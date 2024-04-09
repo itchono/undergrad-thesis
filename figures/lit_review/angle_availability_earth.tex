@@ -1,44 +1,44 @@
 \begin{tikzpicture}[scale=1.2]
 
-\coordinate (S) at (0, 0);
-\coordinate (E) at (1, -2);
+    \coordinate (S) at (0, 0);
+    \coordinate (E) at (1, -2);
 
 
-\draw[densely dotted] (S) circle ({sqrt(5)});
-\fill[earthblue] (E) circle (0.2cm);
+    \draw[densely dotted] (S) circle ({sqrt(5)});
+    \fill[earthblue] (E) circle (0.2cm);
 
 
 
-\pgfmathsetmacro{\e}{0.5}; % set = keep float
-\pgfmathsetmacro{\p}{1.2};
-\pgfmathsetmacro{\aop}{-10};
+    \pgfmathsetmacro{\e}{0.5} % set = keep float
+    \pgfmathsetmacro{\p}{1.2}
+    \pgfmathsetmacro{\aop}{-10}
 
-% Orbits
-\foreach \s in {1,...,50}
-{
-\pgfmathsetmacro{\theta}{360/50*(\s-1)}  % define angle
-\draw (E) +(\theta:{\p*(1-\e^2)/(1 + \e*cos(\theta-\aop)}) coordinate (ORB1\s);
-}
-\draw[green!30!black, thick] (ORB11) foreach \s in {2,...,50}{-- (ORB1\s)} -- cycle;
+    % Orbits
+    \foreach \s in {1,...,50}
+        {
+            \pgfmathsetmacro{\theta}{360/50*(\s-1)}  % define angle
+            \draw (E) +(\theta:{\p*(1-\e^2)/(1 + \e*cos(\theta-\aop))}) coordinate (ORB1\s);
+        }
+    \draw[green!30!black, thick] (ORB11) foreach \s in {2,...,50}{-- (ORB1\s)} -- cycle;
 
-\draw[dashed] (S) -- ($(E) + (\aop:{\p*(1-\e^2)/(1 + \e*cos(0)})$);
+    \draw[dashed] (S) -- ($(E) + (\aop:{\p*(1-\e^2)/(1 + \e*cos(0))})$);
 
-% Cone intercept; hard
-\draw (E) +(\aop:{\p*(1-\e^2)/(1 + \e*cos(0)}) coordinate (SC);
-\draw (S) -- (SC);
+    % Cone intercept; hard
+    \draw (E) +(\aop:{\p*(1-\e^2)/(1 + \e*cos(0))}) coordinate (SC);
+    \draw (S) -- (SC);
 
-\pgfmathsetmacro{\arcsize}{0.3}
-\pgfmathsetmacro{\theta}{-50}
-\filldraw[dashed, fill=green!30!white] (SC) -- ++(\theta+90:\arcsize) arc(\theta+90:\theta-90:\arcsize) -- cycle;
-\fill[black] (SC) circle (0.07cm);
+    \pgfmathsetmacro{\arcsize}{0.3}
+    \pgfmathsetmacro{\theta}{-50}
+    \filldraw[dashed, fill=green!30!white] (SC) -- ++(\theta+90:\arcsize) arc(\theta+90:\theta-90:\arcsize) -- cycle;
+    \fill[black] (SC) circle (0.07cm);
 
-% another
-\draw (E) +(\aop+180:{\p*(1-\e^2)/(1 + \e*cos(180)}) coordinate (SC);
-\draw (S) -- (SC);
-\pgfmathsetmacro{\theta}{-115}
-\filldraw[dashed, fill=green!30!white] (SC) -- ++(\theta+90:\arcsize) arc(\theta+90:\theta-90:\arcsize) -- cycle;
-\fill[black] (SC) circle (0.07cm);
+    % another
+    \draw (E) +(\aop+180:{\p*(1-\e^2)/(1 + \e*cos(180))}) coordinate (SC);
+    \draw (S) -- (SC);
+    \pgfmathsetmacro{\theta}{-115}
+    \filldraw[dashed, fill=green!30!white] (SC) -- ++(\theta+90:\arcsize) arc(\theta+90:\theta-90:\arcsize) -- cycle;
+    \fill[black] (SC) circle (0.07cm);
 
-\fill[yellow] (S) circle (0.4cm);
+    \fill[yellow] (S) circle (0.4cm);
 
 \end{tikzpicture}

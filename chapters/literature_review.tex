@@ -1,10 +1,10 @@
 \chapter{Background}
 This chapter presents a expands on the background covered in the introduction, discussing specific topics driving the approach taken to solving the problem. The literature review is divided into four sections:
 \begin{enumerate}
-    \item Spacecraft trajectory guidance at large, for which solar sail guidance is a subset;
-    \item Feedback guidance laws, particularly the \textit{Q-Law} derived from Lyapunov control theory;
-    \item Special considerations needed for solar sails beyond conventional low-thrust spacecraft;
-    \item Approaches to solar sail guidance, particularly planetocentric orbital maneuvering.
+  \item Spacecraft trajectory guidance at large, for which solar sail guidance is a subset;
+  \item Feedback guidance laws, particularly the \textit{Q-Law} derived from Lyapunov control theory;
+  \item Special considerations needed for solar sails beyond conventional low-thrust spacecraft;
+  \item Approaches to solar sail guidance, particularly planetocentric orbital maneuvering.
 \end{enumerate}
 
 \section{Spacecraft Trajectory Guidance at Large}
@@ -24,9 +24,9 @@ Orbits (in the context of the two-body problem) are described using a set of 6 o
 
 Some examples:
 \begin{itemize}
-    \item Keplerian Elements $\{a, e, i, \Omega, \omega, \theta\}$
-    \item Modified Equinoctial Elements $\{p, f, g, h, k, L\}$ \cite{walker1985set}
-    \item Gooding Universal Elements  $\{\alpha, q, i, \Omega, \omega, \tau\}$ \cite{gooding_universal_elements}
+  \item Keplerian Elements $\{a, e, i, \Omega, \omega, \theta\}$
+  \item Modified Equinoctial Elements $\{p, f, g, h, k, L\}$ \cite{walker1985set}
+  \item Gooding Universal Elements  $\{\alpha, q, i, \Omega, \omega, \tau\}$ \cite{gooding_universal_elements}
 \end{itemize}
 
 Altering the orbit of a spacecraft to solve the guidance problem involves changing its orbital elements. The process of solving for the evolution of orbital elements in time is known as \textit{orbit propagation}.
@@ -34,7 +34,7 @@ Altering the orbit of a spacecraft to solve the guidance problem involves changi
 Cowell's method \cite{book:1487513} is a well-known way of propagating general spacecraft trajectories in Cartesian state space. Typically this involves integrating equations of motion derived from Newton's second law in a form similar to the following:
 
 \begin{equation}
-    \diff[2]{{\boldsymbol{r}}}{t} = -\frac{\mu}{||\boldsymbol{r}||^3} \boldsymbol{r} + \boldsymbol{f}_\mathrm{p} \label{eq:cowells_method}
+  \diff[2]{}{t}{\boldsymbol{r}} = -\frac{\mu}{||\boldsymbol{r}||^3} \boldsymbol{r} + \boldsymbol{f}_\mathrm{p} \label{eq:cowells_method}
 \end{equation}
 Wherein $\boldsymbol{f}_\mathrm{p}$ is some perturbing acceleration (i.e. unrelated to point-mass gravity of the central body) and $\boldsymbol{r}$ is the position vector of the spacecraft (both expressed in an inertial frame). Although simple at first glance, a difficulty of working in Cartesian coordinates for spacecraft guidance is that all six values of the state vector (position and velocity) change in time, regardless of the presence of perturbations. Additionally, describing the geometry of an orbit in terms of Cartesian state is not as straightforward as using orbital elements.
 
@@ -42,11 +42,11 @@ Wherein $\boldsymbol{f}_\mathrm{p}$ is some perturbing acceleration (i.e. unrela
 
 Variational equations of motion are ordinary differential equations giving the time derivatives of orbital elements when subject to a perturbing acceleration, such as thrust from a propulsion system. Taking Keplerian elements as an example, they take the form:
 \begin{equation*}
-    \diff{}{t}
-    \begin{bmatrix}
-        a\\e\\i\\ \Omega \\ \omega \\ \theta
-    \end{bmatrix}
-    = A \boldsymbol{f}_\mathrm{p} + \boldsymbol{b}
+  \diff{}{t}
+  \begin{bmatrix}
+    a \\e\\i\\ \Omega \\ \omega \\ \theta
+  \end{bmatrix}
+  = A \boldsymbol{f}_\mathrm{p} + \boldsymbol{b}
 \end{equation*}
 Where $A \in \mathbb{R}^{6\times6}$, $\boldsymbol{b} \in  \mathbb{R}^{6}$, and typically only the last entry of $\boldsymbol{b}$ is nonzero (i.e. the other 5 orbital elements are invariant when there is zero perturbing acceleration).
 
@@ -59,15 +59,15 @@ Compared to Cowell's method, working directly in terms of orbital elements drama
 Classical orbital maneuvering theory employs brief, high-thrust maneuvers which are approximated as impulses, leading to a sequence of discrete orbits constituting a maneuver, and removing the need to analyze trajectories in terms of continuous equations of motion. Impulse-based maneuvering theory has been extensively studied and is commonly taught at the undergraduate level, as demonstrated by books such as Ref. \cite{book:1487513}. On the other hand, low-thrust guidance requires time integration of differential equations, making the majority of analysis \textbf{heavily-reliant on numerical simulation}. One common approach used for solving the guidance problem for a (low-thrust) solar sail spacecraft is to \textbf{integrate the variational equations of motion}.
 
 \subsection{The Case for Modified Equinoctial Elements}
-The 5 Keplerian elements describing the geometry and orientation of an orbit are the semi-major axis ($a$), eccentricity ($e$), inclination ($i$), right ascension of the ascending node ($\Omega$), and argument of periapsis ($\omega$). The remaining orbital element used to represent time is the true anomaly ($\theta$). A significant challenge associated with using Keplerian elements and their respective variational equations in trajectory analysis are the \textbf{singularities} which occur for many types of orbits (e.g. circular orbits, zero-inclination orbits). Although no orbits are perfectly circular or zero-inclination in practice, the singularities appearing in both the orbital elements themselves and their associated variational equations cause numerical issues in simulations. 
+The 5 Keplerian elements describing the geometry and orientation of an orbit are the semi-major axis ($a$), eccentricity ($e$), inclination ($i$), right ascension of the ascending node ($\Omega$), and argument of periapsis ($\omega$). The remaining orbital element used to represent time is the true anomaly ($\theta$). A significant challenge associated with using Keplerian elements and their respective variational equations in trajectory analysis are the \textbf{singularities} which occur for many types of orbits (e.g. circular orbits, zero-inclination orbits). Although no orbits are perfectly circular or zero-inclination in practice, the singularities appearing in both the orbital elements themselves and their associated variational equations cause numerical issues in simulations.
 
 Common solutions to this include adding ``deadbands'' to the values of eccentricity and inclination, such when they are decremented under some threshold (e.g. $|e| < 10^{-4}$), their value is clamped to the lower bound until their rates of change become positive. This is the approach taken by Petropoulos (2004) \cite{petropoulos2004low} to avoid reaching singularities.
 
 Modified equinoctial orbital elements defined by Walker et. al (1985) \cite{walker1985set} remove singularities in all cases except for a perfectly retrograde equatorial orbit, and present many numerical conveniences for analysis. They are defined from Keplerian elements as follows:
 \begin{align*}
-    p &= a \left(1-e^2\right) & h &= \tan(i/2) \cos \Omega\\
-    f &= e \cos(\omega + \Omega) &  k &= \tan(i/2) \sin \Omega\\
-    g &= e \sin(\omega + \Omega) & L &= \Omega + \omega + \theta
+  p & = a \left(1-e^2\right)    & h & = \tan(i/2) \cos \Omega    \\
+  f & = e \cos(\omega + \Omega) & k & = \tan(i/2) \sin \Omega    \\
+  g & = e \sin(\omega + \Omega) & L & = \Omega + \omega + \theta
 \end{align*}
 In contrast to Keplerian elements, the modified equinoctial elements ($f, g, h, k$) describing the orientation of the orbit represent ratios instead of angles, and are order unity (when $i \in [-\ang{90}, \ang{90}]$). Perfectly circular and equatorial orbits are handled without issues in the variational equations of motion (shown later in Equation \ref{eq:equinoctial_eom_3d}).
 
@@ -90,7 +90,7 @@ Consequently, this project focuses on an entirely different approach to spacecra
 \section{Feedback Guidance Laws}
 Classical control theory is built upon the idea of simple feedback control loops. Although designed without any guarantees for global optimality, they are simple to implement, and can be tuned to get near-optimal performance.
 
-The same idea has been applied to guidance in two main forms: thrust-blending and Lyapunov control. Both approaches use formulations using orbital elements for state representation. In both cases, the key idea is to take the difference between the current value and target value for each orbital element, and produce a control input which decreases the error at each timestep. 
+The same idea has been applied to guidance in two main forms: thrust-blending and Lyapunov control. Both approaches use formulations using orbital elements for state representation. In both cases, the key idea is to take the difference between the current value and target value for each orbital element, and produce a control input which decreases the error at each timestep.
 
 Thrust-blending (also referred to as blended control) methods find control inputs which independently maximize the rate of decrease of the error for each of the orbital elements, and take a linear combination of the individual inputs. This is examined more thoroughly in the survey by Morante et al. (2021) \cite{morante2021survey}.
 
@@ -99,24 +99,24 @@ Lyapunov methods take an alternative approach compared to thrust-blending, by in
 \subsection{Lyapunov Methods}
 A brief primer on Lyapunov control theory is presented, based on an explanation from the fundamental paper of planetocentric Lyapunov-based guidance by Ilgen (1994) \cite{ilgen1994low}.
 
-Consider a dynamic system with state $x(t) \in \mathbb{R}^n$ a control input $u \in \mathbb{R}^m$ governed by some differential equation $f : \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^n$ s.t. $\dot{x}(t) = f(x(t), u)$. 
+Consider a dynamic system with state $x(t) \in \mathbb{R}^n$ a control input $u \in \mathbb{R}^m$ governed by some differential equation $f : \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^n$ s.t. $\dot{x}(t) = f(x(t), u)$.
 
 Consider a function $V: \mathbb{R}^n \to \mathbb{R}$, called a \textbf{potential function or control-Lyapunov function}, which maps each state value to some scalar. Intuitively, this can be thought of as analogous to the potential energy of the system, which vanishes at some point $x = \hat{x}$, e.g. a mass attached to a spring, wherein $V(x) = \frac{1}{2}(x-\hat{x})^2$
 
 This dynamic system is said to be \textbf{Lyapunov stable} iff a potential function can be found which meets the following conditions:
 \begin{enumerate}
-    \item $V(x) > 0\  \forall \ x \neq \hat{x}$
-    \item $V(\hat{x}) = 0$
-    \item There exists some $u$ for all $x \in \mathbb{R}^n$ s.t.
-    \begin{align*}
-    \dot{V}= \nabla V(x) \cdot \dot{x}(t) &= \nabla V(x) \cdot f(x, u) < 0
-    \end{align*}
-    where $\nabla V(x)$ means $\diff{V}{{x_i}} = \left\{\diff{V}{{x_1}}, ..., \diff{V}{{x_n}}  \right\}$
+  \item $V(x) > 0\  \forall \ x \neq \hat{x}$
+  \item $V(\hat{x}) = 0$
+  \item There exists some $u$ for all $x \in \mathbb{R}^n$ s.t.
+        \begin{align*}
+          \dot{V}= \nabla V(x) \cdot \dot{x}(t) & = \nabla V(x) \cdot f(x, u) < 0
+        \end{align*}
+        where $\nabla V(x)$ means $\diff{V}{{x_i}} = \left\{\diff{V}{{x_1}}, ..., \diff{V}{{x_n}}  \right\}$
 \end{enumerate}
 Or in other words:
 \begin{itemize}
-    \item $V(x)$ is positive definite
-    \item For every state, there exists a control input which decreases $V(x)$ in time.
+  \item $V(x)$ is positive definite
+  \item For every state, there exists a control input which decreases $V(x)$ in time.
 \end{itemize}
 
 Over time, this will drive the state towards $x = \hat{x}$.
@@ -129,8 +129,8 @@ Solving for the value of $u$ at each value of $x$ such that $\dot{V}$ is minimiz
 
 Ilgen's paper proposes a potential function which is a linear combination of the square of the difference between each orbital element and its target value. Formulated in Keplerian elements, it is given as:
 \begin{equation}
-    V = \frac{1}{2} \left[P_1 \frac{(a - \hat{a})^2}{R_e^2} + P_2 (e - \hat{e})^2 + P_3 (i - \hat{i})^2 + P_4 (\Omega - \hat{\Omega}) + P_5 (\omega - \hat{\omega})^2  \right]
-    \label{eq:ilgen_potential}
+  V = \frac{1}{2} \left[P_1 \frac{(a - \hat{a})^2}{R_e^2} + P_2 (e - \hat{e})^2 + P_3 (i - \hat{i})^2 + P_4 (\Omega - \hat{\Omega}) + P_5 (\omega - \hat{\omega})^2  \right]
+  \label{eq:ilgen_potential}
 \end{equation}
 where hatted values refer to target orbital elements, and $P_i, i \in \{1, ..., 5\}$ are weighting factors.
 
@@ -151,8 +151,8 @@ A notable contemporary development in Lyapunov-based planetocentric orbit maneuv
 \subsection{The Q-Law Family}
 The \textit{Q-Law} was developed by Petropoulos \cite{petropoulos2004low} using a potential function of the form:
 \begin{equation}
-    Q = (1 + W_P P) \sum_{\moe} W_\moe S_\moe \left(\frac{\moe - \hat{\moe}}{\dot{\moe}_{\max}} \right)^2, \ \  \moe \in \{a, e, i, \Omega, \omega\}
-    \label{eq:q_law_petropulos}
+  Q = (1 + W_P P) \sum_{\moe} W_\moe S_\moe \left(\frac{\moe - \hat{\moe}}{\dot{\moe}_{\max}} \right)^2, \ \  \moe \in \{a, e, i, \Omega, \omega\}
+  \label{eq:q_law_petropulos}
 \end{equation}
 where $P$ is a penalty function used to impose constraints, $S_\moe$ is a scaling function for each orbital element, and $W_\sigma, \sigma \in \{P, a, e, i, \Omega, \omega\}$ are weights. $\hat{\moe}$ represents target orbital elements, and $\dot{\moe}_{\max}$ represents the maximum attainable rate of change in each orbital element across the course of an orbit (i.e. across all values of $\theta$) and across all thrust directions (assuming a propulsion system with fixed thrust).
 
@@ -176,112 +176,112 @@ With that said, an important fact to consider is that real solar sails behave ve
 In a perfectly idealized model, thrust is produced exactly in the direction of the sail normal, and the cone angle can be as great as \ang{90}. Real solar sails have limits on maximum allowable cone angle due to considerations for attitude control or because the reflective material of the sail behaves non-ideally at shallow incidence angles. Furthermore, the resultant thrust vector is not always aligned perfectly with the sail normal. This is illustrated in Figure \ref{fig:sail_reflectivity_comparison} below.
 
 \begin{figure}[H]
-    \centering
-    \begin{subfigure}[t]{0.49\textwidth}
+  \centering
+  \begin{subfigure}[t]{0.49\textwidth}
     \begin{tikzpicture}[scale=0.98]
-        \coordinate (O) at (0, 0);
-        \coordinate (Sun) at (190:4cm);
-        \coordinate (T) at (220:1cm);
-        \begin{scope}[black!50]
+      \coordinate (O) at (0, 0);
+      \coordinate (Sun) at (190:4cm);
+      \coordinate (T) at (220:1cm);
+      \begin{scope}[black!50]
         \draw[ultra thick] (O) ++ (130:2cm) -- ++(-50:4cm);
         \draw (O) ++(220:0.1cm) ++ (130:2cm) -- ++(-50:4cm);
-        \end{scope}
-        \draw[-latex, color=orange!70!black] (O) -- ++(40:1cm) node[right]{\footnotesize{Thrust ($\vec{F}$)}};
-        \draw[-latex, dashed, purple!70!black] (O)  ++(220:2cm) -- ++(40:4cm) node[above]{Sail Normal ($\hat{n}$)};
-        \begin{scope}[cyan!50!black]
-            \draw[-latex, thick] (Sun) -- (O) node[midway, above=4pt] {\footnotesize{Incident Light $\hat{u_i}$}};
-            % Reflected rays
-            \draw[-latex] (O) -- ++(-100:4cm) node[right]{\footnotesize{Reflected Light}};
-        \end{scope}
-        % Draw Sun
-        \fill[color=yellow] (Sun) circle(0.5cm);
-        % angles
-        \draw pic["\footnotesize{$\varphi$}", draw=black, text=black, |->, angle eccentricity=1.4, angle radius=1.3cm] {angle=Sun--O--T};
+      \end{scope}
+      \draw[-latex, color=orange!70!black] (O) -- ++(40:1cm) node[right]{\footnotesize{Thrust ($\vec{F}$)}};
+      \draw[-latex, dashed, purple!70!black] (O)  ++(220:2cm) -- ++(40:4cm) node[above]{Sail Normal ($\hat{n}$)};
+      \begin{scope}[cyan!50!black]
+        \draw[-latex, thick] (Sun) -- (O) node[midway, above=4pt] {\footnotesize{Incident Light $\hat{u_i}$}};
+        % Reflected rays
+        \draw[-latex] (O) -- ++(-100:4cm) node[right]{\footnotesize{Reflected Light}};
+      \end{scope}
+      % Draw Sun
+      \fill[color=yellow] (Sun) circle(0.5cm);
+      % angles
+      \draw pic["\footnotesize{$\varphi$}", draw=black, text=black, |->, angle eccentricity=1.4, angle radius=1.3cm] {angle=Sun--O--T};
     \end{tikzpicture}
     \caption{Perfectly reflecting sail; thrust is aligned with the sail normal.}
     \label{fig:perfect_sail}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.49\textwidth}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.49\textwidth}
     \begin{tikzpicture}[scale=0.98]
-        \coordinate (O) at (0, 0);
-        \coordinate (Sun) at (190:4cm);
-        \coordinate (T) at (220:1cm);
-        \begin{scope}[black!50]
+      \coordinate (O) at (0, 0);
+      \coordinate (Sun) at (190:4cm);
+      \coordinate (T) at (220:1cm);
+      \begin{scope}[black!50]
         \draw[ultra thick] (O) ++ (130:2cm) -- ++(-50:4cm);
         \draw (O) ++(220:0.1cm) ++ (130:2cm) -- ++(-50:4cm);
-        \end{scope}
-        \draw[-latex, color=orange!70!black] (O) -- ++(30:2cm) node[right]{\footnotesize{Thrust ($\vec{F}$)}};
-        \draw[-latex, dashed, purple!70!black] (O)  ++(220:2cm) -- ++(40:4cm) node[above]{Sail Normal ($\hat{n}$)};
-        \begin{scope}[cyan!50!black]
-            \draw[-latex, thick] (Sun) -- (O) node[midway, above=4pt] {\footnotesize{Incident Light $\hat{u_i}$}};
-            % Reflected rays
-            \draw[-latex] (O) -- ++(-70:3cm) node[right]{\footnotesize{Reflected Light}};
-            \draw[-latex] (O) -- ++(-80:3cm);
-            \draw[-latex] (O) -- ++(-90:3cm);
-        \end{scope}
-        % Draw Sun
-        \fill[color=yellow] (Sun) circle(0.5cm);
-        % angles
-        \draw pic["\footnotesize{$\varphi$}", draw=black, text=black, |->, angle eccentricity=1.4, angle radius=1.3cm] {angle=Sun--O--T};
+      \end{scope}
+      \draw[-latex, color=orange!70!black] (O) -- ++(30:2cm) node[right]{\footnotesize{Thrust ($\vec{F}$)}};
+      \draw[-latex, dashed, purple!70!black] (O)  ++(220:2cm) -- ++(40:4cm) node[above]{Sail Normal ($\hat{n}$)};
+      \begin{scope}[cyan!50!black]
+        \draw[-latex, thick] (Sun) -- (O) node[midway, above=4pt] {\footnotesize{Incident Light $\hat{u_i}$}};
+        % Reflected rays
+        \draw[-latex] (O) -- ++(-70:3cm) node[right]{\footnotesize{Reflected Light}};
+        \draw[-latex] (O) -- ++(-80:3cm);
+        \draw[-latex] (O) -- ++(-90:3cm);
+      \end{scope}
+      % Draw Sun
+      \fill[color=yellow] (Sun) circle(0.5cm);
+      % angles
+      \draw pic["\footnotesize{$\varphi$}", draw=black, text=black, |->, angle eccentricity=1.4, angle radius=1.3cm] {angle=Sun--O--T};
     \end{tikzpicture}
     \caption{General sail, which may scatter and absorb incoming light, resulting in offset thrust.}
     \label{fig:general_sail}
-    \end{subfigure}
-    \caption{Differences between a general reflectivity model and a perfectly reflecting sail.}
-    \label{fig:sail_reflectivity_comparison}
+  \end{subfigure}
+  \caption{Differences between a general reflectivity model and a perfectly reflecting sail.}
+  \label{fig:sail_reflectivity_comparison}
 \end{figure}
 
 \subsection{Inherent Challenges of Dynamics}
 Even in the case of a flat perfectly reflecting sail, there are two key obstacles complicating the application of low-thrust guidance theory to solar sail spacecraft.
 \begin{enumerate}
-    \item \textbf{Direction-Dependent Availability of Thrust}: The thrust produced by a solar sail is related to the cone angle $\varphi$ by a factor of roughly $\cos^2(\varphi)$ (see Equation 2.22 of Ref. \cite{mcinnes}). Thrust falls off considerably as the sail becomes misaligned with the direction of incident light, and drops to zero for $|\varphi| > \ang{90}$. This means that at any instant in time, only a single hemisphere of thrust directions can be realized, with the orientation of the hemisphere being dependent on the position of the Sun -- a quantity which cannot be directly controlled. This is illustrated in Figure \ref{fig:thrust_availability}.
-    \item \textbf{Time/Position-Dependent Availability of Thrust}: In addition to the limitations on the direction in which thrust can be produced, the availability of thrust itself depends on a clear line of sight to the Sun. In eclipse, no light hits the sail, and no thrust is produced. This is illustrated in Figure \ref{fig:eclipse}. For spacecraft in low orbits above a planet, the time spent in eclipse represents a substantial fraction of the orbital period, and exacerbates the challenge of maneuvering using a solar sail.
+  \item \textbf{Direction-Dependent Availability of Thrust}: The thrust produced by a solar sail is related to the cone angle $\varphi$ by a factor of roughly $\cos^2(\varphi)$ (see Equation 2.22 of Ref. \cite{mcinnes}). Thrust falls off considerably as the sail becomes misaligned with the direction of incident light, and drops to zero for $|\varphi| > \ang{90}$. This means that at any instant in time, only a single hemisphere of thrust directions can be realized, with the orientation of the hemisphere being dependent on the position of the Sun -- a quantity which cannot be directly controlled. This is illustrated in Figure \ref{fig:thrust_availability}.
+  \item \textbf{Time/Position-Dependent Availability of Thrust}: In addition to the limitations on the direction in which thrust can be produced, the availability of thrust itself depends on a clear line of sight to the Sun. In eclipse, no light hits the sail, and no thrust is produced. This is illustrated in Figure \ref{fig:eclipse}. For spacecraft in low orbits above a planet, the time spent in eclipse represents a substantial fraction of the orbital period, and exacerbates the challenge of maneuvering using a solar sail.
 \end{enumerate}
 
 \begin{figure}[H]
-    \centering
-    \begin{subfigure}[t]{0.49\textwidth}
+  \centering
+  \begin{subfigure}[t]{0.49\textwidth}
     \begin{tikzpicture}
-        \coordinate (O) at (0, 0);
-        \coordinate (Sun) at (190:4cm);
-        \coordinate (T) at (220:1cm);
-        \filldraw[dashed, fill=blue!30!white] (O) -- ++(-80:2.5cm) arc(-80:100:2.5cm) -- cycle;
-        \filldraw[dashed, fill=green!30!white] (O) -- ++(-50:2.5cm) arc(-50:70:2.5cm) node[midway, left=0cm, text width=1.5cm, text=green!70!black]{\tiny{Thrust \newline Availablity\newline \textcolor{blue!70!black}{(Ideal}/Real)}}-- cycle;
-        \begin{scope}[black!50!white]
+      \coordinate (O) at (0, 0);
+      \coordinate (Sun) at (190:4cm);
+      \coordinate (T) at (220:1cm);
+      \filldraw[dashed, fill=blue!30!white] (O) -- ++(-80:2.5cm) arc(-80:100:2.5cm) -- cycle;
+      \filldraw[dashed, fill=green!30!white] (O) -- ++(-50:2.5cm) arc(-50:70:2.5cm) node[midway, left=0cm, text width=1.5cm, text=green!70!black]{\tiny{Thrust \newline Availablity\newline \textcolor{blue!70!black}{(Ideal}/Real)}}-- cycle;
+      \begin{scope}[black!50!white]
         \draw[ultra thick] (O) ++(-80:2.5cm) -- ++(-80:-5cm);
         \draw (O) ++(220:0.1cm) ++(-80:2.5cm) -- ++(-80:-5cm);
-        \end{scope}
-        \draw (O) ++(190:0.5cm) -- ++(100:0.5cm) -- ++(10:0.5cm);
-        \draw[-latex, thick] (Sun) -- (O) node[midway, above=4pt] {\tiny{Incident Light $\hat{u_i}$}};
-        \draw[-latex, thick, dashed, orange!70!black] (O) -- +(-120:2cm) node[below left, text=orange!70!black]{\tiny{Impossible Thrust Direction}};
-        % Draw Sun
-        \fill[color=yellow] (Sun) circle(0.5cm);
+      \end{scope}
+      \draw (O) ++(190:0.5cm) -- ++(100:0.5cm) -- ++(10:0.5cm);
+      \draw[-latex, thick] (Sun) -- (O) node[midway, above=4pt] {\tiny{Incident Light $\hat{u_i}$}};
+      \draw[-latex, thick, dashed, orange!70!black] (O) -- +(-120:2cm) node[below left, text=orange!70!black]{\tiny{Impossible Thrust Direction}};
+      % Draw Sun
+      \fill[color=yellow] (Sun) circle(0.5cm);
     \end{tikzpicture}
     \caption{The direction of produced thrust is limited for solar sails.}
     \label{fig:thrust_availability}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.49\textwidth}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.49\textwidth}
     \begin{tikzpicture}
-        \coordinate (O) at (0, 0);
-        \coordinate (Sun) at (190:4cm);
-        \coordinate (E) at (192:2cm);
-        \coordinate (T) at (220:1cm);
-        \begin{scope}[black!50!white]
+      \coordinate (O) at (0, 0);
+      \coordinate (Sun) at (190:4cm);
+      \coordinate (E) at (192:2cm);
+      \coordinate (T) at (220:1cm);
+      \begin{scope}[black!50!white]
         \draw[ultra thick] (O) ++ (130:2cm) -- ++(-50:4cm);
         \draw (O) ++(220:0.1cm) ++ (130:2cm) -- ++(-50:4cm);
-        \end{scope}
-        \draw (O) node[above right, text=orange!70!black]{\footnotesize NO THRUST!};
-        \draw[-latex, thick] (Sun) -- ++(10:2cm); 
-        \draw[-latex, dashed] (Sun) -- (O) node[midway, above=4pt, text width=3cm] {\footnotesize{Incident Light Occluded}};
-        % Draw Sun and Earth
-        \fill[color=yellow] (Sun) circle(0.5cm);
-        \fill[color=black!30] (E) circle(0.2cm);
+      \end{scope}
+      \draw (O) node[above right, text=orange!70!black]{\footnotesize NO THRUST!};
+      \draw[-latex, thick] (Sun) -- ++(10:2cm);
+      \draw[-latex, dashed] (Sun) -- (O) node[midway, above=4pt, text width=3cm] {\footnotesize{Incident Light Occluded}};
+      % Draw Sun and Earth
+      \fill[color=yellow] (Sun) circle(0.5cm);
+      \fill[color=black!30] (E) circle(0.2cm);
     \end{tikzpicture}
     \caption{Solar sails produce no thrust in eclipse.}
     \label{fig:eclipse}
-    \end{subfigure}
-    \caption{Key challenges associated with solar sail thrust.}
-    \label{fig:sail_challenges}
+  \end{subfigure}
+  \caption{Key challenges associated with solar sail thrust.}
+  \label{fig:sail_challenges}
 \end{figure}
 
 Both of these effects are present to a lesser degree in spacecraft using electric propulsion; solar arrays require Sun exposure, but are typically made to rotate so that they can track the Sun independently of the direction of the engines. Solar sails pose a more extreme set of challenges for maneuvering, stemming from their principle of operation.
@@ -295,9 +295,16 @@ IKAROS (2010) featured variable-reflectivity materials on its surface for attitu
 
 The key point to be made is that fixating upon a certain dynamic model for solar sails is overly restrictive for adequate consideration of future solar sail designs.
 
-Note that there is work done by Rios-Reyes et al. (2005) \cite{rios2005generalized} and Tsunda et al. (2013) \cite{tsuda2013generalized} on generalizing solar sail dynamics models. These models allow for arbitrary geometries and surface reflectivity properties, but have a large number of parameters. For the sake of simplicity, integrating such a model into the guidance law for this project is not considered. 
+Note that there is work done by Rios-Reyes et al. (2005) \cite{rios2005generalized} and Tsunda et al. (2013) \cite{tsuda2013generalized} on generalizing solar sail dynamics models. These models allow for arbitrary geometries and surface reflectivity properties, but have a large number of parameters. For the sake of simplicity, integrating such a model into the guidance law for this project is not considered.
 
 \subsection{Maneuverability Limitations}
+Solar sail spacecraft have limited attitude agility; as a first approximation, angular rates of about $\ang{15}$ per hour are achievable \cite{choi2015structural}. Even with this crude notion of maneuverability, maneuvers in orbits where the period is shorter than a few hours (such as LEO) become difficult with solar sail spacecraft. Such considerations should be made when making a guidance law, so that the time history of commanded thrust directions can be realized by the attitude controller.
+
+Incorporating constraints for attitude dynamics is challenging; attitude control often depends on solar radiation pressure for maneuvering (e.g. tip vanes, LCD panels), and hence the maximum attainable attitude rates change substantially based on the orientation of the spacecraft.
+
+Considering attitude dynamics in a globally optimal method is very challenging,
+
+
 (something about how generally a global trajectory which could be flown by a solar sail may not actually be possible, due to having to add constraints for maneuverability at all times)
 
 (as well as practical limits even with a feedback approach)
@@ -313,20 +320,20 @@ As with low-thrust guidance, solar sails have frequently been the subject for in
 In planetocentric orbits, the issues of directional thrust availability and eclipse are more severe than when around the Sun. For instance, the ``hemisphere'' of allowable thrust directions (see Figure \ref{fig:thrust_availability}) makes a full revolution during each orbit around the Sun, and therefore a solar sail in heliocentric orbit can apply thrust in nearly all directions over the course of a single orbit. On the other hand, the position of the Sun relative to a spacecraft barely changes over the course of a single orbit around a planet, which greatly restricts the possible space of thrust directions. As already mentioned, eclipse is a common occurrence in low orbit around a planet, while it is effectively nonexistent when orbiting the Sun. These complications are illustrated in Figure \ref{fig:angle_availability}.
 
 \begin{figure}[H]
-    \centering
-    \begin{subfigure}[t]{0.45\textwidth}
-        \input{figures/lit_review/angle_availability_sun}
-        \caption{Heliocentric trajectories: thrust availability depends only on the orientation of the spacecraft orbit relative to its parent body (the Sun).}
-        \label{fig:angle_availability_sun}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.45\textwidth}
-        \input{figures/lit_review/angle_availability_earth}
-        \caption{Planetocentric trajectories: thrust availability also depends on the position of the parent planet around the Sun.}
-        \label{fig:angle_availability_earth}
-    \end{subfigure}
-    \caption{Differences between heliocentric and planetocentric solar sail flight.}
-    \label{fig:angle_availability}
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    \input{figures/lit_review/angle_availability_sun}
+    \caption{Heliocentric trajectories: thrust availability depends only on the orientation of the spacecraft orbit relative to its parent body (the Sun).}
+    \label{fig:angle_availability_sun}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.45\textwidth}
+    \input{figures/lit_review/angle_availability_earth}
+    \caption{Planetocentric trajectories: thrust availability also depends on the position of the parent planet around the Sun.}
+    \label{fig:angle_availability_earth}
+  \end{subfigure}
+  \caption{Differences between heliocentric and planetocentric solar sail flight.}
+  \label{fig:angle_availability}
 \end{figure}
 
 \subsection{Specialized Laws for Planetocentric Orbital Maneuvers}

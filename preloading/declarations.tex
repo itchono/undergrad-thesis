@@ -21,13 +21,13 @@
 % Page Numbering (i, ii, iii, ..., 1, 2, 3,...)
 \makeatletter
 \newcommand\frontmatter{%
-    \cleardoublepage
+  \cleardoublepage
   %\@mainmatterfalse
   \pagenumbering{roman}}
 
 \newcommand\mainmatter{%
-    \cleardoublepage
- % \@mainmattertrue
+  \cleardoublepage
+  % \@mainmattertrue
   \pagenumbering{arabic}}
 
 \newcommand\backmatter{%
@@ -36,8 +36,8 @@
   \else
     \clearpage
   \fi
- % \@mainmatterfalse
-   }
+  % \@mainmatterfalse
+}
 \makeatother
 
 
@@ -59,10 +59,10 @@
 \newcommand{\coneback}[4][]{
   %% start at the correct point on the circle, draw the arc, then draw to the origin of the diagram, then close the path
   \draw[canvas is xy plane at z=#2, #1] (45-#4:#3) arc (45-#4:225+#4:#3) -- (O) --cycle;
-  }
+}
 \newcommand{\conefront}[4][]{
   \draw[canvas is xy plane at z=#2, #1] (45-#4:#3) arc (45-#4:-135+#4:#3) -- (O) --cycle;
-  }
+}
 
 % Bibliography margin https://tex.stackexchange.com/a/172000
 \emergencystretch=1em
