@@ -11,14 +11,14 @@ Table \ref{tab:outputs_1_summary} summarizes the outcomes of each case. Discussi
 \begin{table}[H]
     \centering
     \begin{tabular}{L{3cm}L{3cm}L{2.5cm}L{2.5cm}R{3cm}}
-    \toprule
-         \textbf{Case} & Convergence Tolerance & Time of Flight (d) & Number of Revolutions & $\Delta v$ Expenditure (m/s)\\
-         \midrule
-        GEO Disposal & 0.005 & 62.44 & 62 & 13.1\\
-        Plane Change & 0.005 & 1020 & 1944 & 13570.3\\     
-        ``Benchmark'' & 0.005 & 610 & 858 & 6673.2\\
-           Polar GSO & 0.03 & 490 & 494 & 9686.7\\
-         \bottomrule
+        \toprule
+        \textbf{Case} & Convergence Tolerance & Time of Flight (d) & Number of Revolutions & $\Delta v$ Expenditure (m/s) \\
+        \midrule
+        GEO Disposal  & 0.005                 & 62.44              & 62                    & 13.1                         \\
+        Plane Change  & 0.005                 & 1020               & 1944                  & 13570.3                      \\
+        ``Benchmark'' & 0.005                 & 610                & 858                   & 6673.2                       \\
+        Polar GSO     & 0.03                  & 490                & 494                   & 9686.7                       \\
+        \bottomrule
     \end{tabular}
     \caption{Summary of outcomes for each case.}
     \label{tab:outputs_1_summary}
@@ -40,14 +40,14 @@ Global weight optimization was performed for the latter two baseline cases. The 
 \begin{table}[H]
     \centering
     \begin{tabular}{L{5cm}L{2.5cm}L{2.5cm}L{3cm}}
-    \toprule
-         \textbf{Case} & Time of Flight (d) & Number of Revolutions & $\Delta v$ Expenditure (m/s)\\
-         \midrule   
-        ``Benchmark'', baseline & 610 & 858 & 6673.2\\
-        \rowcolor{green!20!white}``Benchmark'', optimized & 388 & 622 & 6193.0\\
-           Polar GSO, baseline & 490 & 494 & 9686.7\\
-           \rowcolor{green!20!white} Polar GSO, optimized & 375 & 323 & 8352.0\\
-         \bottomrule
+        \toprule
+        \textbf{Case}                                     & Time of Flight (d) & Number of Revolutions & $\Delta v$ Expenditure (m/s) \\
+        \midrule
+        ``Benchmark'', baseline                           & 610                & 858                   & 6673.2                       \\
+        \rowcolor{green!20!white}``Benchmark'', optimized & 388                & 622                   & 6193.0                       \\
+        Polar GSO, baseline                               & 490                & 494                   & 9686.7                       \\
+        \rowcolor{green!20!white} Polar GSO, optimized    & 375                & 323                   & 8352.0                       \\
+        \bottomrule
     \end{tabular}
     \caption{Comparison of optimized cases against their baselines.}
     \label{tab:outputs_2_summary}
@@ -63,14 +63,14 @@ Baseline $W_{\moe}$: $\{1, 1, 1, 1, 1\}$
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_transfer/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:results_benchmark_a}
+        \includegraphics[width=\textwidth]{figures/benchmark_transfer/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:results_benchmark_a}
     \end{subfigure}
     \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_transfer/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:results_benchmark_b}
+        \includegraphics[width=\textwidth]{figures/benchmark_transfer/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:results_benchmark_b}
     \end{subfigure}
     \caption{Benchmark transfer case, baseline.}
     \label{fig:results_benchmark}
@@ -81,14 +81,14 @@ Optimal $W_{\moe}$: $\{1.774, 0.5149, 0.3327, 9.925, 0.5317\}$
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_optim/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:results_benchmark_optim_a}
+        \includegraphics[width=\textwidth]{figures/benchmark_optim/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:results_benchmark_optim_a}
     \end{subfigure}
     \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_optim/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:results_benchmark_optim_b}
+        \includegraphics[width=\textwidth]{figures/benchmark_optim/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:results_benchmark_optim_b}
     \end{subfigure}
     \caption{Benchmark transfer case, optimal tuning.}
     \label{fig:results_benchmark_optim}
@@ -101,14 +101,14 @@ Baseline $W_{\moe}$: $\{1, 1, 1, 1, 1\}$
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_G/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:oguri_base_a}
+        \includegraphics[width=\textwidth]{figures/oguri_G/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:oguri_base_a}
     \end{subfigure}
     \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_G/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:oguri_base_b}
+        \includegraphics[width=\textwidth]{figures/oguri_G/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:oguri_base_b}
     \end{subfigure}
     \caption{GTO to polar transfer, baseline.}
     \label{fig:oguri_base}
@@ -119,14 +119,14 @@ Optimal $W_{\moe}$: $\{8.959, 2.132, 1.722, 3.559, 9.789\}$
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_optim/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:oguri_optim_a}
+        \includegraphics[width=\textwidth]{figures/oguri_optim/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:oguri_optim_a}
     \end{subfigure}
     \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_optim/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:oguri_optim_b}
+        \includegraphics[width=\textwidth]{figures/oguri_optim/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:oguri_optim_b}
     \end{subfigure}
     \caption{GTO to polar transfer, optimal tuning.}
     \label{fig:oguri_optim}
@@ -136,11 +136,3 @@ Optimal $W_{\moe}$: $\{8.959, 2.132, 1.722, 3.559, 9.789\}$
 \Large
 Note: animated versions of the trajectory plots can be found on \href{https://github.com/itchono/SLyGA/wiki/Case-Outputs}{this webpage}.
 }
-
-\subsection{Discussion}
-\label{sec:discussion}
-The improvement in time-of-flight (and number of revolutions) is remarkable. By inspecting the plots of the orbital elements, it is clear that adjusting the weights of the guidance changes the ``strategy'' employed by the guidance law.
-
-By emphasizing certain elements over others, the guidance law is more willing to accept an increase in error in one element for a reduction in another. This is exemplified in Figure \ref{fig:results_benchmark_optim_a}.
-
-By inspecting the trajectory plots, it is evident that the optimized transfers ``waste fewer actions'' compared to their baseline counterparts. In the Benchmark case, the total $\Delta v$ expenditures are very similar, but the trajectory taken by the optimized tuning looks far more direct than the baseline case.

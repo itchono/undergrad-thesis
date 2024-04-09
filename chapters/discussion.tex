@@ -1,2 +1,7 @@
 \chapter{Discussion}
+\label{chp:discussion}
+The improvement in time-of-flight (and number of revolutions) is remarkable. By inspecting the plots of the orbital elements, it is clear that adjusting the weights of the guidance changes the ``strategy'' employed by the guidance law.
 
+By emphasizing certain elements over others, the guidance law is more willing to accept an increase in error in one element for a reduction in another. This is exemplified in Figure \ref{fig:results_benchmark_optim_a}.
+
+By inspecting the trajectory plots, it is evident that the optimized transfers ``waste fewer actions'' compared to their baseline counterparts. In the Benchmark case, the total $\Delta v$ expenditures are very similar, but the trajectory taken by the optimized tuning looks far more direct than the baseline case.
