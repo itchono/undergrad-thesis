@@ -1,0 +1,75 @@
+\tdplotsetmaincoords{60}{110}
+\begin{tikzpicture}[tdplot_main_coords, scale=1.35]
+
+% Baseline coordinates
+\coordinate (O) at (0, 0, 0);
+\coordinate (S) at (-1, -2.5, 0);
+
+% Plotting Params
+\pgfmathtruncatemacro{\n}{100};  % truncate = whole number
+
+% SC ORBIT
+\pgfmathsetmacro{\e}{0.2}; % set = keep float
+\pgfmathsetmacro{\p}{1};
+\pgfmathsetmacro{\aop}{150};
+\foreach \s in {1,...,\n}
+{
+\pgfmathsetmacro{\theta}{360/\n*(\s-1)}  % define angle
+\draw (O) +(\theta:{\p*(1-\e^2)/(1 + \e*cos(\theta-\aop)}) coordinate (ORB2\s);
+}
+\draw[red!30!black, thick] (ORB21) foreach \s in {2,...,\n}{-- (ORB2\s)} -- cycle;
+
+\begin{scope}[canvas is xy plane at z=0]
+% DRAW EARTH ORBIT
+\draw[densely dotted, thin] (S) let \p1 = ($(S)-(O)$) in circle ({veclen(\x1,\y1)});
+\end{scope}
+
+% DRAW SUN
+\fill[yellow] (S) circle (12pt);
+
+% DRAW EARTH
+\fill[earthblue] (O) circle (7pt);
+
+% TARGET ORBIT
+\pgfmathsetmacro{\e}{0.6}; % set = keep float
+\pgfmathsetmacro{\p}{1.4};
+\pgfmathsetmacro{\aop}{-10};
+\foreach \s in {1,...,\n}
+{
+\pgfmathsetmacro{\theta}{360/\n*(\s-1)}  % define angle
+\draw (O) +(\theta:{\p*(1-\e^2)/(1 + \e*cos(\theta-\aop)}) coordinate (ORB1\s);
+}
+\draw[green!30!black, thick] (ORB11) foreach \s in {2,...,\n}{-- (ORB1\s)} -- cycle;
+
+% DRAW SC (at AP of SC orbit) AND TRAJ
+\pgfmathsetmacro{\e}{0.2}; % set = keep float
+\pgfmathsetmacro{\p}{1};
+\pgfmathsetmacro{\aop}{150};
+\pgfmathsetmacro{\sailsize}{0.7}
+\begin{scope}[plane x={({-cos(\aop)}, {-sin(\aop)}, 0)},
+             plane y={(0, 0, 1)},
+             canvas is plane]
+    \draw (O) +(0:{\p*(1-\e^2)/(1 + \e*cos(180)}) coordinate (SC);
+    \filldraw[black!30!white, ultra thick] (SC) ++(-\sailsize/2, -\sailsize/2) rectangle ++(\sailsize, \sailsize);
+    % cross exes
+    \begin{scope}[very thick, black!50!white]
+    \draw (SC) ++(-\sailsize/2, -\sailsize/2) -- ++(\sailsize, \sailsize);
+    \draw (SC) ++(-\sailsize/2, \sailsize/2) -- ++(\sailsize, -\sailsize);
+    \end{scope}
+\end{scope}
+
+% Redraw lost portion of arc in sc orbit (hack)
+\foreach \s in {1,...,\n}
+{
+\pgfmathsetmacro{\theta}{181/\n*(\s-1)}  % define angle
+\draw (O) +(\theta+\aop+180:{(1-\e^2)/(1 + \e*cos(\theta+180)}) coordinate (ORB2\s);
+}
+\draw[red!30!black, thick] (ORB21) foreach \s in {2,...,\n}{-- (ORB2\s)};
+
+% Draw trajectory
+\begin{scope}[canvas is xy plane at z = 0]
+    \draw[-latex, thick, densely dashdotted] (O) +(\aop-180:{\p*(1-\e^2)/(1 + \e*cos(180)}) arc (\aop-180:\aop+10:1.7);
+\end{scope}
+
+\end{tikzpicture}
+

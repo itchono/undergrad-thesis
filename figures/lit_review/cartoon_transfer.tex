@@ -1,0 +1,44 @@
+\begin{figure}[H]
+\tdplotsetmaincoords{30}{30}
+\begin{tikzpicture}[tdplot_main_coords,scale=1]
+    \coordinate (O) at (0, 0, 0);
+    \coordinate (SC) at ({9/sqrt(2)}, {9/sqrt(2)}, 0);
+    % Orbit 1
+    \begin{scope}[plane x={({1/sqrt(2)}, {1/sqrt(2)}, 0)}, plane y={(-0.5, 0.5, {1/sqrt(2)})}, canvas is plane]
+    % Grid
+    \begin{scope}[densely dotted, green!50!black]
+    \draw (-1, 0, 0) -- (9, 0, 0);
+    \draw (0, -1.8, 0) -- (0, 1.8, 0);
+    \end{scope}
+    \draw[green!50!black, thick, fill=green!50!black, fill opacity=0.2] (4, 0, 0) ellipse (5cm and 3cm);
+    \draw (9, -0.5) node[below right, green!50!black, text width=4cm]{Initial Orbit};
+    \end{scope}
+    % Orbit 2
+    \begin{scope}[plane x={(1, 0, 0)}, plane y={(0, 1, 0)}, canvas is plane]
+    % Grid
+    \begin{scope}[densely dotted, red!50!black]
+    \draw (-2, 0, 0) -- (8, 0, 0);
+    \draw (0, -3, 0) -- (0, 3, 0);
+    \end{scope}
+    \draw[red!50!black, thick, fill=red!50!black, fill opacity=0.2] (3, 0, 0) ellipse (5cm and 4cm);
+    \draw (8, 0) coordinate (PP) node[below right, red!50!black, text width=5cm]{Target Orbit};
+    \end{scope}
+    % SC
+    \fill[black] (SC) circle(0.1cm);
+    \draw (SC) node[right]{Spacecraft};
+    % Earth
+    \fill[earthblue] (0, 0) circle(0.5cm);
+    % Axes
+    \begin{scope}[-latex, thick]
+        \draw (O) -- ++ (2,0,0);
+        \draw (O) -- ++ (0,2,0);
+        \draw (O) -- ++ (0,0,2);
+    \end{scope}
+    % Arrow
+    \coordinate (AA) at ($(SC)!0.25!(PP)$);
+    \coordinate (BB) at ($(SC)!0.9!(PP)$);
+    \draw[densely dashdotted, thick, -latex] ($(O)!1.2!(AA)$) to[bend left = 20] ($(O)!1.2!(BB)$);
+\end{tikzpicture}
+\caption{Cartoon illustration of the planetocentric orbital maneuvering guidance problem.}
+\label{fig:guidance_problem}
+\end{figure}

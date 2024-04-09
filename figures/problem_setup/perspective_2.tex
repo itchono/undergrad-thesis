@@ -1,0 +1,51 @@
+\begin{subfigure}[t]{\textwidth}
+\tdplotsetmaincoords{80}{110}
+\begin{tikzpicture}[tdplot_main_coords,scale=1]
+    \coordinate (O) at (0, 0, 0);
+    \coordinate (SC) at ({9/sqrt(2)}, {9/sqrt(2)}, 0);
+    \coordinate (SUN) at (0, 6, 2);
+    % Orbit 1
+    \begin{scope}[plane x={({1/sqrt(2)}, {1/sqrt(2)}, 0)}, plane y={(-0.5, 0.5, {1/sqrt(2)})}, canvas is plane]
+    % Grid
+    \begin{scope}[densely dotted, green!50!black]
+    \draw (-1, 0, 0) -- (9, 0, 0);
+    \draw (0, -1.8, 0) -- (0, 1.8, 0);
+    \end{scope}
+    \draw[green!50!black, thick,  fill=green!50!black, fill opacity=0.2] (4, 0, 0) ellipse (5cm and 3cm);
+    \end{scope}
+    % Orbit 2
+    \begin{scope}[plane x={(1, 0, 0)}, plane y={(0, 1, 0)}, canvas is plane]
+    % Grid
+    \begin{scope}[densely dotted, red!50!black]
+    \draw (-2, 0, 0) -- (8, 0, 0);
+    \draw (0, -3, 0) -- (0, 3, 0);
+    \end{scope}
+    \draw[red!50!black, thick, fill=red!50!black, fill opacity=0.2] (3, 0, 0) ellipse (5cm and 4cm);
+    \end{scope}
+    \draw[dashdotted, cyan!50!black] (SUN) -- (SC);
+    % Sun
+    \fill[color=yellow] (SUN) 
+    circle(0.5cm);
+    % SC
+    \fill[black] (SC) circle(0.1cm);
+    % to SC and Sun
+    \begin{scope}[-latex, orange, very thick]
+    \draw (O) -- (SC) node[pos=0.7, below left]{$\vec{r}$};
+    \draw (O) -- (SUN) node[pos=0.9, above left]{$\vec{r}_{\astrosun}$};
+    \draw[cyan!50!black] (SUN) -- ($(SUN)!0.2!(SC)$) node[pos=, below right]{$\vec{u}_{i}$};
+    \end{scope}
+    % Earth
+    \fill[earthblue] (0, 0) circle(0.5cm);
+    % Axes
+    \begin{scope}[-latex, thick]
+        \draw (O) -- ++ (2,0,0) node[below]{$\hat{x}_{I}$};
+        \draw (O) -- ++ (0,2,0) node[right]{$\hat{y}_{I}$};
+        \draw (O) -- ++ (0,0,2) node[right]{$\hat{z}_{I}$};
+        \draw (SC) -- ++ ({2/sqrt(2)},{2/sqrt(2)},0) node[right]{$\hat{x}_{\text{LVLH}}$};
+        \draw (SC) -- ++ (-1,1,{2/sqrt(2)}) node[right]{$\hat{y}_{\text{LVLH}}$};
+        \draw (SC) -- ++ (1,-1,{2/sqrt(2)}) node[above right]{$\hat{z}_{\text{LVLH}}$};
+    \end{scope}
+\end{tikzpicture}
+\caption{Spatial setup of problem, alternate view.}
+\label{fig:problem_setup:view2}
+\end{subfigure}

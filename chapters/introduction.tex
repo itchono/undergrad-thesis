@@ -1,0 +1,50 @@
+\chapter{Introduction}
+\label{chp:introduction}
+
+This chapter presents introductory context for the project, and frames the scope of the project around key challenges associated with targeted maneuvering of solar sail spacecraft in planetocentric orbits.
+
+\section{Scope}
+This project aims to develop a guidance law for performing planetocentric orbital transfers with a solar sail spacecraft, using a simplified feedback approach derived from Lyapunov control theory.
+
+\begin{figure}[H]
+    \centering
+    \input{figures/problem_setup/intro_diagram}
+    \caption{Illustratory diagram depicting the main goal of the guidance law.}
+    \label{fig:intro_diagram}
+\end{figure}
+
+
+
+The goal of the guidance law is to achieve acceptable values for time-of-flight while requiring a minimal set of considerations for spacecraft configuration.
+
+Convergence and time optimality of the guidance law are considered, but are not rigorously assessed or proven. Instead, these characteristics are assessed through simulations spanning a variety of initial/target orbits and spacecraft configurations.
+
+Three extended studies are performed:
+\begin{enumerate}
+    \item Tuning the parameters of the guidance law for minimum time-of-flight;
+    \item Subjecting the guidance law to disturbances;
+    \item Testing the guidance law with a more realistic solar sail model.
+\end{enumerate}
+
+\section{Motivation}
+Low-thrust spacecraft have been the focus of spacecraft guidance research in recent decades, paving the way for the dominance of low-thrust trajectories in contemporary space missions. Electric propulsion has attained widespread adoption \cite{lev2019technological, spencer2021lightsail}, while solar sails have remained obscure \cite{mori2010first}. Developing practical solar sailing guidance laws is a critical precursor for the acceptance of solar sails as a useful propulsion method.
+
+Earth orbit remains the most prolific destination for space missions, and there exist many proposed applications of solar sailing in this domain. Existing literature is largely focused on specific problems, including orbit raising \cite{fieseler1998method}, Earth escape \cite{coverstone2003technique}, and end-of-life deorbiting \cite{lappas2011deorbitsail}. A more general problem of maneuvering solar sail spacecraft between two arbitrary orbits around a planet is considered for this project, as it has received limited study.
+
+\section{Key Challenges and Gap}
+Planetocentric orbital maneuvering of solar sail spacecraft poses two significant challenges compared to conventional spacecraft.
+\begin{enumerate}
+    \item Solar sails produce little thrust \cite{mcinnes}, making classical impulse-based orbital maneuvering theory unsuitable for trajectory planning. Low-thrust trajectory planning for planetocentric orbits is itself a challenging domain of study; traditional approaches using collocation struggle with the ``winding'' nature of consecutive orbits.
+    \item Thrust is dependent on the orientation of the spacecraft relative to incoming sunlight. Thrust availability depends on the direction of incident light, which cannot be directly controlled. For example, a solar sail cannot produce thrust directly towards incoming sunlight, akin to a sailboat sailing directly into the wind. Furthermore, real solar sails are typically limited in terms of how much they can be misaligned from incident sunlight, owing to both thrust production and attitude control needs \cite{mcinnes}.
+\end{enumerate}
+
+Low-thrust planetocentric orbital maneuvering has been approached using methods derived from feedback control theory \cite{ilgen1994low, petropoulos2004low, vargaperez2016, sanjeev2023}. Instead of approaching trajectory guidance as a global optimization problem, feedback guidance laws trade global optimality for better convergence behaviour and simplicity. This class of guidance laws has been explored in the context of solar sailing, but formulated with an assumed form of relationship between sail thrust and orientation relative to the Sun. Notably, a recent guidance law developed by Oguri (2023) \cite{oguri2023solar} depends on 3 parameters representing the contributions of different modes of light reflection.
+
+A key appeal of feedback guidance laws is their relative independence from system parameters. It is therefore appealing to consider a solar sailing guidance law which is agnostic to the parameters of the solar sail. Such a guidance law would facilitate trajectory analysis for unique and esoteric spacecraft designs, and remain applicable as better reflectivity models for solar sails are developed.
+
+\section{Implementation}
+The guidance law is implemented as a two-stage algorithm, combining a solution obtained from conventional low-thrust feedback guidance theory with an additional set of adaptations to make the solution amenable to solar sails.
+
+The first stage is based on a control-Lyapunov function, $Q$, in a formulation called the \textit{Q-Law} first introduced by Petroupolos (2004) \cite{petropoulos2004low}. A reformulation presented by Varga and Pérez (2016) \cite{vargaperez2016} using analytical approximations to the derivatives of $Q$ is used to produce a desired sail orientation based on a spacecraft state in modified equinoctial orbital elements. The intermediate guidance solution is regularized to obey constraints associated with the alignment of the sail relative to incoming sunlight.
+
+A computer model of the guidance law is tested in simulations. A MATLAB implementation is used for high-fidelity simulations and performance validation. A lower-fidelity but faster implementation in C is used to optimize the parameters of the guidance law for minimum time-of-flight.

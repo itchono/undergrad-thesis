@@ -1,0 +1,49 @@
+\documentclass[12pt]{report}
+\linespread{1.25}  % 1.5 spacing
+\input{preloading/imports}
+\input{preloading/declarations}
+
+\begin{document}
+
+\frontmatter
+%%%%%%%%%%%%%%%%
+%  Title Page  %
+%%%%%%%%%%%%%%%%
+\begin{titlepage}
+\includepdf{Thesis_Title_Page.pdf}
+\end{titlepage}
+
+\epigraph{
+The cosmos is all that is or ever was or ever will be. Our contemplations of the cosmos stir us. There is a tingling in the spine, a catch in the voice, a faint sensation: as if a distant memory of falling from a great height. We know we are approaching the grandest of mysteries.}{Carl Sagan, \textit{Cosmos}}
+
+\newpage
+\input{chapters/front}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+
+%%%%%%%%%%%%%%%%
+%     Body     %
+%%%%%%%%%%%%%%%%
+\mainmatter
+
+\input{chapters/introduction}
+\input{chapters/literature_review}
+\input{chapters/formulation_and_implementation}
+\input{chapters/results}
+\input{chapters/future_work}
+
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+\newpage
+\setlength\bibitemsep{0.5\baselineskip}
+\printbibliography[title={References}]
+
+% BLANK PAGE FOR REAR
+\newpage
+
+\end{document}

@@ -1,0 +1,71 @@
+% Declarations; put macros here
+
+% Section numbering, so that subsubsection has numbers
+\setcounter{secnumdepth}{5}
+
+% le funni, for making oe an actual symbol
+\newcommand{\moe}{\text{\oe}}
+
+% math commands
+\DeclareMathOperator{\sign}{\mathrm{sign}}
+
+% shorthands for maximum rate of change
+\newcommand{\maxrocall}{\text{max}[\alpha, \beta, L]}
+\newcommand{\potentialfunc}[1]{\left(\frac{#1 - \hat{#1}}{\dot{#1}_\maxrocall}\right)}
+
+% Special Table Columns https://tex.stackexchange.com/a/2442
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% Page Numbering (i, ii, iii, ..., 1, 2, 3,...)
+\makeatletter
+\newcommand\frontmatter{%
+    \cleardoublepage
+  %\@mainmatterfalse
+  \pagenumbering{roman}}
+
+\newcommand\mainmatter{%
+    \cleardoublepage
+ % \@mainmattertrue
+  \pagenumbering{arabic}}
+
+\newcommand\backmatter{%
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+ % \@mainmatterfalse
+   }
+\makeatother
+
+
+% Header configuration
+\pagestyle{fancy}
+\setlength{\headheight}{27.2pt}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{Mingde Yin\par BASc Thesis}
+\fancyfoot{}
+\fancyfoot[C]{\thepage}
+
+% Override to make every page fancy
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
+% Cone https://tex.stackexchange.com/a/401378
+%% macros to draw back and front of cones
+%% optional first argument is styling; others are z, radius, side offset (in degrees)
+\newcommand{\coneback}[4][]{
+  %% start at the correct point on the circle, draw the arc, then draw to the origin of the diagram, then close the path
+  \draw[canvas is xy plane at z=#2, #1] (45-#4:#3) arc (45-#4:225+#4:#3) -- (O) --cycle;
+  }
+\newcommand{\conefront}[4][]{
+  \draw[canvas is xy plane at z=#2, #1] (45-#4:#3) arc (45-#4:-135+#4:#3) -- (O) --cycle;
+  }
+
+% Bibliography margin https://tex.stackexchange.com/a/172000
+\emergencystretch=1em
+
+% Tikz colours
+\definecolor{earthblue}{rgb}{0.3010, 0.7450, 0.9330}

@@ -1,0 +1,31 @@
+\begin{figure}[H]
+    \centering
+    \tdplotsetmaincoords{65}{140}
+    \begin{tikzpicture}[tdplot_main_coords,scale=1]
+        \coordinate (O) at (0,0,0);
+        \coordinate (B) at (-2,0,0);
+        \coordinate (N) at (4, 2, 4.6);
+        \coordinate (NP) at (4, 2, 0);
+        % R Arrow
+        \draw[dashed, orange, thick, -latex] (B) -- (O) node[pos=0.1, above]{$\vec{r}$};
+        % horizon line
+        \draw[densely dotted, black!50] (O) ++(1, -4, 0) -- ++(-2, 8, 0);
+        \begin{scope}[-latex, thick]
+            \draw (O) -- ++ (3,0,0) node[left]{$\hat{x}_{\text{LVLH}}$};
+            \draw (O) -- ++ (0,3,0) coordinate (Y) node[below]{$\hat{y}_{\text{LVLH}}$};
+            \draw (O) -- ++ (0,0,3) node[above right]{$\hat{z}_{\text{LVLH}}$};
+        \end{scope}
+        % Arc
+        \draw[densely dashdotted, green!70!black, thick] (O) arc (10:50:7) (O) arc(10:-30:7);
+        % Stuff
+        \draw[very thick, -latex, purple] (O) -- (N) node[left]{$\hat{n}$ (Direction of $\vec{F}$)};
+        \draw[purple] (O) -- (NP) -- (N);
+        % Angles
+        \begin{scope}[canvas is xy plane at z=0]
+        \draw pic["$\alpha$", draw=purple, text=purple, latex-|, thick, angle eccentricity=1.3, angle radius=1.2cm,transform shape, pic text options={transform shape=false}] {angle=NP--O--Y};
+        \end{scope}
+        \draw pic["$\beta$", draw=purple, text=purple, latex-|, thick, angle eccentricity=1.4, angle radius=1cm,transform shape] {angle=N--O--NP};
+    \end{tikzpicture}
+    \caption{Thrust angle orientation convention. Note that generally, $\alpha = 0$ does NOT correspond to the direction of the velocity vector of the spacecraft, as $\vec{\mathcal{F}}_{\text{LVLH}}$ is aligned with $\vec{r}$ and $\vec{r} \times \vec{v}$. The dashed grey line represents the tangent line to the orbit, which is generally not aligned with $\hat{y}_{\text{LVLH}}$.}
+    \label{fig:orientation_convention}
+\end{figure}
