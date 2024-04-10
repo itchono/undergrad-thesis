@@ -1,6 +1,6 @@
 \chapter{Problem Formulation and Implementation}
 
-The formulation of the guidance law is presented in this chapter, along with an overview of its implementation in numerical simulation.
+\lettrine{T}{he} formulation of the guidance law is presented in this chapter, along with an overview of its implementation in numerical simulation.
 
 \section{Problem Definition and Assumptions}
 The objective of this project is to develop a feedback guidance law for transferring between two orbits around a planet in orbit around the Sun using a solar sail spacecraft.
@@ -448,7 +448,14 @@ Expressing $\hat{n}$ in $\vec{\mathcal{F}}_{\text{LVLH}}$, the steering angles $
     \beta  & = \mathrm{atan2}\left(\hat{n} \cdot \hat{z}_{\text{LVLH}}, \ \sqrt{(\hat{n} \cdot \hat{x}_{\text{LVLH}})^2 + (\hat{n} \cdot \hat{y}_{\text{LVLH}})^2}\right)
 \end{align*}
 
-\section{Features of Combined Guidance Law}
+\section{Combined Guidance Law}
 The combined guidance law is called QUAIL: Q-Law Using Angle of Incidence Limits.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/quail_logo_v2.pdf}
+    \caption{QUAIL logo.}
+    \label{fig:quail_logo}
+\end{figure}
 
 

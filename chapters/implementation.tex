@@ -1,7 +1,6 @@
 \chapter{Implementation and Testing}
 
-Details about the implementation of QUAIL
-
+\lettrine{D}{etails} about the implementation of QUAIL
 
 \section{Implementation in Simulation}
 With reference to the architecture in Figure \ref{fig:algorithm_diagram} and the procedures shown above, the complete guidance law and dynamics are implemented in two separate simulators.
@@ -26,40 +25,40 @@ The C/Python implementation, named ``cshanty'' (i.e. Sea Shanty) is built for tu
 Table \ref{tab:trajectory_cases} gives four trajectory cases used to assess the performance of the guidance law.
 
 \begin{table}[H]
-    \centering
-    \begin{tabular}{L{2.7cm}L{1.2cm}C{3cm}C{1cm}C{1cm}C{1cm}C{1cm}C{2cm}}
-        \toprule
-        \textbf{Case} &         & $p$ [\qty{1e3}{m}] & $f$       & $g$        & $h$       & $k$       & $L$ [\unit{rad}] \\
-        \midrule
-        GEO Disposal  & Initial & \num{42164}        & 0         & 0          & 0         & 0         & 0                \\
-                      & Final   & \num{42464}        & 0         & 0          & Free      & Free      & N/A              \\
-        Plane Change  & Initial & \num{20000}        & 0.5       & 0          & 1         & 0         & 0                \\                    & Final & \num{20000} & 0.5 & 0 & \num{-1} & 0 & N/A\\
-        ``Benchmark'' & Initial & \num{20000}        & \num{0.5} & \num{-0.2} & \num{0.5} & \num{0}   & \num{0}          \\
-                      & Final   & \num{25000}        & \num{0.2} & \num{0.5}  & \num{0}   & \num{0.3} & N/A              \\
-        Polar GSO     & Initial & \num{11625}        & 0.725     & 0          & 0         & 0         & 0                \\
-                      & Final   & \num{42165}        & 0         & 0          & 0         & \num{-1}  & N/A              \\
-        \bottomrule
-    \end{tabular}
-    \caption{Trajectory cases.}
-    \label{tab:trajectory_cases}
+  \centering
+  \begin{tabular}{L{2.7cm}L{1.2cm}C{3cm}C{1cm}C{1cm}C{1cm}C{1cm}C{2cm}}
+    \toprule
+    \textbf{Case} &         & $p$ [\qty{1e3}{m}] & $f$       & $g$        & $h$       & $k$       & $L$ [\unit{rad}] \\
+    \midrule
+    GEO Disposal  & Initial & \num{42164}        & 0         & 0          & 0         & 0         & 0                \\
+                  & Final   & \num{42464}        & 0         & 0          & Free      & Free      & N/A              \\
+    Plane Change  & Initial & \num{20000}        & 0.5       & 0          & 1         & 0         & 0                \\                    & Final & \num{20000} & 0.5 & 0 & \num{-1} & 0 & N/A\\
+    ``Benchmark'' & Initial & \num{20000}        & \num{0.5} & \num{-0.2} & \num{0.5} & \num{0}   & \num{0}          \\
+                  & Final   & \num{25000}        & \num{0.2} & \num{0.5}  & \num{0}   & \num{0.3} & N/A              \\
+    Polar GSO     & Initial & \num{11625}        & 0.725     & 0          & 0         & 0         & 0                \\
+                  & Final   & \num{42165}        & 0         & 0          & 0         & \num{-1}  & N/A              \\
+    \bottomrule
+  \end{tabular}
+  \caption{Trajectory cases.}
+  \label{tab:trajectory_cases}
 \end{table}
 Free orbital elements are implemented by assigning a value of zero to the corresponding weight (i.e. $W_{\moe} = 0$).
 
 For each trajectory case, values of the guidance parameters used are presented in Table \ref{tab:trajectory_case_params}.
 \begin{table}[H]
-    \centering
-    \begin{tabular}{L{1.7cm}cccccccccc}
-        \toprule
-        \textbf{Case} & $W_P$ & $\gamma$ & $r_{p, \text{min}}$ (km) & $W_p$ & $W_f$ & $W_g$ & $W_h$ & $W_k$ & $\kappa_d$ & $\kappa_f$ \\
-        \midrule
-        GEO Disposal  & 0     & N/A      & N/A                      & 5     & 0.5   & 1     & 0     & 0     & \ang{70}   & \ang{91}   \\
-        Plane Change  & 1     & 1        & 10000                    & 1     & 1     & 1     & 1     & 1     & \ang{70}   & \ang{91}   \\
-        ``Benchmark'' & 0     & N/A      & N/A                      & 1     & 1     & 1     & 1     & 1     & \ang{70}   & \ang{91}   \\
-        Polar GSO     & 1     & 5        & 6878                     & 1     & 1     & 1     & 1     & 1     & \ang{70}   & \ang{91}   \\
-        \bottomrule
-    \end{tabular}
-    \caption{Guidance parameters for each case.}
-    \label{tab:trajectory_case_params}
+  \centering
+  \begin{tabular}{L{1.7cm}cccccccccc}
+    \toprule
+    \textbf{Case} & $W_P$ & $\gamma$ & $r_{p, \text{min}}$ (km) & $W_p$ & $W_f$ & $W_g$ & $W_h$ & $W_k$ & $\kappa_d$ & $\kappa_f$ \\
+    \midrule
+    GEO Disposal  & 0     & N/A      & N/A                      & 5     & 0.5   & 1     & 0     & 0     & \ang{70}   & \ang{91}   \\
+    Plane Change  & 1     & 1        & 10000                    & 1     & 1     & 1     & 1     & 1     & \ang{70}   & \ang{91}   \\
+    ``Benchmark'' & 0     & N/A      & N/A                      & 1     & 1     & 1     & 1     & 1     & \ang{70}   & \ang{91}   \\
+    Polar GSO     & 1     & 5        & 6878                     & 1     & 1     & 1     & 1     & 1     & \ang{70}   & \ang{91}   \\
+    \bottomrule
+  \end{tabular}
+  \caption{Guidance parameters for each case.}
+  \label{tab:trajectory_case_params}
 \end{table}
 
 \section{Tuning of Guidance Algorithm}
