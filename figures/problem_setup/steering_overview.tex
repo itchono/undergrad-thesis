@@ -11,7 +11,7 @@
         \begin{scope}[plane x={({1/sqrt(2)}, {1/sqrt(2)}, 0)}, plane y={(0, 0, 1)}, canvas is plane]
             \fill[green!10!white] (O) -- (90:6) arc(90:56.31:6) node[midway, above=4pt, text=green!70!black]{\footnotesize{Unmodified}} -- cycle;
             \fill[yellow!10!white] (O) -- (56.31:6) arc(56.31:0:6) node[midway, above right=4pt, text=yellow!70!black]{\footnotesize{Projected}} -- cycle;
-            \fill[black!10] (O) -- (0:6) arc(0:-18:6) node[midway, right, text=black!70]{\footnotesize{Feathered}} -- (0, -2) -- cycle;
+            \fill[black!10] (O) -- (0:6) arc(0:-18:6) node[midway, right, text=black!70]{\footnotesize{Feathered}} -| (O) -- cycle;
         \end{scope}
         % Cone stuff
         \coneback[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
@@ -25,7 +25,7 @@
         \end{scope}
         % Annotations of thrust cone and limit plane
         \draw[yellow!70!black] (O) ++(-1, 0, 3.5) node[left] {Thrust Cone};
-        \draw[black!60] (O) ++(-1, 0, 0.75) node[left] {Limit Plane}; 
+        \draw[black!60] (O) ++(-1, 0, 0.75) node[left] {Limit Plane};
         % Angles
         \draw pic["$\kappa$", draw=yellow!70!black, text=yellow!70!black, latex-|, thick, angle eccentricity=1.03, angle radius=5.5cm] {angle=KD--O--T};
         \draw pic["$\varphi^*$", draw=green!70!black, text=green!70!black, latex-|, thick, angle eccentricity=1.1, angle radius=4cm] {angle=NS--O--T};

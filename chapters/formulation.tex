@@ -435,9 +435,11 @@ The 3 cases in Equation \ref{eq:ndf_law} correspond to \textbf{nominal, degraded
 
 Figures \ref{fig:steering_heuristic_overview} and \ref{fig:steering_heuristic_cases} give an overview of the steering angle heuristic, as well as a visual depiction of each case.
 
-The most interesting case to discuss is the degraded operation mode. The resultant direction of $\hat{n}$ is equivalent to projecting $\hat{n}^*$ upon the cone formed at an angle of $\kappa_f$ relative to $\hat{u}_i$.
+The most interesting case to discuss is the degraded operation mode. The resultant direction of $\hat{n}$ is equivalent to projecting $\hat{n}^*$ upon the cone formed at an angle of $\kappa$ relative to $\hat{u}_i$.
 
-The feathering threshold $\kappa_f$ can be set based on the maximum achievable angle for a solar sail, while the degraded operation threshold $\kappa_d$ can be set to an even lower angle to enforce greater production of thrust. These parameters are completely agnostic to the solar sail thrust model used, and could readily be extended to a variety of spacecraft configurations.
+The thrust cone angle $\kappa$ can be set to an even lower angle to enforce greater production of thrust. This parameter is completely agnostic to the solar sail thrust model used, and could readily be extended to a variety of spacecraft configurations.
+
+something about how it's a user-set parameter, (sort of) decoupling sail design from guidance strategy.
 
 \subsection{Assembly of Output}
 Following the computation of $(\alpha^*, \beta^*)$ by the first stage of the algorithm, $\varphi^*$ is computed using Equation \ref{eq:cone_star}. $\hat{n}^*$ is computed in referential form (i.e. its components are calculated relative to some reference frame), and the vector $\hat{b}$ is formed. Then, Equation \ref{eq:ndf_law} is used to calculate $\hat{n}$, using conditional expressions.
