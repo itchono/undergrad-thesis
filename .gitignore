@@ -304,3 +304,9 @@ main.pdf
 
 # biblatex
 *-SAVE-ERROR
+
+# latexindent
+**/*__latexindent_temp*
+
+# word count selection
+**/*._wordcount*
