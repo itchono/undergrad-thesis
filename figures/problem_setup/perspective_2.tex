@@ -30,20 +30,20 @@
     \fill[black] (SC) circle(0.1cm);
     % to SC and Sun
     \begin{scope}[-latex, orange, very thick]
-    \draw (O) -- (SC) node[pos=0.7, below left]{$\vec{r}$};
-    \draw (O) -- (SUN) node[pos=0.9, above left]{$\vec{r}_{\astrosun}$};
-    \draw[cyan!50!black] (SUN) -- ($(SUN)!0.2!(SC)$) node[pos=, below right]{$\vec{u}_{i}$};
+    \draw (O) -- (SC) node[pos=0.7, below left]{\(\vec{r}\)};
+    \draw (O) -- (SUN) node[pos=0.9, above left]{\(\vec{r}_{\astrosun}\)};
+    \draw[cyan!50!black] (SUN) -- ($(SUN)!0.2!(SC)$) node[pos=, below right]{\(\vec{u}_{i}\)};
     \end{scope}
     % Earth
     \fill[earthblue] (0, 0) circle(0.5cm);
     % Axes
     \begin{scope}[-latex, thick]
-        \draw (O) -- ++ (2,0,0) node[below]{$\hat{x}_{I}$};
-        \draw (O) -- ++ (0,2,0) node[right]{$\hat{y}_{I}$};
-        \draw (O) -- ++ (0,0,2) node[right]{$\hat{z}_{I}$};
-        \draw (SC) -- ++ ({2/sqrt(2)},{2/sqrt(2)},0) node[right]{$\hat{x}_{\text{LVLH}}$};
-        \draw (SC) -- ++ (-1,1,{2/sqrt(2)}) node[right]{$\hat{y}_{\text{LVLH}}$};
-        \draw (SC) -- ++ (1,-1,{2/sqrt(2)}) node[above right]{$\hat{z}_{\text{LVLH}}$};
+        \draw (O) -- ++ (2,0,0) node[below]{\(\hat{x}_{I}\)};
+        \draw (O) -- ++ (0,2,0) node[right]{\(\hat{y}_{I}\)};
+        \draw (O) -- ++ (0,0,2) node[right]{\(\hat{z}_{I}\)};
+        \draw (SC) -- ++ ({2/sqrt(2)},{2/sqrt(2)},0) node[right]{\(\hat{x}_{\text{LVLH}}\)};
+        \draw (SC) -- ++ (-1,1,{2/sqrt(2)}) node[right]{\(\hat{y}_{\text{LVLH}}\)};
+        \draw (SC) -- ++ (1,-1,{2/sqrt(2)}) node[above right]{\(\hat{z}_{\text{LVLH}}\)};
     \end{scope}
 \end{tikzpicture}
 \caption{Spatial setup of problem, alternate view.}

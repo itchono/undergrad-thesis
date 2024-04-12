@@ -10,36 +10,36 @@ Stated more formally, the problem is given as:
 \fbox{\begin{minipage}{0.9\textwidth}
     \textbf{Planetocentric Solar Sail Feedback Guidance Problem}
 
-    Consider a spacecraft propelled by an ideal flat solar sail with sail loading $\sigma$ and efficiency $\eta$ in an ideal 2-body orbit around a planet with gravitaional parameter $\mu$ (which itself orbits the Sun). Let be $P$ the radiation pressure of incident sunlight, which comes from a known direction $\hat{u}_i$.
+    Consider a spacecraft propelled by an ideal flat solar sail with sail loading \(\sigma\) and efficiency \(\eta\) in an ideal 2-body orbit around a planet with gravitaional parameter \(\mu\) (which itself orbits the Sun). Let be \(P\) the radiation pressure of incident sunlight, which comes from a known direction \(\hat{u}_i\).
 
-    Given the instantaneous spacecraft state $\{p, f, g, h, k, L\}$ and target orbit described by the elements $\{\hat{p}, \hat{f}, \hat{g}, \hat{h}, \hat{k}\}$, determine an instantaneous spacecraft orientation in the LVLH frame (i.e. the sail normal $\hat{n}$, presented in the form of steering angles $\alpha$ and $\beta$) which ultimately brings the spacecraft to the target orbit.
+    Given the instantaneous spacecraft state \(\{p, f, g, h, k, L\}\) and target orbit described by the elements \(\{\hat{p}, \hat{f}, \hat{g}, \hat{h}, \hat{k}\}\), determine an instantaneous spacecraft orientation in the LVLH frame (i.e. the sail normal \(\hat{n}\), presented in the form of steering angles \(\alpha\) and \(\beta\)) which ultimately brings the spacecraft to the target orbit.
   \end{minipage}}
 
 The terms of this statement are elaborated in the proceeding subsections.
 
 \subsection{Orbit and Environment}
 \label{sec:orbit_environment}
-The spacecraft is assumed to be orbiting a planet, possessing an instantaneous state expressed in modified equinoctial elements \{$p, f, g, h, k, L$\} (i.e an osculating orbit). The spacecraft is targeting an orbit described in modified equinoctial elements, as $\{\hat{p}, \hat{f}, \hat{g}, \hat{h}, \hat{k}\}$
+The spacecraft is assumed to be orbiting a planet, possessing an instantaneous state expressed in modified equinoctial elements \{\(p, f, g, h, k, L\)\} (i.e an osculating orbit). The spacecraft is targeting an orbit described in modified equinoctial elements, as \(\{\hat{p}, \hat{f}, \hat{g}, \hat{h}, \hat{k}\}\)
 
-The position of the spacecraft with respect to the planet is given by the vector $\vec{r}$, and the absolute velocity of the spacecraft is given by $\vec{v}$.
+The position of the spacecraft with respect to the planet is given by the vector \(\vec{r}\), and the absolute velocity of the spacecraft is given by \(\vec{v}\).
 
 
 
-\textbf{Remark on Notation}: Mathematical notation for vectors follows the vectrix convention, as used in Ref. \cite{book:1487513}. Abstract vectorial quantities are written with the arrow above (e,g $\vec{u}$), and vectors expressed in a reference frame $\vec{\mathcal{F}}$ are written in boldface (e.g. $\boldsymbol{u}$). Unit vectors are given a special notation, written using a hat (e.g. $\hat{u}$).
+\textbf{Remark on Notation}: Mathematical notation for vectors follows the vectrix convention, as used in Ref. \cite{book:1487513}. Abstract vectorial quantities are written with the arrow above (e,g \(\vec{u}\)), and vectors expressed in a reference frame \(\vec{\mathcal{F}}\) are written in boldface (e.g. \(\boldsymbol{u}\)). Unit vectors are given a special notation, written using a hat (e.g. \(\hat{u}\)).
 
 \textbf{Reference Frames}
 
-Two reference frames are used in this problem, defined in Table \ref{tab:frames_3d}, based on common convention. The frame $\mathcal{\vec{F}}_I$ has its origin at the center of the planet, and is taken to be inertial. The $\mathcal{\vec{F}}_{\text{LVLH}}$ is attached to the spacecraft, and its orientation is defined by the position vector of the spacecraft and the plane of the orbit.
+Two reference frames are used in this problem, defined in Table \ref{tab:frames_3d}, based on common convention. The frame \(\mathcal{\vec{F}}_I\) has its origin at the center of the planet, and is taken to be inertial. The \(\mathcal{\vec{F}}_{\text{LVLH}}\) is attached to the spacecraft, and its orientation is defined by the position vector of the spacecraft and the plane of the orbit.
 
 \begin{table}[H]
   \centering
   \begin{tabular}{ccC{3cm}C{4cm}C{3cm}}
     \toprule
-    Frame Name                         & Symbol                                   & $x$-direction                 & $y$-direction                                           & $z$-direction                            \\ \midrule
-    Inertial                           & $\mathcal{\vec{F}}_I$                    & Points in direction of \aries & Perpendicular to $\hat{x}_I$ in equatorial plane        & $\hat{z}_I = \hat{x}_I \times \hat{y}_I$ \\
-    LVLH                               & $\mathcal{\vec{F}}_{\text{LVLH}}$        & $\frac{\vec{r}}{||\vec{r}||}$ & $\frac{\vec{r} \times \vec{v} \times \vec{r}}{||\vec{r}
-    \times \vec{v} \times \vec{r}||} $ & $\frac{\vec{r} \times \vec{v}}{||\vec{r}
-    \times \vec{v}||} $                                                                                                                                                                                                \\
+    Frame Name                          & Symbol                                    & \(x\)-direction                 & \(y\)-direction                                          & \(z\)-direction                            \\ \midrule
+    Inertial                            & \(\mathcal{\vec{F}}_I\)                   & Points in direction of \aries   & Perpendicular to \(\hat{x}_I\) in equatorial plane       & \(\hat{z}_I = \hat{x}_I \times \hat{y}_I\) \\
+    LVLH                                & \(\mathcal{\vec{F}}_{\text{LVLH}}\)       & \(\frac{\vec{r}}{||\vec{r}||}\) & \(\frac{\vec{r} \times \vec{v} \times \vec{r}}{||\vec{r}
+    \times \vec{v} \times \vec{r}||} \) & \(\frac{\vec{r} \times \vec{v}}{||\vec{r}
+    \times \vec{v}||} \)                                                                                                                                                                                                      \\
     \bottomrule
   \end{tabular}
   \caption{The frames involved, and their definitions.}
@@ -50,7 +50,7 @@ Quantities related to the guidance law are expressed in the LVLH frame, includin
 
 \textbf{Sun}
 
-The Sun is located at a position $\vec{r}_{\astrosun}$ with respect to the planet, and hence the vector going from the Sun to the spacecraft is given by $\vec{r} - \vec{r}_{\astrosun}$. The direction of incident light is therefore given by $\hat{u} = -\frac{\vec{r} - \vec{r}_{\astrosun}}{||\vec{r} - \vec{r}_{\astrosun}||}$.
+The Sun is located at a position \(\vec{r}_{\astrosun}\) with respect to the planet, and hence the vector going from the Sun to the spacecraft is given by \(\vec{r} - \vec{r}_{\astrosun}\). The direction of incident light is therefore given by \(\hat{u} = -\frac{\vec{r} - \vec{r}_{\astrosun}}{||\vec{r} - \vec{r}_{\astrosun}||}\).
 
 A diagram describing the elements of the problem discussed so far is shown in Figure \ref{fig:problem_setup}.
 \begin{figure}[H]
@@ -64,12 +64,12 @@ A diagram describing the elements of the problem discussed so far is shown in Fi
 % another diagram for steering convention
 
 \subsection{Spacecraft Orientation Convention}
-The output of the guidance law is a spacecraft orientation in the LVLH frame. That is, the guidance law expresses the unit vector $\hat{n}$ in terms of the output steering angles $\alpha$ and $\beta$.
+The output of the guidance law is a spacecraft orientation in the LVLH frame. That is, the guidance law expresses the unit vector \(\hat{n}\) in terms of the output steering angles \(\alpha\) and \(\beta\).
 
 The convention used in this project follows Refs. \cite{petropoulos2004low, vargaperez2016, sanjeev2023}, and is depicted in Figure \ref{fig:orientation_convention}.
 
 \input{figures/problem_setup/orientation_convention}
-$\alpha$ is a clockwise steering angle from the $y$-axis in the $xy$ LVLH plane, and $\beta$ is a steering angle towards the $+z$ axis.
+\(\alpha\) is a clockwise steering angle from the \(y\)-axis in the \(xy\) LVLH plane, and \(\beta\) is a steering angle towards the \(+z\) axis.
 
 That is to say, the direction vector of the spacecraft is given by:
 \begin{equation}
@@ -88,13 +88,13 @@ That is to say, the direction vector of the spacecraft is given by:
 
 Dynamics for an idealized flat solar sail are presented and used in the implementation of numerical simulations.
 
-For a solar sail pointing in the direction $\hat{n}$ and for incident light in the direction $\hat{u}_i$, the acceleration imparted on the sail is given by:
+For a solar sail pointing in the direction \(\hat{n}\) and for incident light in the direction \(\hat{u}_i\), the acceleration imparted on the sail is given by:
 \begin{equation}
   \vec{F} = \frac{2 P \eta}{\sigma}(\hat{u}_i \cdot \hat{n})^2 \mathrm{sign}(\hat{u}_i \cdot \hat{n}) \hat{n}
   \ [\unit{m\ s^{-2}}] \label{eq:solar_force}
 \end{equation}
 
-Where $P = \qty{9.12e-6}{N\ m^{-2}}$ is the value of solar radiation pressure at a distance of 1 AU. The quantity $\sigma = \frac{m}{A}$ [\unit{kg\ m^{-2}}] referred to as \textit{sail loading} is the mass of the spacecraft divided by the sail area, and is conventionally used to parameterize sail performance. A dimensionless efficiency factor $\eta$ represents ``how reflective'' the material of the sail is, relative to a perfect reflector. The leading coefficient of 2 results from force imparted both by incident and reflected photons.
+Where \(P = \qty{9.12e-6}{N\ m^{-2}}\) is the value of solar radiation pressure at a distance of 1 AU. The quantity \(\sigma = \frac{m}{A}\) [\unit{kg\ m^{-2}}] referred to as \textit{sail loading} is the mass of the spacecraft divided by the sail area, and is conventionally used to parameterize sail performance. A dimensionless efficiency factor \(\eta\) represents ``how reflective'' the material of the sail is, relative to a perfect reflector. The leading coefficient of 2 results from force imparted both by incident and reflected photons.
 
 \textbf{Variational Equations of Motion}
 
@@ -133,7 +133,7 @@ The equations of motion of the spacecraft are given by (\ref{eq:equinoctial_eom_
 \end{equation}
 \begin{align*}
   \text{with} \ \ q & \equiv 1 + f\cos L + g\sin L
-  \intertext{$F_r$, $F_\theta$, $F_n$ correspond to perturbing accelerations on the spacecraft expressed in the LVLH frame corresponding to the radial, tangential, and normal directions respectively. That is:}
+  \intertext{\(F_r\), \(F_\theta\), \(F_n\) correspond to perturbing accelerations on the spacecraft expressed in the LVLH frame corresponding to the radial, tangential, and normal directions respectively. That is:}
   \vec{F}           & =
   \mathcal{\vec{F}}_{\mathrm{LVLH}}^T
   \begin{bmatrix}
@@ -146,7 +146,7 @@ The equations of motion of the spacecraft are given by (\ref{eq:equinoctial_eom_
 
 
 \subsection{Motion of the Sun}
-The sun is assumed to be \qty{1.5e8}{m} from the center of the coordinate system, at an angle varying by $2\pi$ in 1 year ($\tau = \qty{365.25}{d} = \qty{31557600}{s}$).
+The sun is assumed to be \qty{1.5e8}{m} from the center of the coordinate system, at an angle varying by \(2\pi\) in 1 year (\(\tau = \qty{365.25}{d} = \qty{31557600}{s}\)).
 
 That is,
 \begin{equation}
@@ -162,11 +162,11 @@ That is,
   \unit{m}
   \label{eq:sun_position_3d}
 \end{equation}
-Where $\lambda_{\astrosun} = \frac{2 \pi}{\tau} t$, with $t=0$ corresponding to the vernal equinox, and $\varepsilon = \ang{23.439}$ is the obliquity of the ecliptic.
+Where \(\lambda_{\astrosun} = \frac{2 \pi}{\tau} t\), with \(t=0\) corresponding to the vernal equinox, and \(\varepsilon = \ang{23.439}\) is the obliquity of the ecliptic.
 
 This is obviously not reflective of Earth's elliptical orbit around the Sun, but it is assumed to be adequate as a starting point.
 
-In this analysis, the position of the Sun is considered to be \textbf{quasi-static}, that is, $\dot{\lambda}_{\astrosun} = 0$, since the motion of the Sun occurs on a timescale much longer than the period of an orbit.
+In this analysis, the position of the Sun is considered to be \textbf{quasi-static}, that is, \(\dot{\lambda}_{\astrosun} = 0\), since the motion of the Sun occurs on a timescale much longer than the period of an orbit.
 
 \section{Methodology}
 The guidance law is implemented in a
@@ -179,7 +179,7 @@ two-stage architecture, depicted in Figure \ref{fig:algorithm_diagram} below. Th
   \label{fig:algorithm_diagram}
 \end{figure}
 
-The key idea is to consider all solar sail-related elements (direction of incident light, restrictions on orientation) independently of the formulation for the ``idealized'' steering angles. The first stage of the guidance law treats the solar sail as if it were a regular low-thrust spacecraft capable of producing an acceleration $F_{\max}$ at constant thrust. From this, it generates idealized angles $\alpha^*, \beta^*$, which are then regularized by the second stage to make them feasible for a solar sail to use.
+The key idea is to consider all solar sail-related elements (direction of incident light, restrictions on orientation) independently of the formulation for the ``idealized'' steering angles. The first stage of the guidance law treats the solar sail as if it were a regular low-thrust spacecraft capable of producing an acceleration \(F_{\max}\) at constant thrust. From this, it generates idealized angles \(\alpha^*, \beta^*\), which are then regularized by the second stage to make them feasible for a solar sail to use.
 
 Rather than try to rework the \textit{\textit{Q-Law}}, the heuristic attached to the original guidance law transforms the solar sail guidance problem into a more conventional low-thrust guidance problem with modified dynamics. That is, the steering angle regularization block can be thought of as being part of the dynamics, with the \textit{\textit{Q-Law}} operating as if it were controlling a regular low-thrust spacecraft.
 
@@ -187,7 +187,7 @@ Rather than try to rework the \textit{\textit{Q-Law}}, the heuristic attached to
 The minimally modified \textit{\textit{Q-Law}} is derived in this section, along with a computational procedure for assembling the steering angle outputs.
 
 \subsection{Control-Lyapunov Function}
-The minimally modified \textit{\textit{Q-Law}} is structured very similarly to previous works (Refs. \cite{petropoulos2004low, vargaperez2016, sanjeev2023}), following a control-Lyapunov function $Q$, which is then differentiated in terms of steering angles $\alpha, \beta$ to determine the direction maximizing $-\dot{Q}$.
+The minimally modified \textit{\textit{Q-Law}} is structured very similarly to previous works (Refs. \cite{petropoulos2004low, vargaperez2016, sanjeev2023}), following a control-Lyapunov function \(Q\), which is then differentiated in terms of steering angles \(\alpha, \beta\) to determine the direction maximizing \(-\dot{Q}\).
 
 The control-Lyapunov function is given below in Equation \ref{eq:Q_func}.
 \begin{align}
@@ -200,13 +200,13 @@ The control-Lyapunov function is given below in Equation \ref{eq:Q_func}.
   a        & = \frac{p}{1-e^2} \nonumber                                                                                                                                   \\
   r_{p}    & = a (1-e) = p\frac{(1-e)}{(1+e)(1-e)} = \frac{p}{1+\sqrt{f^2 + g^2}} \nonumber
 \end{align}
-with $\dot{\moe}_{\maxrocall}$ being taken to mean the maximum achieveable rate of change in that orbital element for any value of steering angles $(\alpha, \beta)$ and true longitude $L$.
+with \(\dot{\moe}_{\maxrocall}\) being taken to mean the maximum achieveable rate of change in that orbital element for any value of steering angles \((\alpha, \beta)\) and true longitude \(L\).
 
-The only variables in $Q$ are $\moe \in \{p, f, g, h, k\}$, and therefore $Q$ can be written as a sum of derivatives using the chain rule:
+The only variables in \(Q\) are \(\moe \in \{p, f, g, h, k\}\), and therefore \(Q\) can be written as a sum of derivatives using the chain rule:
 \begin{align*}
   \dot{Q} & = \sum_{\moe} \diffp{Q}{{\moe}} \dot{\moe}
 \end{align*}
-Note that Equation \ref{eq:equinoctial_eom_3d} in fact gives $\dot{\moe}$ as a function of $F_r, F_\theta, F_n$. The idea then is to link $\dot{Q}$ to the thrust model for the solar sail, without being overly specific. The key assumption taken for deriving the \textit{\textit{Q-Law}} portion of the guidance law is to \textbf{assume that the solar sail always produces its maximum possible thrust in any direction} (i.e. Figure \ref{fig:thrust_curve}). Hence, Equation \ref{eq:max_accel_assumption} is taken to be true for the purposes of deriving ideal steering angles.
+Note that Equation \ref{eq:equinoctial_eom_3d} in fact gives \(\dot{\moe}\) as a function of \(F_r, F_\theta, F_n\). The idea then is to link \(\dot{Q}\) to the thrust model for the solar sail, without being overly specific. The key assumption taken for deriving the \textit{\textit{Q-Law}} portion of the guidance law is to \textbf{assume that the solar sail always produces its maximum possible thrust in any direction} (i.e. Figure \ref{fig:thrust_curve}). Hence, Equation \ref{eq:max_accel_assumption} is taken to be true for the purposes of deriving ideal steering angles.
 \begin{equation}
   \begin{bmatrix}
     F_r      \\
@@ -228,7 +228,7 @@ Note that Equation \ref{eq:equinoctial_eom_3d} in fact gives $\dot{\moe}$ as a f
   \end{bmatrix}
   \label{eq:max_accel_assumption}
 \end{equation}
-Keeping the relationship simple using only $F_{\max}$ allows for a very general application of the guidance law to a broad range of spacecraft configurations.
+Keeping the relationship simple using only \(F_{\max}\) allows for a very general application of the guidance law to a broad range of spacecraft configurations.
 
 \begin{figure}
   \centering
@@ -238,7 +238,7 @@ Keeping the relationship simple using only $F_{\max}$ allows for a very general 
         ymax = 1.3,
         xmin = -95,
         xmax = 95,
-        xlabel ={Cone Angle $\varphi$},
+        xlabel ={Cone Angle \(\varphi\)},
         xlabel near ticks,
         ylabel = {Relative Thrust},
         xtick={-90, -60, -30, 0, 30, 60, 90},
@@ -267,23 +267,23 @@ Keeping the relationship simple using only $F_{\max}$ allows for a very general 
 \end{figure}
 
 \subsection{Ideal Steering Angles}
-By simultaneously considering Equations \ref{eq:equinoctial_eom_3d} and \ref{eq:max_accel_assumption}, $\dot{\moe}$ becomes a function of $\alpha$ and $\beta$.
+By simultaneously considering Equations \ref{eq:equinoctial_eom_3d} and \ref{eq:max_accel_assumption}, \(\dot{\moe}\) becomes a function of \(\alpha\) and \(\beta\).
 
-$\dot{Q}$ can therefore be expressed in a form based on steering angles, shown below:
+\(\dot{Q}\) can therefore be expressed in a form based on steering angles, shown below:
 \begin{align}
   \dot{Q}  & = D_1 \cos \beta \sin \alpha + D_2 \cos \beta \cos \alpha + D_3 \sin \beta \label{eq:q_dot_angles_form} \\
-  \intertext{For some $D_1$, $D_2$, $D_3$ based on other variables/parameters. Finding the stationary point of $\dot{Q}$ with respect to $(\alpha, \beta)$ gives:}
+  \intertext{For some \(D_1\), \(D_2\), \(D_3\) based on other variables/parameters. Finding the stationary point of \(\dot{Q}\) with respect to \((\alpha, \beta)\) gives:}
   \alpha^* & = \mathrm{atan2}\left(-D_1, -D_2\right) \label{eq:alpha_star}                                           \\
   \beta^*  & = \mathrm{atan2}\left(-D_3, \sqrt{D_1^2 + D_2^2}\right) \label{eq:beta_star}
 \end{align}
-which maximizes $-\dot{Q}$. This form is obtained from Ref. \cite{vargaperez2016}, where the definition of $D_1$ and $D_2$ are swapped compared to this project. The reasoning behind the ordering here is such that $D_1, D_2, D_3$ line up with $F_r, F_\theta, F_n$.
+which maximizes \(-\dot{Q}\). This form is obtained from Ref. \cite{vargaperez2016}, where the definition of \(D_1\) and \(D_2\) are swapped compared to this project. The reasoning behind the ordering here is such that \(D_1, D_2, D_3\) line up with \(F_r, F_\theta, F_n\).
 
 \subsection{Assembling the Guidance Output}
-The remaining piece consists of deriving expressions for all of the terms in $Q$ and $\dot{Q}$ and assembling them to produce optimal steering angles.
+The remaining piece consists of deriving expressions for all of the terms in \(Q\) and \(\dot{Q}\) and assembling them to produce optimal steering angles.
 
-\textbf{Expressions for $\dot{\moe}_{\maxrocall}$}
+\textbf{Expressions for \(\dot{\moe}_{\maxrocall}\)}
 
-$\dot{f}_{\maxrocall}$ and $\dot{g}_{\maxrocall}$ are taken as approximate analytical forms, first developed by Ref. \cite{vargaperez2016}. The other 3 orbital elements have exact analytical expressions for maximum rate of change, obtained by manipulating Equation \ref{eq:equinoctial_eom_3d}.
+\(\dot{f}_{\maxrocall}\) and \(\dot{g}_{\maxrocall}\) are taken as approximate analytical forms, first developed by Ref. \cite{vargaperez2016}. The other 3 orbital elements have exact analytical expressions for maximum rate of change, obtained by manipulating Equation \ref{eq:equinoctial_eom_3d}.
 \begin{align*}
   \dot{p}_{\maxrocall} & = \frac{2p}{q} \sqrt{\frac{p}{\mu}} F_{\max}                                   \\
   \dot{f}_{\maxrocall} & \approx 2F_{\max} \sqrt{\frac{p}{\mu}}                                       &
@@ -292,13 +292,13 @@ $\dot{f}_{\maxrocall}$ and $\dot{g}_{\maxrocall}$ are taken as approximate analy
   \dot{k}_{\maxrocall} & = \tfrac{1}{2}F_{\max} \sqrt{\frac{p}{\mu}}\frac{1+h^2+k^2}{\sqrt{1-f^2}+g}
 \end{align*}
 
-\textbf{Partials of $Q$}
+\textbf{Partials of \(Q\)}
 
-Each partial derivative of $Q$ can be written as:
+Each partial derivative of \(Q\) can be written as:
 \begin{equation*}
   \diffp{Q}{{\moe}} = W_{\moe} S_{\moe} \left[ W_P\diffp{P}{{\moe}}\left(\frac{\moe - \hat{\moe}}{\dot{\moe}_{\maxrocall}} \right)^2 + 2 (1+W_P P) \left(\frac{\moe - \hat{\moe}}{\dot{\moe}_{\maxrocall}} \right) \right] \ \, \moe \in \{p, f, g, h, k\}
 \end{equation*}
-The final forms of $D_1, D_2, D_3$ can now be computed from this, with a few shorthands introduced for convenience:
+The final forms of \(D_1, D_2, D_3\) can now be computed from this, with a few shorthands introduced for convenience:
 \begin{align*}
   \boldsymbol{\Xi}_E & = \begin{bmatrix}
                            2  \left(\frac{\moe - \hat{\moe}}{\dot{\moe}_{\maxrocall}} \right)
@@ -320,7 +320,7 @@ The final forms of $D_1, D_2, D_3$ can now be computed from this, with a few sho
     0        & 0                & \tfrac{\cos L}{2} (1 + h^2 + k^2) \\
     0        & 0                & \tfrac{\sin L}{2} (1 + h^2 + k^2)
   \end{bmatrix} \in \mathbb{R}^{5 \times 3}
-  \intertext{\hfill ($q$ is defined in Equation \ref{eq:equinoctial_eom_3d}).}
+  \intertext{\hfill (\(q\) is defined in Equation \ref{eq:equinoctial_eom_3d}).}
   \boldsymbol{D}     & = \begin{bmatrix}
                            D_1 \\D_2\\D_3
                          \end{bmatrix} \in \mathbb{R}^3
@@ -334,7 +334,7 @@ Combining everything together gives:
 
 Combined with Equations \ref{eq:alpha_star} and \ref{eq:beta_star}, this gives a computational procedure for the ideal steering angles.
 
-Note that $\diffp{P}{{\moe}}$ is calculated using symbolic algebra, and the expressions are omitted here because they are very ugly. It should be noted that $\diffp{P}{{\moe}}$ is nonzero only for $\moe \in \{p, f, g\}$.
+Note that \(\diffp{P}{{\moe}}\) is calculated using symbolic algebra, and the expressions are omitted here because they are very ugly. It should be noted that \(\diffp{P}{{\moe}}\) is nonzero only for \(\moe \in \{p, f, g\}\).
 
 \section{Beyond the \textit{Q-Law}}
 A solar-sail-agnostic formulation of the \textit{Q-Law} is insufficient as a guidance law. There are two notable problem cases which arise from
@@ -351,15 +351,15 @@ A solar-sail-agnostic formulation of the \textit{Q-Law} is insufficient as a gui
       \coordinate (T) at (0,0,5);
       % Cone stuff
       \draw[cyan!50!black, dashdotted] (O) -- (T);
-      \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{$\hat{u}_i$};
+      \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{\(\hat{u}_i\)};
       % Adaptation
-      \draw[-latex, dashed] (O) -- (NS2) node[right]{$\hat{n}^*$};
+      \draw[-latex, dashed] (O) -- (NS2) node[right]{\(\hat{n}^*\)};
       \begin{scope}[canvas is xy plane at z = 0]
         \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);
       \end{scope}
       \draw[-latex, green!70!black, thick] (O) -- (NS3) node[above]{\scriptsize Thrust};
     \end{tikzpicture}
-    \caption{$\varphi > \ang{90}$ - Unstable}
+    \caption{\(\varphi > \ang{90}\) - Unstable}
     \label{fig:degencase_1}
   \end{subfigure}
   \begin{subfigure}[b]{0.45\textwidth}
@@ -372,15 +372,15 @@ A solar-sail-agnostic formulation of the \textit{Q-Law} is insufficient as a gui
       \coordinate (T) at (0,0,5);
       % Cone stuff
       \draw[cyan!50!black, dashdotted] (O) -- (T);
-      \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{$\hat{u}_i$};
+      \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{\(\hat{u}_i\)};
       \begin{scope}[canvas is xy plane at z = 0]
         \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);
       \end{scope}
       % Adaptation
-      \draw[-latex, dashed] (O) -- (NS2) node[right]{$\hat{n}^*$};
+      \draw[-latex, dashed] (O) -- (NS2) node[right]{\(\hat{n}^*\)};
       \draw[-latex, green!70!black, thick] (O) -- (NS3) node[above]{\scriptsize Thrust};
     \end{tikzpicture}
-    \caption{$\varphi \approx \ang{90}$ - No Progress}
+    \caption{\(\varphi \approx \ang{90}\) - No Progress}
     \label{fig:degencase_2}
   \end{subfigure}
   \caption{Problematic cases associated with a solar-sail-agnostic guidance law.}
@@ -403,22 +403,22 @@ Feathering the sail is useful for situations where the cone angle suggested by t
 The latter option is particularly helpful even in the case of an ideal flat solar sail, where the first stage of the guidance law could produce a set of steering angles resulting in a cone angle very close to \ang{90}. The thrust produced in such a situation would be extremely small, and result in less progress being made compared to if the guidance law accepted a thrust direction which does not point exactly towards the local optimum. By accepting a non-ideal direction, the spacecraft can still make progress towards its goal.
 
 \subsection{Formulation}
-The ideal steering angles $\alpha^*, \beta^*$ are used to compute an idealized cone angle.
+The ideal steering angles \(\alpha^*, \beta^*\) are used to compute an idealized cone angle.
 \begin{equation}
   \varphi^* = \arccos(\hat{u}_i \cdot \hat{n}^*)
   \label{eq:cone_star}
 \end{equation}
-where $\hat{n}^* = \hat{n}(\alpha^*, \beta^*)$ can be computed using (\ref{eq:alpha_beta_n}) and $\hat{u}_i = -\frac{\vec{r}_{\astrosun}}{||\vec{r}_{\astrosun}||}$. Both vectors are expressed in the same frame for computational procedures (e.g. the LVLH frame).
+where \(\hat{n}^* = \hat{n}(\alpha^*, \beta^*)\) can be computed using (\ref{eq:alpha_beta_n}) and \(\hat{u}_i = -\frac{\vec{r}_{\astrosun}}{||\vec{r}_{\astrosun}||}\). Both vectors are expressed in the same frame for computational procedures (e.g. the LVLH frame).
 
-$\varphi^*$ is compared between cone angle thresholds:
+\(\varphi^*\) is compared between cone angle thresholds:
 \begin{enumerate}
-  \item \textbf{Feathering Threshold}: $\varphi = \ang{90}$
-  \item \textbf{Degraded Operation Threshold}: $\varphi = \kappa$
+  \item \textbf{Feathering Threshold}: \(\varphi = \ang{90}\)
+  \item \textbf{Degraded Operation Threshold}: \(\varphi = \kappa\)
 \end{enumerate}
 
-Consider a vector $\hat{b}$ which is normal to both $\hat{u}_i$ and $\hat{n}^*$. For example, $\hat{b} = \hat{u}_i \times (\hat{n}^* \times \hat{u}_i)$.
+Consider a vector \(\hat{b}\) which is normal to both \(\hat{u}_i\) and \(\hat{n}^*\). For example, \(\hat{b} = \hat{u}_i \times (\hat{n}^* \times \hat{u}_i)\).
 
-The resulting sail normal $\hat{n}$ is then calculated as:
+The resulting sail normal \(\hat{n}\) is then calculated as:
 \begin{equation}
   \hat{n} = \begin{cases}
     \hat{n}^*                                       & \cos \varphi^* > \cos \kappa          \\
@@ -435,16 +435,16 @@ The 3 cases in Equation \ref{eq:ndf_law} correspond to \textbf{nominal, degraded
 
 Figures \ref{fig:steering_heuristic_overview} and \ref{fig:steering_heuristic_cases} give an overview of the steering angle heuristic, as well as a visual depiction of each case.
 
-The most interesting case to discuss is the degraded operation mode. The resultant direction of $\hat{n}$ is equivalent to projecting $\hat{n}^*$ upon the cone formed at an angle of $\kappa$ relative to $\hat{u}_i$.
+The most interesting case to discuss is the degraded operation mode. The resultant direction of \(\hat{n}\) is equivalent to projecting \(\hat{n}^*\) upon the cone formed at an angle of \(\kappa\) relative to \(\hat{u}_i\).
 
-The thrust cone angle $\kappa$ can be set to an even lower angle to enforce greater production of thrust. This parameter is completely agnostic to the solar sail thrust model used, and could readily be extended to a variety of spacecraft configurations.
+The thrust cone angle \(\kappa\) can be set to an even lower angle to enforce greater production of thrust. This parameter is completely agnostic to the solar sail thrust model used, and could readily be extended to a variety of spacecraft configurations.
 
 something about how it's a user-set parameter, (sort of) decoupling sail design from guidance strategy.
 
 \subsection{Assembly of Output}
-Following the computation of $(\alpha^*, \beta^*)$ by the first stage of the algorithm, $\varphi^*$ is computed using Equation \ref{eq:cone_star}. $\hat{n}^*$ is computed in referential form (i.e. its components are calculated relative to some reference frame), and the vector $\hat{b}$ is formed. Then, Equation \ref{eq:ndf_law} is used to calculate $\hat{n}$, using conditional expressions.
+Following the computation of \((\alpha^*, \beta^*)\) by the first stage of the algorithm, \(\varphi^*\) is computed using Equation \ref{eq:cone_star}. \(\hat{n}^*\) is computed in referential form (i.e. its components are calculated relative to some reference frame), and the vector \(\hat{b}\) is formed. Then, Equation \ref{eq:ndf_law} is used to calculate \(\hat{n}\), using conditional expressions.
 
-Expressing $\hat{n}$ in $\vec{\mathcal{F}}_{\text{LVLH}}$, the steering angles $\alpha$ and $\beta$ can be found by working backwards from Equation \ref{eq:alpha_beta_n}. A reference formulation is given below:
+Expressing \(\hat{n}\) in \(\vec{\mathcal{F}}_{\text{LVLH}}\), the steering angles \(\alpha\) and \(\beta\) can be found by working backwards from Equation \ref{eq:alpha_beta_n}. A reference formulation is given below:
 \begin{align*}
   \alpha & = \mathrm{atan2}\left(\hat{n} \cdot \hat{x}_{\text{LVLH}}, \ \hat{n} \cdot \hat{y}_{\text{LVLH}}\right)                                                      \\
   \beta  & = \mathrm{atan2}\left(\hat{n} \cdot \hat{z}_{\text{LVLH}}, \ \sqrt{(\hat{n} \cdot \hat{x}_{\text{LVLH}})^2 + (\hat{n} \cdot \hat{y}_{\text{LVLH}})^2}\right)

@@ -1,8 +1,8 @@
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.3\textwidth}
-    \centering
-    \tdplotsetmaincoords{85}{45}
+        \centering
+        \tdplotsetmaincoords{85}{45}
         \begin{tikzpicture}[tdplot_main_coords,scale=0.5]
             \coordinate (O) at (0,0,0);
             \coordinate (KD) at ({2/sqrt(2)},{2/sqrt(2)},3);
@@ -12,21 +12,21 @@
             % Cone stuff
             \coneback[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
             \draw[cyan!50!black, dashdotted] (O) -- (T);
-            \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{$\hat{u}_i$};
+            \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{\(\hat{u}_i\)};
             \begin{scope}[canvas is xy plane at z = 0]
-                \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);      
+                \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);
             \end{scope}
             \conefront[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
             % Adaptation
-            \draw[-latex, green!70!black, thick] (O) -- ($(O)!1.4!(NS)$) node[right]{$\hat{n}^*$};
-            \draw[-latex, purple!70!black, thick] (O) -- ($(O)!1.1!(NS)$) node[right]{$\hat{n}$};
+            \draw[-latex, green!70!black, thick] (O) -- ($(O)!1.4!(NS)$) node[right]{\(\hat{n}^*\)};
+            \draw[-latex, purple!70!black, thick] (O) -- ($(O)!1.1!(NS)$) node[right]{\(\hat{n}\)};
         \end{tikzpicture}
-        \caption{Nominal operations; $\hat{n}$ is equal to $\hat{n}^*$.}
+        \caption{Nominal operations; \(\hat{n}\) is equal to \(\hat{n}^*\).}
         \label{fig:steering_heuristic_cases_1}
     \end{subfigure} \hfill
     \begin{subfigure}[t]{0.33\textwidth}
-    \centering
-    \tdplotsetmaincoords{85}{45}
+        \centering
+        \tdplotsetmaincoords{85}{45}
         \begin{tikzpicture}[tdplot_main_coords,scale=0.5]
             \coordinate (O) at (0,0,0);
             \coordinate (KD) at ({2/sqrt(2)},{2/sqrt(2)},3);
@@ -36,21 +36,21 @@
             % Cone stuff
             \coneback[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
             \draw[cyan!50!black, dashdotted] (O) -- (T);
-            \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{$\hat{u}_i$};
+            \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{\(\hat{u}_i\)};
             \begin{scope}[canvas is xy plane at z = 0]
-                \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);      
+                \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);
             \end{scope}
             \conefront[,draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
             % Adaptation
-            \draw[-latex, green!70!black, thick] (O) -- ($(O)!1.4!(NS)$) node[right]{$\hat{n}^*$};
-            \draw[-latex, purple!70!black, thick] (O) -- ($(O)!1.5!(KD)$) node[right]{$\hat{n}$};
+            \draw[-latex, green!70!black, thick] (O) -- ($(O)!1.4!(NS)$) node[right]{\(\hat{n}^*\)};
+            \draw[-latex, purple!70!black, thick] (O) -- ($(O)!1.5!(KD)$) node[right]{\(\hat{n}\)};
         \end{tikzpicture}
-        \caption{Degraded operations; $\hat{n}^*$ is projected onto the yellow cone.}
+        \caption{Degraded operations; \(\hat{n}^*\) is projected onto the yellow cone.}
         \label{fig:steering_heuristic_cases_2}
     \end{subfigure} \hfill
     \begin{subfigure}[t]{0.3\textwidth}
-    \centering
-    \tdplotsetmaincoords{85}{45}
+        \centering
+        \tdplotsetmaincoords{85}{45}
         \begin{tikzpicture}[tdplot_main_coords,scale=0.5]
             \coordinate (O) at (0,0,0);
             \coordinate (KD) at ({2/sqrt(2)},{2/sqrt(2)},3);
@@ -60,16 +60,16 @@
             % Cone stuff
             \coneback[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
             \draw[cyan!50!black, dashdotted] (O) -- (T);
-            \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{$\hat{u}_i$};
+            \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{\(\hat{u}_i\)};
             \begin{scope}[canvas is xy plane at z = 0]
-                \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);    
+                \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);
             \end{scope}
             \conefront[,draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
             % Adaptation
-            \draw[-latex, green!70!black, thick] (O) -- ($(O)!1.5!(NS)$) node[right]{$\hat{n}^*$};
-            \draw[-latex, purple!70!black, thick] (O) -- (3, 3, 0) node[right]{$\hat{n}$};
+            \draw[-latex, green!70!black, thick] (O) -- ($(O)!1.5!(NS)$) node[right]{\(\hat{n}^*\)};
+            \draw[-latex, purple!70!black, thick] (O) -- (3, 3, 0) node[right]{\(\hat{n}\)};
         \end{tikzpicture}
-        \caption{Feathered operations; $\hat{n}$ is normal to $\hat{u}_i$.}
+        \caption{Feathered operations; \(\hat{n}\) is normal to \(\hat{u}_i\).}
         \label{fig:steering_heuristic_cases_3}
     \end{subfigure}
     \caption{Three different cases of the steering heuristic illustrated.}

@@ -17,7 +17,7 @@
         \coneback[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
         \begin{scope}[thick, cyan!50!black]
             \draw[dashdotted] (O) -- (T);
-            \draw[-latex] (O) ++(0,0,-2) -- (O) node[midway, left]{Incident Light $\hat{u}_i$};
+            \draw[-latex] (O) ++(0,0,-2) -- (O) node[midway, left]{Incident Light \(\hat{u}_i\)};
         \end{scope}
         \conefront[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
         \begin{scope}[canvas is xy plane at z = 0]
@@ -27,12 +27,12 @@
         \draw[yellow!70!black] (O) ++(-1, 0, 3.5) node[left] {Thrust Cone};
         \draw[black!60] (O) ++(-1, 0, 0.75) node[left] {Limit Plane};
         % Angles
-        \draw pic["$\kappa$", draw=yellow!70!black, text=yellow!70!black, latex-|, thick, angle eccentricity=1.03, angle radius=5.5cm] {angle=KD--O--T};
-        \draw pic["$\varphi^*$", draw=green!70!black, text=green!70!black, latex-|, thick, angle eccentricity=1.1, angle radius=4cm] {angle=NS--O--T};
+        \draw pic["\(\kappa\)", draw=yellow!70!black, text=yellow!70!black, latex-|, thick, angle eccentricity=1.03, angle radius=5.5cm] {angle=KD--O--T};
+        \draw pic["\(\varphi^*\)", draw=green!70!black, text=green!70!black, latex-|, thick, angle eccentricity=1.1, angle radius=4cm] {angle=NS--O--T};
         % Adaptation
         \begin{scope}[thick, -latex]
-            \draw[green!70!black] (O) -- ($(O)!1.3!(NS)$) node[right]{$\hat{n}^*$};
-            \draw[purple!70!black] (O) -- ($(O)!1.3!(KD)$) node[right]{$\hat{n}$};
+            \draw[green!70!black] (O) -- ($(O)!1.3!(NS)$) node[right]{\(\hat{n}^*\)};
+            \draw[purple!70!black] (O) -- ($(O)!1.3!(KD)$) node[right]{\(\hat{n}\)};
         \end{scope}
     \end{tikzpicture}
     \caption{Overview of steering angle regularization heuristic. The vertical is aligned with the direction of incident sunlight.}
