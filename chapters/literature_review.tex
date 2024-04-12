@@ -149,7 +149,7 @@ Another example of a control-Lyapunov guidance law is demonstrated by Naasz \cit
 
 A notable contemporary development in Lyapunov-based planetocentric orbit maneuvering guidance is a family of guidance laws spawned from the \textit{Q-Law}.
 
-\subsection{The Q-Law Family}
+\subsection{The \textit{Q-Law} Family}
 The \textit{Q-Law} was developed by Petropoulos \cite{petropoulos2004low} using a potential function of the form:
 \begin{equation}
   Q = (1 + W_P P) \sum_{\moe} W_\moe S_\moe \left(\frac{\moe - \hat{\moe}}{\dot{\moe}_{\max}} \right)^2, \ \  \moe \in \{a, e, i, \Omega, \omega\}
@@ -352,8 +352,6 @@ One of the oldest approaches to this problem is presented by Sackett (1977) \cit
 MacDonald and McInnes (2005) \cite{macdonald2005analytical} were among the first to formulate a contemporary feedback guidance law for orbital maneuvering. Their approach was to use a feedback guidance law using thrust-blending. This was the first use of a penalty function to prevent the spacecraft from plunging into the Earth.
 
 The most recent development in the field is a paper from Oguri (2023) \cite{oguri2023solar}, which adapts the \textit{Q-Law} for use with solar sails, by incorporating a popular sail reflectivity model into the guidance law (done by incorporating sail thrust into the $\dot{\moe}_{\max}$ terms of $Q$). This work demonstrated that the remarkable performance of the \textit{Q-Law} could be readily transferred to solar sails given adequate consideration for solar sail dynamics.
-
-(ADD NICE DIAGRAMS FROM SLIDES)
 
 \section{Research Gap and Approach}
 Given the robustness of the \textit{Q-Law} to disturbances in environment and dynamics, it is interesting to consider an approach similar to that taken by Oguri (2023) \cite{oguri2023solar}, except without needing to incorporate solar sail dynamics directly into the derivatives of $Q$.
