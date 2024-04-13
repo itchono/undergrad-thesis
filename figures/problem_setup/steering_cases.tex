@@ -1,7 +1,8 @@
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.3\textwidth}
+    \begin{subfigure}[t]{0.32\textwidth}
         \centering
+        \captionsetup{justification=centering}
         \tdplotsetmaincoords{85}{45}
         \begin{tikzpicture}[tdplot_main_coords,scale=0.5]
             \coordinate (O) at (0,0,0);
@@ -21,11 +22,12 @@
             \draw[-latex, green!70!black, thick] (O) -- ($(O)!1.4!(NS)$) node[right]{\(\hat{n}^*\)};
             \draw[-latex, purple!70!black, thick] (O) -- ($(O)!1.1!(NS)$) node[right]{\(\hat{n}\)};
         \end{tikzpicture}
-        \caption{Nominal operations; \(\hat{n}\) is equal to \(\hat{n}^*\).}
+        \caption{Inside thrust cone; use Q-Law solution as-is.}
         \label{fig:steering_heuristic_cases_1}
     \end{subfigure} \hfill
     \begin{subfigure}[t]{0.33\textwidth}
         \centering
+        \captionsetup{justification=centering}
         \tdplotsetmaincoords{85}{45}
         \begin{tikzpicture}[tdplot_main_coords,scale=0.5]
             \coordinate (O) at (0,0,0);
@@ -45,11 +47,12 @@
             \draw[-latex, green!70!black, thick] (O) -- ($(O)!1.4!(NS)$) node[right]{\(\hat{n}^*\)};
             \draw[-latex, purple!70!black, thick] (O) -- ($(O)!1.5!(KD)$) node[right]{\(\hat{n}\)};
         \end{tikzpicture}
-        \caption{Degraded operations; \(\hat{n}^*\) is projected onto the yellow cone.}
+        \caption{Outside of thrust cone; project \(\hat{n}^*\) onto cone.}
         \label{fig:steering_heuristic_cases_2}
     \end{subfigure} \hfill
-    \begin{subfigure}[t]{0.3\textwidth}
+    \begin{subfigure}[t]{0.32\textwidth}
         \centering
+        \captionsetup{justification=centering}
         \tdplotsetmaincoords{85}{45}
         \begin{tikzpicture}[tdplot_main_coords,scale=0.5]
             \coordinate (O) at (0,0,0);
@@ -69,9 +72,9 @@
             \draw[-latex, green!70!black, thick] (O) -- ($(O)!1.5!(NS)$) node[right]{\(\hat{n}^*\)};
             \draw[-latex, purple!70!black, thick] (O) -- (3, 3, 0) node[right]{\(\hat{n}\)};
         \end{tikzpicture}
-        \caption{Feathered operations; \(\hat{n}\) is normal to \(\hat{u}_i\).}
+        \caption{Outside of limit plane; feather sail (no thrust).}
         \label{fig:steering_heuristic_cases_3}
     \end{subfigure}
-    \caption{Three different cases of the steering heuristic illustrated.}
+    \caption{The 3 different cases of the cone angle adaptation heuristic illustrated.}
     \label{fig:steering_heuristic_cases}
 \end{figure}

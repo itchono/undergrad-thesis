@@ -3,7 +3,7 @@
 \lettrine{A}{n} in-depth discussion of the background associated with the project is presented, discussing specific topics driving the approach taken to solving the problem. The literature review is divided into four sections:
 \begin{enumerate}
   \item Spacecraft trajectory guidance at large, for which solar sail guidance is a subset;
-  \item Feedback guidance laws, particularly the \textit{Q-Law} derived from Lyapunov control theory;
+  \item Feedback guidance laws, particularly the Q-Law derived from Lyapunov control theory;
   \item Special considerations needed for solar sails beyond conventional low-thrust spacecraft;
   \item Approaches to solar sail guidance, particularly planetocentric orbital maneuvering.
 \end{enumerate}
@@ -149,10 +149,10 @@ This paper highlights many of the key strengths and weaknesses of Lyapunov metho
 
 Another example of a control-Lyapunov guidance law is demonstrated by Naasz \cite{naasz2002classical}.
 
-A notable contemporary development in Lyapunov-based planetocentric orbit maneuvering guidance is a family of guidance laws spawned from the \textit{Q-Law}.
+A notable contemporary development in Lyapunov-based planetocentric orbit maneuvering guidance is a family of guidance laws spawned from the Q-Law.
 
-\subsection{The \textit{Q-Law} Family}
-The \textit{Q-Law} was developed by Petropoulos \cite{petropoulos2004low} using a potential function of the form:
+\subsection{The Q-Law Family}
+The Q-Law was developed by Petropoulos \cite{petropoulos2004low} using a potential function of the form:
 \begin{equation}
   Q = (1 + W_P P) \sum_{\moe} W_\moe S_\moe \left(\frac{\moe - \hat{\moe}}{\dot{\moe}_{\max}} \right)^2, \ \  \moe \in \{a, e, i, \Omega, \omega\}
   \label{eq:q_law_petropulos}
@@ -169,7 +169,7 @@ Weighing \(Q\) by \(\dot{\moe}_{\max}\) informs the application of \textbf{contr
 
 Petropoulos' original paper has been built upon numerous times for different applications, including rendezvous \cite{sanjeev2023}. Varga and Pérez (2016) \cite{vargaperez2016} give an implementation in modified equinoctial elements, along with a study on optimizing the values of \(W_\sigma, \sigma \in \{P, a, e, i, \Omega, \omega\}\). Proceeding work on the Q-Law has adopted the modified equinoctial element formulation \cite{sanjeev2023} for its better performance.
 
-The \textit{Q-Law} family has demonstrated remarkably good performance when tested in higher fidelity studies, incorporating eclipse effects (i.e. rendering electric propulsion inoperable when occluded from sunlight), and J2 perturbation \cite{vargaperez2016}. Although solar sails are a relatively fresh application for this type of guidance law, the long history of good performance under challenging conditions makes it a good foundation to build upon for this project.
+The Q-Law family has demonstrated remarkably good performance when tested in higher fidelity studies, incorporating eclipse effects (i.e. rendering electric propulsion inoperable when occluded from sunlight), and J2 perturbation \cite{vargaperez2016}. Although solar sails are a relatively fresh application for this type of guidance law, the long history of good performance under challenging conditions makes it a good foundation to build upon for this project.
 
 \section{Considerations for Solar Sails}
 Solar sails are a propulsion method requiring no propellant expenditure to produce thrust. The principle of operation is based on conservation of momentum in the reflection of incident photons from the Sun. Challenges associated with performing controlled maneuvers using solar sails are described, with discussions of implications on spacecraft guidance. Fundamental principles are taken with reference to McInnes (1999) \cite{mcinnes}.
@@ -347,10 +347,10 @@ One of the oldest approaches to this problem is presented by Sackett (1977) \cit
 
 MacDonald and McInnes (2005) \cite{macdonald2005analytical} were among the first to formulate a contemporary feedback guidance law for orbital maneuvering. Their approach was to use a feedback guidance law using thrust-blending. This was the first use of a penalty function to prevent the spacecraft from plunging into the Earth.
 
-The most recent development in the field is a paper from Oguri (2023) \cite{oguri2023solar}, which adapts the \textit{Q-Law} for use with solar sails, by incorporating a popular sail reflectivity model into the guidance law (done by incorporating sail thrust into the \(\dot{\moe}_{\max}\) terms of \(Q\)). This work demonstrated that the remarkable performance of the \textit{Q-Law} could be readily transferred to solar sails given adequate consideration for solar sail dynamics.
+The most recent development in the field is a paper from Oguri (2023) \cite{oguri2023solar}, which adapts the Q-Law for use with solar sails, by incorporating a popular sail reflectivity model into the guidance law (done by incorporating sail thrust into the \(\dot{\moe}_{\max}\) terms of \(Q\)). This work demonstrated that the remarkable performance of the Q-Law could be readily transferred to solar sails given adequate consideration for solar sail dynamics.
 
 \section{Research Gap and Approach}
-Given the robustness of the \textit{Q-Law} to disturbances in environment and dynamics, it is interesting to consider an approach similar to that taken by Oguri (2023) \cite{oguri2023solar}, except without needing to incorporate solar sail dynamics directly into the derivatives of \(Q\).
+Given the robustness of the Q-Law to disturbances in environment and dynamics, it is interesting to consider an approach similar to that taken by Oguri (2023) \cite{oguri2023solar}, except without needing to incorporate solar sail dynamics directly into the derivatives of \(Q\).
 
 The ingredients for such an approach are already well-established, and the prospect of demonstrating good performance of a guidance law with a more general form appears feasible.
 

@@ -1,6 +1,6 @@
 \chapter{Problem Formulation and Implementation}
 
-\lettrine{T}{he} formulation of the guidance law is presented in this chapter, including a full overview of the underlying \textit{Q-Law} and the novel modifications made for solar sails.
+\lettrine{T}{he} formulation of the guidance law is presented in this chapter, including a full overview of the underlying Q-Law and the novel modifications made for solar sails.
 
 \section{Problem Definition and Assumptions}
 The objective of this project is to develop a feedback guidance law for transferring between two orbits around a planet in orbit around the Sun using a solar sail spacecraft.
@@ -44,7 +44,7 @@ Two reference frames are used in this problem, defined in Table \ref{tab:frames_
   \caption{The frames involved, and their definitions.}
   \label{tab:frames_3d}
 \end{table}
-Quantities related to the guidance law are expressed in the LVLH frame, including steering command outputs. This choice of frame is motivated by past formulations of the \textit{Q-Law}, which are based on variational equations in the LVLH frame.
+Quantities related to the guidance law are expressed in the LVLH frame, including steering command outputs. This choice of frame is motivated by past formulations of the Q-Law, which are based on variational equations in the LVLH frame.
 
 \textbf{Sun}
 The Sun is located at a position \(\vec{r}_{\astrosun}\) with respect to the planet, and hence the vector going from the Sun to the spacecraft is given by \(\vec{r} - \vec{r}_{\astrosun}\). The direction of incident light is therefore given by \(\hat{u} = -\frac{\vec{r} - \vec{r}_{\astrosun}}{||\vec{r} - \vec{r}_{\astrosun}||}\).
@@ -87,7 +87,7 @@ Dynamics for an idealized flat solar sail are presented and used in the implemen
 
 For a solar sail pointing in the direction \(\hat{n}\) and for incident light in the direction \(\hat{u}_i\), the acceleration imparted on the sail is given by:
 \begin{equation}
-  \vec{F} = \frac{2 P \eta}{\sigma}(\hat{u}_i \cdot \hat{n})^2 \mathrm{sign}(\hat{u}_i \cdot \hat{n}) \hat{n}
+  \vec{F} = \frac{2 P \eta}{\sigma}(\hat{u}_i \cdot \hat{n})^2 \ \mathrm{sign}(\hat{u}_i \cdot \hat{n}) \ \hat{n}
   \ [\unit{m\ s^{-2}}] \label{eq:solar_force}
 \end{equation}
 
@@ -166,8 +166,9 @@ This is obviously not reflective of Earth's elliptical orbit around the Sun, but
 In this analysis, the position of the Sun is considered to be \textbf{quasi-static}, that is, \(\dot{\lambda}_{\astrosun} = 0\), since the motion of the Sun occurs on a timescale much longer than the period of an orbit.
 
 \section{Methodology}
-The guidance law is implemented in a
-two-stage architecture, depicted in Figure \ref{fig:algorithm_diagram} below. The guidance law occupies the left half of the diagram (blocks in blue and green), while the rest of the dynamics are shown in the purple blocks on the right.
+The guidance law is implemented in a two-stage architecture, depicted in Figure \ref{fig:algorithm_diagram} below. This choice is discussed more in proceeding sections.
+
+The guidance law occupies the left half of the diagram (blocks in blue and green), while the rest of the dynamics are shown in the purple blocks on the right.
 
 \begin{figure}[H]
   \centering
@@ -176,15 +177,15 @@ two-stage architecture, depicted in Figure \ref{fig:algorithm_diagram} below. Th
   \label{fig:algorithm_diagram}
 \end{figure}
 
-The key idea is to consider all solar sail-related elements (direction of incident light, restrictions on orientation) independently of the formulation for the ``idealized'' steering angles. The \textit{Q-Law} stage of the guidance law \textbf{treats the solar sail as if it were a conventional low-thrust spacecraft} capable of producing an acceleration \(F_{\max}\) in \textbf{all directions}. From this, it generates idealized angles \(\alpha^*, \beta^*\), which are then adapted by the second stage to make them feasible for a solar sail.
+The key idea of the overall approach taken in this project is to separate solar sail-related considerations (direction of incident light, restrictions on orientation) as much as possible from the Q-Law. The Q-Law stage of the guidance law \textbf{treats the solar sail as if it were a conventional low-thrust spacecraft} capable of producing an acceleration \(F_{\max}\) in \textbf{all directions}. From this, it generates idealized angles \(\alpha^*, \beta^*\), which are then adapted by the second stage to make them feasible for a solar sail.
 
-Rather than try to rework the \textit{Q-Law} with solar sail dynamics like \cite{oguri2023solar}, this approach sticks with the conventional low-thrust guidance origins of the \textit{Q-Law}; the cone angle adaptation block can be thought of as being \textbf{part of the dynamics}, with the \textit{Q-Law} operating as if it were controlling a regular low-thrust spacecraft of acceleration  \(F_{\max}\).
+Rather than try to rework the Q-Law with solar sail dynamics like Ref. \cite{oguri2023solar}, this approach sticks with the conventional low-thrust guidance origins of the Q-Law; the cone angle adaptation block can be thought of as being \textbf{part of the dynamics}, with the Q-Law operating as if it were controlling a regular low-thrust spacecraft of acceleration  \(F_{\max}\).
 
-\section{Formulation of Simplified \textit{Q-Law}}
-The simplified \textit{Q-Law} is derived in this section, along with a computational procedure for assembling the steering angle outputs.
+\section{Formulation of Simplified Q-Law}
+The simplified Q-Law is derived in this section, along with a computational procedure for assembling the steering angle outputs.
 
 \subsection{Control-Lyapunov Function}
-The simplified \textit{Q-Law} is structured very similarly to previous works (Refs. \cite{petropoulos2004low, vargaperez2016, sanjeev2023}), following a control-Lyapunov function \(Q\), which is then differentiated in terms of steering angles \(\alpha, \beta\) to determine the direction maximizing \(-\dot{Q}\).
+The simplified Q-Law is structured very similarly to previous works (Refs. \cite{petropoulos2004low, vargaperez2016, sanjeev2023}), following a control-Lyapunov function \(Q\), which is then differentiated in terms of steering angles \(\alpha, \beta\) to determine the thrust direction maximizing \(-\dot{Q}\).
 
 The control-Lyapunov function is given below in Equation \ref{eq:Q_func}.
 \begin{align}
@@ -203,7 +204,7 @@ The only variables in \(Q\) are \(\moe \in \{p, f, g, h, k\}\), and therefore \(
 \begin{align*}
   \dot{Q} & = \sum_{\moe} \diffp{Q}{{\moe}} \dot{\moe}
 \end{align*}
-Note that Equation \ref{eq:equinoctial_eom_3d} in fact gives \(\dot{\moe}\) as a function of \(F_r, F_\theta, F_n\). The idea then is to link \(\dot{Q}\) to the thrust model for the solar sail, without being overly specific. The key assumption taken for deriving the \textit{Q-Law} portion of the guidance law is to \textbf{assume that the solar sail always produces its maximum possible thrust in any direction} (i.e. Figure \ref{fig:thrust_curve}). Hence, Equation \ref{eq:max_accel_assumption} is taken to be true for the purposes of deriving ideal steering angles.
+Note that Equation \ref{eq:equinoctial_eom_3d} in fact gives \(\dot{\moe}\) as a function of \(F_r, F_\theta, F_n\). The idea then is to link \(\dot{Q}\) to the thrust model for the solar sail, without being overly specific. The key decision taken in deriving the Q-Law portion of the guidance law is to \textbf{assume that the solar sail always produces its maximum possible thrust in any direction} (i.e. Figure \ref{fig:thrust_curve}). Hence, Equation \ref{eq:max_accel_assumption} is taken to be true (rather than Equation \ref{eq:solar_force}) for deriving ideal steering angles.
 \begin{equation}
   \begin{bmatrix}
     F_r      \\
@@ -259,7 +260,7 @@ Keeping the relationship simple using only \(F_{\max}\) allows for a very genera
       \addlegendentry{\tiny Simplified Model}
     \end{axis}
   \end{tikzpicture}
-  \caption{A significant assumption being made for the \textit{Q-Law} portion of the guidance law is to remove the direction-dependence on produced thrust.}
+  \caption{A significant assumption being made for the Q-Law portion of the guidance law is to remove the direction-dependence on produced thrust.}
   \label{fig:thrust_curve}
 \end{figure}
 
@@ -331,10 +332,25 @@ Combining everything together gives:
 
 Combined with Equations \ref{eq:alpha_star} and \ref{eq:beta_star}, this gives a computational procedure for the ideal steering angles.
 
-Note that \(\diffp{P}{{\moe}}\) is calculated using symbolic algebra, and the expressions are omitted here because they are very ugly. It should be noted that \(\diffp{P}{{\moe}}\) is nonzero only for \(\moe \in \{p, f, g\}\).
+Additionally, \(\diffp{P}{{\moe}}\) is calculated using symbolic algebra, with expressions shown below. They are rather ugly, but presented for completeness.
+\begin{align*}
+  \diffp{P}{p} & = -\frac{k}{r_{p, \min } \,{\left(\sqrt{f^2 +g^2 }+1\right)}}\exp\left[-k\,{\left(\frac{p}{r_{p, \min } \,{\left(\sqrt{f^2 +g^2 }+1\right)}}-1\right)}\right]                         \\
+  \diffp{P}{f} & = f\frac{pk}{r_{p, \min } \,{{\left(\sqrt{f^2 +g^2 }+1\right)}}^2 \,\sqrt{f^2 +g^2 }}\exp\left[-k\,{\left(\frac{p}{r_{p, \min } \,{\left(\sqrt{f^2 +g^2 }+1\right)}}-1\right)}\right] \\
+  \diffp{P}{g} & =g \frac{pk}{r_{p, \min } \,{{\left(\sqrt{f^2 +g^2 }+1\right)}}^2 \,\sqrt{f^2 +g^2 }}\exp\left[-k\,{\left(\frac{p}{r_{p, \min } \,{\left(\sqrt{f^2 +g^2 }+1\right)}}-1\right)}\right] \\
+  \diffp{P}{h} & = 0                                                                                                                                                                                   \\
+  \diffp{P}{k} & = 0
+\end{align*}
 
-\section{The Simplified \textit{Q-Law} Alone is Insufficient}
-A solar-sail-agnostic formulation of the \textit{Q-Law} is insufficient as a solar sail guidance law on its own. There are two notable problem cases which arise from ignoring solar sail attitude constraints:
+\section{The Simplified Q-Law Alone is Insufficient}
+\label{sec:insufficient}
+A solar-sail-agnostic formulation of the Q-Law is insufficient as a solar sail guidance law on its own. There are two notable problem cases which arise from ignoring solar sail attitude constraints:
+\begin{enumerate}[(a)]
+  \item The Q-Law can request a thrust direction which points \textit{towards} the Sun, resulting in reverse thrust. This causes the guidance solution to become unstable.
+  \item The Q-Law can request a thrust direction which points almost perpendicular to the direction of incident light, which, following Equation \ref{eq:solar_force} produces nearly no thrust and stalls the progress of the solar sail.
+\end{enumerate}
+
+These are illustrated in Figure \ref{fig:degencases}.
+
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.45\textwidth}
@@ -349,13 +365,13 @@ A solar-sail-agnostic formulation of the \textit{Q-Law} is insufficient as a sol
       \draw[cyan!50!black, dashdotted] (O) -- (T);
       \draw[cyan!50!black, -latex] (O) ++(0,0,-2) -- (O) node[midway, left]{\(\hat{u}_i\)};
       % Adaptation
-      \draw[-latex, dashed] (O) -- (NS2) node[right]{\(\hat{n}^*\)};
+      \draw[-latex, green!70!black, dashed] (O) -- (NS2) node[right]{\(\hat{n}^*\)};
       \begin{scope}[canvas is xy plane at z = 0]
         \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);
       \end{scope}
-      \draw[-latex, green!70!black, thick] (O) -- (NS3) node[above]{\scriptsize Thrust};
+      \draw[-latex, orange!70!black, thick] (O) -- (NS3) node[above]{\scriptsize Thrust};
     \end{tikzpicture}
-    \caption{\(\varphi > \ang{90}\) - Unstable}
+    \caption{\(\varphi > \ang{90}\) - Unstable.}
     \label{fig:degencase_1}
   \end{subfigure}
   \begin{subfigure}[b]{0.45\textwidth}
@@ -373,30 +389,34 @@ A solar-sail-agnostic formulation of the \textit{Q-Law} is insufficient as a sol
         \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);
       \end{scope}
       % Adaptation
-      \draw[-latex, dashed] (O) -- (NS2) node[right]{\(\hat{n}^*\)};
-      \draw[-latex, green!70!black, thick] (O) -- (NS3) node[above]{\scriptsize Thrust};
+      \draw[-latex, green!70!black, dashed] (O) -- (NS2) node[right]{\(\hat{n}^*\)};
+      \draw[-latex, orange!70!black, thick] (O) -- (NS3) node[above]{\scriptsize Thrust};
     \end{tikzpicture}
-    \caption{\(\varphi \approx \ang{90}\) - No Progress}
+    \caption{\(\varphi \approx \ang{90}\) - No Progress.}
     \label{fig:degencase_2}
   \end{subfigure}
   \caption{Problematic cases associated with a solar-sail-agnostic guidance law.}
   \label{fig:degencases}
 \end{figure}
 
+Ignoring solar sail dynamics in the Q-Law portion of the guidance law simplifies the formulation, but comes at the cost of requiring an additional mechanism to overcome the above issues. The solution used in this project is to transform the desired thrust direction \(\hat{n}^*\) into an ``actual'' thrust direction \(\hat{n}\) by examining the cone angle associated with \(\hat{n}^*\), and comparing it with what is achievable by the solar sail.
+
 \section{Cone Angle Adaptation Heuristic}
-The heuristic used to adapt the ideal steering angles from the simplified \textit{Q-Law} stage is formulated in this section, beginning from the conceptual motivation of the idea.
+The heuristic used to adapt the ideal steering angles from the simplified Q-Law stage is formulated in this section, beginning from the conceptual motivation of the idea.
 
 \subsection{Concept}
 If the cone angle produced by the ideal steering angles from the first stage is outside the achievable range of the solar sail, there are two options:
 \begin{enumerate}
   \setlength{\parskip}{2pt}
   \item \textbf{Feather the sail}: Orient the solar sail (normal) at exactly \ang{90} relative to the incident sunlight to produce zero thrust.
-  \item \textbf{Make a Compromise}: Find the ``closest'' valid sail orientation, subject to the cone angle restriction. (This notion of ``closeness'' is elaborated upon in the formulation).
+  \item \textbf{Make a compromise}: Find the ``closest'' valid sail orientation, subject to the cone angle restriction. (This notion of ``closeness'' is elaborated upon in the formulation).
 \end{enumerate}
 
 Feathering the sail is useful for situations where the cone angle suggested by the first stage exceeds \ang{90} (i.e. the sail cannot produce thrust in that direction). This prevents the spacecraft from regressing \textbf{away} from its target orbit.
 
 The latter option is particularly helpful even in the case of an ideal flat solar sail, where the first stage of the guidance law could produce a set of steering angles resulting in a cone angle very close to \ang{90}. The thrust produced in such a situation would be extremely small, and result in less progress being made compared to if the guidance law accepted a thrust direction which does not point exactly towards the local optimum. By accepting a non-ideal direction, the spacecraft can still make progress towards its goal.
+
+This highlights a counter-intuitive aspect of solar sail dynamics; it is sometimes favourable to point somewhere other than the desired direction of thrust, so that a greater amount of total thrust (not necessarily in the desired direction) is produced. \textbf{Decreasing the cone angle of the sail can dramatically increase its thrust}, and this is the core idea of the cone angle adaptation heuristic.
 
 \subsection{Formulation}
 The ideal steering angles \(\alpha^*, \beta^*\) are used to compute an idealized cone angle.
@@ -404,15 +424,11 @@ The ideal steering angles \(\alpha^*, \beta^*\) are used to compute an idealized
   \varphi^* = \arccos(\hat{u}_i \cdot \hat{n}^*)
   \label{eq:cone_star}
 \end{equation}
-where \(\hat{n}^* = \hat{n}(\alpha^*, \beta^*)\) can be computed using (\ref{eq:alpha_beta_n}) and \(\hat{u}_i = -\frac{\vec{r}_{\astrosun}}{||\vec{r}_{\astrosun}||}\). Both vectors are expressed in the same frame for computational procedures (e.g. the LVLH frame).
+where \(\hat{n}^* = \hat{n}(\alpha^*, \beta^*)\) can be computed using (\ref{eq:alpha_beta_n}) and \(\hat{u} = -\frac{\vec{r} - \vec{r}_{\astrosun}}{||\vec{r} - \vec{r}_{\astrosun}||}\). Both vectors are expressed in the same frame for computational procedures (e.g. the LVLH frame).
 
-\(\varphi^*\) is compared between two cone angle thresholds:
-\begin{enumerate}
-  \item \textbf{Feathering Threshold}: \(\varphi = \ang{90}\)
-  \item \textbf{Degraded Operation Threshold}: \(\varphi = \kappa\)
-\end{enumerate}
+Consider an angle \(\kappa \in [\ang{0}\, \ang{90}]\) which is a guidance law parameter defining a cone in space called the \textit{thrust cone}. The thrust cone has its axis coincident with \(\hat{u}_i\), and is set such that any thrust direction laying within the cone produces a ``large'' amount of thrust.
 
-Consider a vector \(\hat{b}\) which is normal to both \(\hat{u}_i\) and \(\hat{n}^*\). For example, \(\hat{b} = \hat{u}_i \times (\hat{n}^* \times \hat{u}_i)\).
+Let the \textit{limit plane} be the plane normal to \(\hat{u}^i\). Consider a vector \(\hat{b}\) which lies in the limit plane, e.g. \(\hat{b} = \hat{u}_i \times (\hat{n}^* \times \hat{u}_i)\).
 
 The resulting sail normal \(\hat{n}\) is then calculated as:
 \begin{equation}
@@ -423,33 +439,25 @@ The resulting sail normal \(\hat{n}\) is then calculated as:
   \end{cases}
   \label{eq:ndf_law}
 \end{equation}
-
-The 3 cases in Equation \ref{eq:ndf_law} correspond to \textbf{nominal, degraded, and feathered} operation.
+Or, in words:
+\begin{itemize}
+  \item If the desired thrust direction lies within the thrust cone, use it as-is.
+  \item If the desired thrust direction points away from the Sun but lies outside the thrust cone, project it upon the thrust cone, and use the resultant direction.
+  \item If the desired thrust direction points towards the Sun, feather the sail.
+\end{itemize}
+This is illustrated more clearly in Figure \ref{fig:steering_heuristic_overview}.
 
 \input{figures/problem_setup/steering_overview}
+Figure \ref{fig:steering_heuristic_cases} provides a visual depiction of all 3 cases.
+
 \input{figures/problem_setup/steering_cases}
 
-Figures \ref{fig:steering_heuristic_overview} and \ref{fig:steering_heuristic_cases} give an overview of the steering angle heuristic, as well as a visual depiction of each case.
+Both of the problematic cases from Section \ref{sec:insufficient} are addressed with this adaptation heuristic. \textbf{This approach takes care of two birds with one cone.}
 
-The most interesting case to discuss is the degraded operation mode. The resultant direction of \(\hat{n}\) is equivalent to projecting \(\hat{n}^*\) upon the cone formed at an angle of \(\kappa\) relative to \(\hat{u}_i\).
-
-The thrust cone angle \(\kappa\) can be set to an even lower angle to enforce greater production of thrust. This parameter is completely agnostic to the solar sail thrust model used, and could readily be extended to a variety of spacecraft configurations.
-
-something about how it's a user-set parameter, (sort of) decoupling sail design from guidance strategy. (TODO)
-
-\textbf{This approach takes care of two birds with one cone.}
-
-\subsection{Assembly of Output}
-Following the computation of \((\alpha^*, \beta^*)\) by the first stage of the algorithm, \(\varphi^*\) is computed using Equation \ref{eq:cone_star}. \(\hat{n}^*\) is computed in referential form (i.e. its components are calculated relative to some reference frame), and the vector \(\hat{b}\) is formed. Then, Equation \ref{eq:ndf_law} is used to calculate \(\hat{n}\), using conditional expressions.
-
-Expressing \(\hat{n}\) in \(\vec{\mathcal{F}}_{\text{LVLH}}\), the steering angles \(\alpha\) and \(\beta\) can be found by working backwards from Equation \ref{eq:alpha_beta_n}. A reference formulation is given below:
-\begin{align*}
-  \alpha & = \mathrm{atan2}\left(\hat{n} \cdot \hat{x}_{\text{LVLH}}, \ \hat{n} \cdot \hat{y}_{\text{LVLH}}\right)                                                      \\
-  \beta  & = \mathrm{atan2}\left(\hat{n} \cdot \hat{z}_{\text{LVLH}}, \ \sqrt{(\hat{n} \cdot \hat{x}_{\text{LVLH}})^2 + (\hat{n} \cdot \hat{y}_{\text{LVLH}})^2}\right)
-\end{align*}
+Setting the thrust cone angle \(\kappa\) is a matter of guidance strategy; as a starting point, it could be set to be equal to the absolute maximum allowable cone angle for a solar sail (e.g. \ang{60} for a realistic solar sail), but it can also be set to an even lower angle to enforce greater production of thrust. This parameter is therefore decoupled from the solar sail thrust model used, and could readily be extended to a variety of spacecraft configurations.
 
 \section{Combined Guidance Law}
-The combined guidance law is called QUAIL: \textit{Q-Law} Using Angle of Incidence Limits.
+The Q-Law and the cone angle adaptation heuristic form a combined guidance law. This guidance law is called \boxed{\text{QUAIL: Q-Law Using Angle of Incidence Limits}}.
 
 \begin{figure}[H]
   \centering
@@ -458,4 +466,12 @@ The combined guidance law is called QUAIL: \textit{Q-Law} Using Angle of Inciden
   \label{fig:quail_logo}
 \end{figure}
 
+Following the computation of \((\alpha^*, \beta^*)\) by the first stage, \(\varphi^*\) is computed using Equation \ref{eq:cone_star}. \(\hat{n}^*\) is computed in referential form (i.e. its components are calculated relative to some reference frame), and the vector \(\hat{b}\) is formed. Then, Equation \ref{eq:ndf_law} is used to calculate \(\hat{n}\), using conditional expressions.
 
+Expressing \(\hat{n}\) in \(\vec{\mathcal{F}}_{\text{LVLH}}\), the steering angles \(\alpha\) and \(\beta\) can be found by working backwards from Equation \ref{eq:alpha_beta_n}. A reference formulation is given below:
+\begin{align*}
+  \alpha & = \mathrm{atan2}\left(\hat{n} \cdot \hat{x}_{\text{LVLH}}, \ \hat{n} \cdot \hat{y}_{\text{LVLH}}\right)                                                      \\
+  \beta  & = \mathrm{atan2}\left(\hat{n} \cdot \hat{z}_{\text{LVLH}}, \ \sqrt{(\hat{n} \cdot \hat{x}_{\text{LVLH}})^2 + (\hat{n} \cdot \hat{y}_{\text{LVLH}})^2}\right)
+\end{align*}
+
+The problem statement at the beginning of this chapter is therefore solved by QUAIL.
