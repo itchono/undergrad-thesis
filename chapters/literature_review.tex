@@ -76,26 +76,26 @@ The heavy dependence of numerical simulation for the analysis low-thrust spacecr
 
 \subsection{Global Optimization Methods for Low-Thrust Trajectories}
 
-One common approach used for low-thrust trajectory planning is posing the guidance problem as a global optimization problem. At a high level, there exists two main classes of methods: direct and indirect methods, along with variants thereof. These are presented in depth in a survey of the state of the art by Morante et al. (2021) \cite{morante2021survey}, but the essential points are discussed here. Note that global methods often employ a Cartesian state formulation instead of orbital elements.
+One common approach used for low-thrust trajectory planning is posing the guidance problem as a global optimization problem. At a high level, there exist two main classes of methods: direct and indirect methods, along with variants thereof. These are presented in depth in a survey of the state of the art by Morante et al. (2021) \cite{morante2021survey}, but the essential points are discussed here. Note that global methods often employ a Cartesian state formulation instead of orbital elements.
 
-Both methods construct a sequence (i.e. a time history) of control inputs which bring the spacecraft to a targeted state. Both methods also discretize the problem by assuming a certain form for the control inputs (e.g. piecewise polynomials). Direct methods solve for unknown coefficients using pseudospectral or other collocation-based methods through integration of the equations of motion and direct evaluation of the functional to be optimized. Indirect methods (also referred to as adjoint, co-state, or primer vector methods) use the calculus of variations and Lagrangian multipliers to produce systems of equations with sufficient constraints for optimality which are then solved to get the unknown coefficients. As described by Kelly (2015) in an introductory overview paper of global optimization \cite{kelly2015transcription}, direct methods find coefficients to minimize a functional, while indirect methods solve a system of equations which ``set the gradient of the functional to be zero''.
+Both methods construct a sequence (i.e. a time history) of control inputs which bring the spacecraft to a targeted state. Both methods also discretize the problem by assuming a certain form for the control inputs (e.g. piecewise polynomials). Direct methods solve for unknown coefficients using pseudospectral or other collocation-based methods through integration of the equations of motion and direct evaluation of the functional to be optimized. Indirect methods (also referred to as adjoint, co-state, or primer vector methods) use variational techniques and Lagrangian multipliers to produce systems of equations with sufficient constraints for optimality which are then solved to get the unknown coefficients. As described by Kelly (2015) in an introductory overview paper of global optimization \cite{kelly2015transcription}, direct methods find coefficients to minimize a functional, while indirect methods solve a system of equations which ``set the gradient of the functional to be zero''.
 
 For interplanetary missions, the timescale of the astrodynamics (i.e. the period of orbits around the Sun) is similar to the timescale of the optimization problem (i.e. the time of flight), making the problem computationally tractable through use of a coarse discretization. The Sims-Flanagan method, a direct method, is highly amenable for interplanetary trajectories \cite{sims1997preliminary, yam2011low}. Collocation-based methods (e.g. Gauss pseudospectral methods) are used in similar applications \cite{fahroo2002direct, narayanaswamy2020comparison}.
 
 A critical weakness of global optimization approaches for trajectory planning is their dependence on an initial guess. Indirect methods in particular struggle with stably converging to a solution when presented with a poor initial guess. For simple interplanetary trajectories, intuition is sufficient to kickstart an optimization, but the complex nature of orbital transfers around a planet is considerably less intuitive.
 
-As discussed in the introduction, a challenging aspect of planetocentric orbital maneuvering is the mismatch in timescales between orbital periods and time of flight. Referred to as \textbf{multirevolution transfers}, trajectories making a large number of revolutions around a planet require a very fine mesh to accurately capture the ``curvature'' of the orbits. An extremely low-thrust propulsion system such as a solar sail may need hundreds of revolutions to raise its orbit, increasing computational complexity considerably.
+As discussed in the introduction, a challenging aspect of planetocentric orbital maneuvering is the mismatch in timescales between orbital periods and time of flight. Referred to as \textbf{multi-revolution transfers}, trajectories making a large number of revolutions around a planet require basis functions with sufficiently high spatial frequency to accurately capture the ``curvature'' of the orbits. An extremely low-thrust propulsion system such as a solar sail may need hundreds of revolutions to raise its orbit, requiring either a very high order basis or a large number of basis functions -- both of which result in a challenging computational workload.
 
 Consequently, this project focuses on an entirely different approach to spacecraft guidance -- locally optimal feedback guidance.
 
 \section{Feedback Guidance Laws}
 Classical control theory is built upon the idea of simple feedback control loops. Although designed without any guarantees for global optimality, they are simple to implement, and can be tuned to get near-optimal performance.
 
-The same idea has been applied to guidance in two main forms: thrust-blending and Lyapunov control. Both approaches use formulations using orbital elements for state representation. In both cases, the key idea is to take the difference between the current value and target value for each orbital element, and produce a control input which decreases the error at each timestep.
+The same idea has been applied to guidance in two main forms: thrust-blending and Lyapunov control. Both approaches use formulations using orbital elements for state representation. In both cases, the key idea is to take the difference between the current value and target value for each orbital element, and produce a control input which decreases the error at each timestep. Removing the dependence of modelling a coupled global trajectory dramatically decreases computational complexity, and has the added benefit of being easy to run ``online'' with simulators in a feedback loop.
 
 Thrust-blending (also referred to as blended control) methods find control inputs which independently maximize the rate of decrease of the error for each of the orbital elements, and take a linear combination of the individual inputs. This is examined more thoroughly in the survey by Morante et al. (2021) \cite{morante2021survey}.
 
-Lyapunov methods take an alternative approach compared to thrust-blending, by instead maximizing the rate of decrease of an error function, comprised of the errors in each orbital element.
+Lyapunov methods can be thought of as a variant of thrust-blending methods, by using a heuristic to weigh the decrease in error for each orbital element by an optimality criterion. The specific linear combination taken is the one which maximizes the rate of decrease of some scalar function, described in the next section.
 
 \subsection{Lyapunov Methods}
 A brief primer on Lyapunov control theory is presented, based on an explanation from the fundamental paper of planetocentric Lyapunov-based guidance by Ilgen (1994) \cite{ilgen1994low}.
@@ -120,11 +120,13 @@ Or in other words:
   \item For every state, there exists a control input which decreases \(V(x)\) in time.
 \end{itemize}
 
-Over time, this will drive the state towards \(x = \hat{x}\).
+Over time, this is guaranteed to drive the state towards \(x = \hat{x}\), so long as the stabilizing control input is provided.
 
 This is a powerful idea, because it can be used both as a means to prove the stability of a system, and also as a means of developing a feedback control law \(u = u(x, t)\)
 
 Solving for the value of \(u\) at each value of \(x\) such that \(\dot{V}\) is minimized produces a \textbf{locally optimal feedback control law}.
+
+By introducing an optimality criterion, a unique solution can be obtained at each timestep. Lyapunov control is hence a natural extension of thrust blending.
 
 \subsection{Early Control-Lyapunov Functions}
 
@@ -161,24 +163,27 @@ where \(P\) is a penalty function used to impose constraints, \(S_\moe\) is a sc
 
 One of the key brilliancies of the approach is implementing a means to compensate for \textbf{how ``easy'' it is to change a given orbital element} (through \(\dot{\moe}_{\max}\)). Orbital elements which have a lower possible maximum rate of change are weighed with more importance by the potential function. This mechanism allows for the error in each orbital element to ``balance out'' over time, which is important for practically ensuring stability and convergence.
 
+Weighing \(Q\) by \(\dot{\moe}_{\max}\) informs the application of \textbf{control effort} such that the ``most difficult'' orbital elements are addressed first, and ensures that no orbital element gets left behind.
+
 \(\dot{\moe}_{\max}\) can be computed from the variational equations of motion, and results in an analytical expression for the derivatives of \(Q\). Note that when formulated in modified equinoctial elements, analytical approximations are used for \(\dot{\moe}_{\max}\) \cite{vargaperez2016, sanjeev2023}.
 
-Petropoulos' original paper has been built upon numerous times for different applications, including rendezvous \cite{sanjeev2023}. Varga and Pérez (2016) \cite{vargaperez2016} give an implementation in modified equinoctial elements, along with a study on optimizing the values of \(W_\sigma, \sigma \in \{P, a, e, i, \Omega, \omega\}\).
+Petropoulos' original paper has been built upon numerous times for different applications, including rendezvous \cite{sanjeev2023}. Varga and Pérez (2016) \cite{vargaperez2016} give an implementation in modified equinoctial elements, along with a study on optimizing the values of \(W_\sigma, \sigma \in \{P, a, e, i, \Omega, \omega\}\). Proceeding work on the Q-Law has adopted the modified equinoctial element formulation \cite{sanjeev2023} for its better performance.
 
-The \textit{Q-Law} family has demonstrated remarkably good performance when subjected to higher fidelity studies, incorporating eclipse effects (i.e. rendering electric propulsion inoperable when occluded from sunlight), and J2 perturbation \cite{vargaperez2016}. Although solar sails are a relatively fresh application for this type of guidance law, the long history of good performance under challenging conditions shows promise for this project.
+The \textit{Q-Law} family has demonstrated remarkably good performance when tested in higher fidelity studies, incorporating eclipse effects (i.e. rendering electric propulsion inoperable when occluded from sunlight), and J2 perturbation \cite{vargaperez2016}. Although solar sails are a relatively fresh application for this type of guidance law, the long history of good performance under challenging conditions makes it a good foundation to build upon for this project.
 
 \section{Considerations for Solar Sails}
 Solar sails are a propulsion method requiring no propellant expenditure to produce thrust. The principle of operation is based on conservation of momentum in the reflection of incident photons from the Sun. Challenges associated with performing controlled maneuvers using solar sails are described, with discussions of implications on spacecraft guidance. Fundamental principles are taken with reference to McInnes (1999) \cite{mcinnes}.
 
-The most challenging aspects of bringing solar sails into reality are not actually related to trajectory planning; truthfully, the greatest issues lie in the manufacturing and production of solar sails; material science and mechanical design remain the greatest barriers to the widespread adoption of solar sails \cite{mcinnes}. On top of that, attitude control is a fundamental precursor to thrust control, and is still in a highly development stage \cite{choi2015structural}.
+The most challenging aspects of bringing solar sails into reality are not actually related to trajectory planning; truthfully, the greatest issues lie in the manufacturing and production of solar sails; material science and mechanical design remain the greatest barriers to the widespread adoption of solar sails \cite{mcinnes}. On top of that, attitude control is a fundamental precursor to thrust control, and is still in a highly developmental stage \cite{choi2015structural}.
 
-With that said, an important fact to consider is that real solar sails behave very differently from an ideal flat sail. As discussed by Polyakhova (2018) in a review of solar sailing missions, models describing the thrust produced by solar sails continue to change with every new spacecraft built and flown \cite{polyakhova2018solar}.
+With that said, guidance is still an important and challenging problem for solar sailing. An important fact to consider is that real solar sails behave very differently from an ideal flat sail. As discussed by Polyakhova (2018) in a review of solar sailing missions, models describing the thrust produced by solar sails continue to change with every new spacecraft built and flown \cite{polyakhova2018solar}.
 
-In a perfectly idealized model, thrust is produced exactly in the direction of the sail normal, and the cone angle can be as great as \ang{90}. Real solar sails have limits on maximum allowable cone angle due to considerations for attitude control or because the reflective material of the sail behaves non-ideally at shallow incidence angles. Furthermore, the resultant thrust vector is not always aligned perfectly with the sail normal. This is illustrated in Figure \ref{fig:sail_reflectivity_comparison} below.
+In a perfectly idealized model, thrust is produced exactly in the direction of the sail normal, and the cone angle can be as great as \ang{90}. Real solar sails have limits on maximum allowable cone angle due to considerations for attitude control or because the reflective material of the sail behaves non-ideally at shallow incidence angles (e.g. absorption and re-radiation effects). Due to these same reflectivity effects, the resultant thrust vector is not always aligned perfectly with the sail normal. This is illustrated in Figure \ref{fig:sail_reflectivity_comparison} below.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}[t]{0.49\textwidth}
+    \centering
     \begin{tikzpicture}[scale=0.98]
       \coordinate (O) at (0, 0);
       \coordinate (Sun) at (190:4cm);
@@ -187,22 +192,23 @@ In a perfectly idealized model, thrust is produced exactly in the direction of t
         \draw[ultra thick] (O) ++ (130:2cm) -- ++(-50:4cm);
         \draw (O) ++(220:0.1cm) ++ (130:2cm) -- ++(-50:4cm);
       \end{scope}
-      \draw[-latex, color=orange!70!black] (O) -- ++(40:1cm) node[right]{\footnotesize{Thrust (\(\vec{F}\))}};
       \draw[-latex, dashed, purple!70!black] (O)  ++(220:2cm) -- ++(40:4cm) node[above]{Sail Normal (\(\hat{n}\))};
+      \draw[-latex, color=orange!70!black, thick] (O) -- ++(40:1.5cm) node[right]{\footnotesize{Thrust (\(\vec{F}\))}};
       \begin{scope}[cyan!50!black]
         \draw[-latex, thick] (Sun) -- (O) node[midway, above=4pt] {\footnotesize{Incident Light \(\hat{u_i}\)}};
         % Reflected rays
-        \draw[-latex] (O) -- ++(-100:4cm) node[right]{\footnotesize{Reflected Light}};
+        \draw[-latex] (O) -- ++(-100:2.5cm) node[right]{\footnotesize{Reflected Light}};
       \end{scope}
       % Draw Sun
       \fill[color=yellow] (Sun) circle(0.5cm);
       % angles
       \draw pic["\footnotesize{\(\varphi\)}", draw=black, text=black, |->, angle eccentricity=1.4, angle radius=1.3cm] {angle=Sun--O--T};
     \end{tikzpicture}
-    \caption{Perfectly reflecting sail; thrust is aligned with the sail normal.}
+    \caption{Perfectly reflecting sail.}
     \label{fig:perfect_sail}
   \end{subfigure}
   \begin{subfigure}[t]{0.49\textwidth}
+    \centering
     \begin{tikzpicture}[scale=0.98]
       \coordinate (O) at (0, 0);
       \coordinate (Sun) at (190:4cm);
@@ -211,24 +217,24 @@ In a perfectly idealized model, thrust is produced exactly in the direction of t
         \draw[ultra thick] (O) ++ (130:2cm) -- ++(-50:4cm);
         \draw (O) ++(220:0.1cm) ++ (130:2cm) -- ++(-50:4cm);
       \end{scope}
-      \draw[-latex, color=orange!70!black] (O) -- ++(30:2cm) node[right]{\footnotesize{Thrust (\(\vec{F}\))}};
+      \draw[-latex, color=orange!70!black, thick] (O) -- ++(30:1cm) node[right]{\footnotesize{Thrust (\(\vec{F}\))}};
       \draw[-latex, dashed, purple!70!black] (O)  ++(220:2cm) -- ++(40:4cm) node[above]{Sail Normal (\(\hat{n}\))};
       \begin{scope}[cyan!50!black]
         \draw[-latex, thick] (Sun) -- (O) node[midway, above=4pt] {\footnotesize{Incident Light \(\hat{u_i}\)}};
         % Reflected rays
-        \draw[-latex] (O) -- ++(-70:3cm) node[right]{\footnotesize{Reflected Light}};
-        \draw[-latex] (O) -- ++(-80:3cm);
-        \draw[-latex] (O) -- ++(-90:3cm);
+        \draw[-latex] (O) -- ++(-70:2cm) node[right]{\footnotesize{Reflected Light}};
+        \draw[-latex] (O) -- ++(-80:2cm);
+        \draw[-latex] (O) -- ++(-90:2cm);
       \end{scope}
       % Draw Sun
       \fill[color=yellow] (Sun) circle(0.5cm);
       % angles
       \draw pic["\footnotesize{\(\varphi\)}", draw=black, text=black, |->, angle eccentricity=1.4, angle radius=1.3cm] {angle=Sun--O--T};
     \end{tikzpicture}
-    \caption{General sail, which may scatter and absorb incoming light, resulting in offset thrust.}
+    \caption{Real sail.}
     \label{fig:general_sail}
   \end{subfigure}
-  \caption{Differences between a general reflectivity model and a perfectly reflecting sail.}
+  \caption{Effects of non-ideal effects on solar sail thrust production.}
   \label{fig:sail_reflectivity_comparison}
 \end{figure}
 
@@ -236,9 +242,8 @@ In a perfectly idealized model, thrust is produced exactly in the direction of t
 Even in the case of a flat perfectly reflecting sail, there are two key obstacles complicating the application of low-thrust guidance theory to solar sail spacecraft.
 \begin{enumerate}
   \item \textbf{Direction-Dependent Availability of Thrust}: The thrust produced by a solar sail is related to the cone angle \(\varphi\) by a factor of roughly \(\cos^2(\varphi)\) (see Equation 2.22 of Ref. \cite{mcinnes}). Thrust falls off considerably as the sail becomes misaligned with the direction of incident light, and drops to zero for \(|\varphi| > \ang{90}\). This means that at any instant in time, only a single hemisphere of thrust directions can be realized, with the orientation of the hemisphere being dependent on the position of the Sun -- a quantity which cannot be directly controlled. This is illustrated in Figure \ref{fig:thrust_availability}.
-  \item \textbf{Time/Position-Dependent Availability of Thrust}: In addition to the limitations on the direction in which thrust can be produced, the availability of thrust itself depends on a clear line of sight to the Sun. In eclipse, no light hits the sail, and no thrust is produced. This is illustrated in Figure \ref{fig:eclipse}. For spacecraft in low orbits above a planet, the time spent in eclipse represents a substantial fraction of the orbital period, and exacerbates the challenge of maneuvering using a solar sail.
+  \item \textbf{Time/Position-Dependent Availability of Thrust}: The availability of thrust depends on a clear line of sight to the Sun. In eclipse, no light hits the sail, and no thrust is produced. This is illustrated in Figure \ref{fig:eclipse}. For spacecraft in low orbits above a planet, the time spent in eclipse represents a substantial fraction of the orbital period. More importantly, for a planetocentric orbit, the position of the parent planet around the Sun directly affects the direction of incident sunlight hitting the spacecraft and hence directional thrust availability. This is revisited in Section \ref{sec:solar_sail_guidance}.
 \end{enumerate}
-
 \begin{figure}[H]
   \centering
   \begin{subfigure}[t]{0.49\textwidth}
@@ -284,7 +289,6 @@ Even in the case of a flat perfectly reflecting sail, there are two key obstacle
   \caption{Key challenges associated with solar sail thrust.}
   \label{fig:sail_challenges}
 \end{figure}
-
 Both of these effects are present to a lesser degree in spacecraft using electric propulsion; solar arrays require Sun exposure, but are typically made to rotate so that they can track the Sun independently of the direction of the engines. Solar sails pose a more extreme set of challenges for maneuvering, stemming from their principle of operation.
 
 \subsection{Diversity of Sail Geometries and Materials}
@@ -299,23 +303,15 @@ The key point to be made is that fixating upon a certain dynamic model for solar
 Note that there is work done by Rios-Reyes et al. (2005) \cite{rios2005generalized} and Tsunda et al. (2013) \cite{tsuda2013generalized} on generalizing solar sail dynamics models. These models allow for arbitrary geometries and surface reflectivity properties, but have a large number of parameters. For the sake of simplicity, integrating such a model into the guidance law for this project is not considered.
 
 \subsection{Maneuverability Limitations}
-Solar sail spacecraft have limited attitude agility; as a first approximation, angular rates of about \(\ang{15}\) per hour are achievable \cite{choi2015structural}. Even with this crude notion of maneuverability, maneuvers in orbits where the period is shorter than a few hours (such as LEO) become difficult with solar sail spacecraft. Such considerations should be made when making a guidance law, so that the time history of commanded thrust directions can be realized by the attitude controller.
+Solar sail spacecraft have limited attitude agility; as a first approximation, angular rates of about \(\ang{15}\) per hour are achievable \cite{choi2015structural}. Even with this crude notion of maneuverability, maneuvers in orbits where the orbital period is shorter than a few hours (such as LEO) become difficult with solar sail spacecraft. Such considerations should be made when making a guidance law, so that the time history of commanded thrust directions can be realized by the attitude controller.
 
-Incorporating constraints for attitude dynamics is challenging; attitude control often depends on solar radiation pressure for maneuvering (e.g. tip vanes, LCD panels), and hence the maximum attainable attitude rates change substantially based on the orientation of the spacecraft.
+Incorporating constraints for attitude dynamics is challenging; attitude control often depends on solar radiation pressure for maneuvering (e.g. tip vanes, LCD panels), and hence the maximum attainable attitude rates change substantially based on the orientation of the spacecraft. Also, as previously mentioned, there are also absolute limits imposed on
 
-Considering attitude dynamics in a globally optimal method is very challenging,
-
-
-(something about how generally a global trajectory which could be flown by a solar sail may not actually be possible, due to having to add constraints for maneuverability at all times)
-
-(as well as practical limits even with a feedback approach)
-
-Attitude rate and absolute attitude limits
-
-TODO
+Considering attitude dynamics in a globally optimal method is very challenging, since solar sail attitude constraints often cannot be expressed in a simple form required by many optimization approaches.
 
 
 \section{Solar Sail Guidance}
+\label{sec:solar_sail_guidance}
 As with low-thrust guidance, solar sails have frequently been the subject for interplanetary (heliocentric) trajectories. Analytical analysis of inward and outward spiral trajectories around the Sun are discussed by McInnes (1999) \cite{mcinnes}. However, the focus of this literature review is on planetocentric orbital maneuvering.
 
 In planetocentric orbits, the issues of directional thrust availability and eclipse are more severe than when around the Sun. For instance, the ``hemisphere'' of allowable thrust directions (see Figure \ref{fig:thrust_availability}) makes a full revolution during each orbit around the Sun, and therefore a solar sail in heliocentric orbit can apply thrust in nearly all directions over the course of a single orbit. On the other hand, the position of the Sun relative to a spacecraft barely changes over the course of a single orbit around a planet, which greatly restricts the possible space of thrust directions. As already mentioned, eclipse is a common occurrence in low orbit around a planet, while it is effectively nonexistent when orbiting the Sun. These complications are illustrated in Figure \ref{fig:angle_availability}.
