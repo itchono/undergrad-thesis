@@ -302,19 +302,19 @@ The key point to be made is that fixating upon a certain dynamic model for solar
 
 Note that there is work done by Rios-Reyes et al. (2005) \cite{rios2005generalized} and Tsunda et al. (2013) \cite{tsuda2013generalized} on generalizing solar sail dynamics models. These models allow for arbitrary geometries and surface reflectivity properties, but have a large number of parameters. For the sake of simplicity, integrating such a model into the guidance law for this project is not considered.
 
-\subsection{Maneuverability Limitations}
+\subsection{Attitude Dynamics}
 Solar sail spacecraft have limited attitude agility; as a first approximation, angular rates of about \(\ang{15}\) per hour are achievable \cite{choi2015structural}. Even with this crude notion of maneuverability, maneuvers in orbits where the orbital period is shorter than a few hours (such as LEO) become difficult with solar sail spacecraft. Such considerations should be made when making a guidance law, so that the time history of commanded thrust directions can be realized by the attitude controller.
 
-Incorporating constraints for attitude dynamics is challenging; attitude control often depends on solar radiation pressure for maneuvering (e.g. tip vanes, LCD panels), and hence the maximum attainable attitude rates change substantially based on the orientation of the spacecraft. Also, as previously mentioned, there are also absolute limits imposed on
+Incorporating attitude constraints is complex; attitude control often depends on radiation pressure for maneuvering (e.g. tip vanes, LCD panels), and hence the maximum attainable attitude rates vary with the orientation of the spacecraft. Also, as previously mentioned, there are also limits imposed on the angles of the sail relative to the Sun, which continuously vary in time as the Sun moves.
 
-Considering attitude dynamics in a globally optimal method is very challenging, since solar sail attitude constraints often cannot be expressed in a simple form required by many optimization approaches.
+Considering attitude dynamics in a globally optimal method is challenging, since the above constraints often cannot be expressed in a simple form. Even with feedback methods, directly incorporating such constraints into a guidance law dramatically increases its complexity. Therefore, the majority of approaches to solar sail guidance make simplifications to ignore certain aspects of attitude dynamics.
 
 
 \section{Solar Sail Guidance}
 \label{sec:solar_sail_guidance}
-As with low-thrust guidance, solar sails have frequently been the subject for interplanetary (heliocentric) trajectories. Analytical analysis of inward and outward spiral trajectories around the Sun are discussed by McInnes (1999) \cite{mcinnes}. However, the focus of this literature review is on planetocentric orbital maneuvering.
+Traditional solar sail guidance has focused on heliocentric trajectories. Analytical analysis of inward and outward spiral trajectories around the Sun are discussed by McInnes (1999) \cite{mcinnes}. However, the focus of this literature review is on planetocentric orbital maneuvering.
 
-In planetocentric orbits, the issues of directional thrust availability and eclipse are more severe than when around the Sun. For instance, the ``hemisphere'' of allowable thrust directions (see Figure \ref{fig:thrust_availability}) makes a full revolution during each orbit around the Sun, and therefore a solar sail in heliocentric orbit can apply thrust in nearly all directions over the course of a single orbit. On the other hand, the position of the Sun relative to a spacecraft barely changes over the course of a single orbit around a planet, which greatly restricts the possible space of thrust directions. As already mentioned, eclipse is a common occurrence in low orbit around a planet, while it is effectively nonexistent when orbiting the Sun. These complications are illustrated in Figure \ref{fig:angle_availability}.
+In planetocentric orbits, the issues of directional thrust availability and eclipse are more severe than when around the Sun. For instance, the ``hemisphere'' of allowable thrust directions (see Figure \ref{fig:thrust_availability}) makes a full revolution during each orbit around the Sun, and therefore a solar sail in heliocentric orbit can apply thrust in nearly all directions over the course of a single orbit. On the other hand, the position of the Sun relative to a spacecraft barely changes over the course of a single orbit around a planet, which greatly restricts the possible space of thrust directions. Consider Figure \ref{fig:angle_availability} for an illustration of this. Furthermore, as already mentioned, eclipse is a common occurrence in low orbit around a planet, while it is effectively nonexistent when orbiting the Sun.
 
 \begin{figure}[H]
   \centering
@@ -355,3 +355,7 @@ Given the robustness of the \textit{Q-Law} to disturbances in environment and dy
 The ingredients for such an approach are already well-established, and the prospect of demonstrating good performance of a guidance law with a more general form appears feasible.
 
 The choice of a Lyapunov-based feedback guidance law is supported by a healthy lineage of research in low-thrust spacecraft guidance, and the inclination to keep the guidance law as general as possible is motivated by the ongoing evolution of solar sail spacecraft designs and dynamics models.
+
+Considering attitude dynamics for solar sails may be very complex, so it is favourable to ignore certain aspects such as rate limitations in developing the guidance law.
+
+The direction is now well defined: create a solar sail guidance law for planetocentric maneuvering while keeping it very simple.

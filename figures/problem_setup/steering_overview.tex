@@ -1,40 +1,40 @@
 \begin{figure}[H]
-    \centering
-    \tdplotsetmaincoords{85}{45}
-    \begin{tikzpicture}[tdplot_main_coords,scale=1]
-        \coordinate (O) at (0,0,0);
-        \coordinate (KD) at ({2/sqrt(2)},{2/sqrt(2)},3);
-        \coordinate (NS) at ({2.5/sqrt(2)},{2.5/sqrt(2)},2.5);
-        \coordinate (KF) at ({3/sqrt(2)},{3/sqrt(2)},0);
-        \coordinate (T) at (0,0,7);
-        % BG
-        \begin{scope}[plane x={({1/sqrt(2)}, {1/sqrt(2)}, 0)}, plane y={(0, 0, 1)}, canvas is plane]
-            \fill[green!10!white] (O) -- (90:6) arc(90:56.31:6) node[midway, above=4pt, text=green!70!black]{\footnotesize{Unmodified}} -- cycle;
-            \fill[yellow!10!white] (O) -- (56.31:6) arc(56.31:0:6) node[midway, above right=4pt, text=yellow!70!black]{\footnotesize{Projected}} -- cycle;
-            \fill[black!10] (O) -- (0:6) arc(0:-18:6) node[midway, right, text=black!70]{\footnotesize{Feathered}} -| (O) -- cycle;
-        \end{scope}
-        % Cone stuff
-        \coneback[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
-        \begin{scope}[thick, cyan!50!black]
-            \draw[dashdotted] (O) -- (T);
-            \draw[-latex] (O) ++(0,0,-2) -- (O) node[midway, left]{Incident Light \(\hat{u}_i\)};
-        \end{scope}
-        \conefront[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
-        \begin{scope}[canvas is xy plane at z = 0]
-            \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);
-        \end{scope}
-        % Annotations of thrust cone and limit plane
-        \draw[yellow!70!black] (O) ++(-1, 0, 3.5) node[left] {Thrust Cone};
-        \draw[black!60] (O) ++(-1, 0, 0.75) node[left] {Limit Plane};
-        % Angles
-        \draw pic["\(\kappa\)", draw=yellow!70!black, text=yellow!70!black, latex-|, thick, angle eccentricity=1.03, angle radius=5.5cm] {angle=KD--O--T};
-        \draw pic["\(\varphi^*\)", draw=green!70!black, text=green!70!black, latex-|, thick, angle eccentricity=1.1, angle radius=4cm] {angle=NS--O--T};
-        % Adaptation
-        \begin{scope}[thick, -latex]
-            \draw[green!70!black] (O) -- ($(O)!1.3!(NS)$) node[right]{\(\hat{n}^*\)};
-            \draw[purple!70!black] (O) -- ($(O)!1.3!(KD)$) node[right]{\(\hat{n}\)};
-        \end{scope}
-    \end{tikzpicture}
-    \caption{Overview of steering angle regularization heuristic. The vertical is aligned with the direction of incident sunlight.}
-    \label{fig:steering_heuristic_overview}
+  \centering
+  \tdplotsetmaincoords{85}{45}
+  \begin{tikzpicture}[tdplot_main_coords,scale=1]
+    \coordinate (O) at (0,0,0);
+    \coordinate (KD) at ({2/sqrt(2)},{2/sqrt(2)},3);
+    \coordinate (NS) at ({2.5/sqrt(2)},{2.5/sqrt(2)},2.5);
+    \coordinate (KF) at ({3/sqrt(2)},{3/sqrt(2)},0);
+    \coordinate (T) at (0,0,7);
+    % BG
+    \begin{scope}[plane x={({1/sqrt(2)}, {1/sqrt(2)}, 0)}, plane y={(0, 0, 1)}, canvas is plane]
+      \fill[green!10!white] (O) -- (90:6) arc(90:56.31:6) node[midway, above=4pt, text=green!70!black]{\footnotesize{Unmodified}} -- cycle;
+      \fill[yellow!10!white] (O) -- (56.31:6) arc(56.31:0:6) node[midway, above right=4pt, text=yellow!70!black]{\footnotesize{Projected}} -- cycle;
+      \fill[black!10] (O) -- (0:6) arc(0:-18:6) node[midway, right, text=black!70]{\footnotesize{Feathered}} -| (O) -- cycle;
+    \end{scope}
+    % Cone stuff
+    \coneback[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
+    \begin{scope}[thick, cyan!50!black]
+      \draw[dashdotted] (O) -- (T);
+      \draw[-latex] (O) ++(0,0,-2) -- (O) node[midway, left]{Incident Light \(\hat{u}_i\)};
+    \end{scope}
+    \conefront[draw=yellow!70!black, fill=yellow!40!white, fill opacity=.6]{3}{2}{0}
+    \begin{scope}[canvas is xy plane at z = 0]
+      \filldraw[draw=black!60, fill=black!50, fill opacity=.3] (0, 0) circle (3cm);
+    \end{scope}
+    % Annotations of thrust cone and limit plane
+    \draw[yellow!70!black] (O) ++(-1, 0, 3.5) node[left] {Thrust Cone};
+    \draw[black!60] (O) ++(-1, 0, 0.75) node[left] {Limit Plane};
+    % Angles
+    \draw pic["\(\kappa\)", draw=yellow!70!black, text=yellow!70!black, latex-|, thick, angle eccentricity=1.03, angle radius=5.5cm] {angle=KD--O--T};
+    \draw pic["\(\varphi^*\)", draw=green!70!black, text=green!70!black, latex-|, thick, angle eccentricity=1.1, angle radius=4cm] {angle=NS--O--T};
+    % Adaptation
+    \begin{scope}[thick, -latex]
+      \draw[green!70!black] (O) -- ($(O)!1.3!(NS)$) node[right]{\(\hat{n}^*\)};
+      \draw[purple!70!black] (O) -- ($(O)!1.3!(KD)$) node[right]{\(\hat{n}\)};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Overview of cone angle adaptation heuristic. The vertical is aligned with the direction of incident sunlight.}
+  \label{fig:steering_heuristic_overview}
 \end{figure}
