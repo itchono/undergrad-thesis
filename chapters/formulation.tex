@@ -10,7 +10,7 @@ Stated more formally, the problem is given as:
 \fbox{\begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
         \textbf{Planetocentric Solar Sail Feedback Guidance Problem}
 
-        Consider a spacecraft propelled by an ideal flat solar sail with sail loading \(\sigma\) and efficiency \(\eta\) in an ideal 2-body orbit around a planet with gravitaional parameter \(\mu\) (which itself orbits the Sun). Let be \(P\) the radiation pressure of incident sunlight, which comes from a known direction \(\hat{u}_i\).
+        Consider a spacecraft propelled by an ideal flat solar sail with sail loading \(\sigma\) and efficiency \(\eta\) in an ideal 2-body orbit around a planet with gravitational parameter \(\mu\) (which itself orbits the Sun). Let be \(P\) the radiation pressure of incident sunlight, which comes from a known direction \(\hat{u}_i\).
 
         Given the instantaneous spacecraft state \(\{p, f, g, h, k, L\}\) and target orbit described by the elements \(\{\hat{p}, \hat{f}, \hat{g}, \hat{h}, \hat{k}\}\), determine an instantaneous spacecraft orientation in the LVLH frame (i.e. the sail normal \(\hat{n}\), presented in the form of steering angles \(\alpha\) and \(\beta\)) which ultimately brings the spacecraft to the target orbit.
     \end{minipage}}
@@ -198,7 +198,7 @@ The control-Lyapunov function is given below in Equation \ref{eq:Q_func}.
     a        & = \frac{p}{1-e^2} \nonumber                                                                                                                                   \\
     r_{p}    & = a (1-e) = p\frac{(1-e)}{(1+e)(1-e)} = \frac{p}{1+\sqrt{f^2 + g^2}} \nonumber
 \end{align}
-with \(\dot{\moe}_{\maxrocall}\) being taken to mean the maximum achieveable rate of change in that orbital element for any value of steering angles \((\alpha, \beta)\) and true longitude \(L\).
+with \(\dot{\moe}_{\maxrocall}\) being taken to mean the maximum achievable rate of change in that orbital element for any value of steering angles \((\alpha, \beta)\) and true longitude \(L\).
 
 The only variables in \(Q\) are \(\moe \in \{p, f, g, h, k\}\), and therefore \(Q\) can be written as a sum of derivatives using the chain rule:
 \begin{align*}
