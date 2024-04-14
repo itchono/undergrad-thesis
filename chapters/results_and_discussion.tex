@@ -126,7 +126,7 @@ Trajectory segmentation is most evident in this animation.
 
 Overall, it is impressive that the guidance law is convergent in all of the test cases. However, it is far from perfect. Most notably, it is extremely slow at advancing the orbit in certain segments. Hence, the first extended study aims to search for trajectories with lower time of flight through tuning the guidance weight \(W_{\moe}\).
 
-Tuning the weights of the Q-Law is equivalent to changing the ``greediness strategy'' of the local optimization being done at each timestep; there may exist a \textbf{local strategy} which can set up a better trajectory at a \textbf{global level}.
+Tuning the weights of the Q-Law is equivalent to changing the ``greediness strategy'' of the local optimization being done at each timestep; the baseline Q-Law always attempts to maximize \(-\dot{Q}\) (in a greedy fashion), and adjusting \(W_{\moe}\) helps ``steer the greediest direction'' at one timestep to help the guidance law at a later timestep. There may exist a \textbf{local strategy} which can set up a better trajectory at a \textbf{global level}.
 
 
 \newpage
@@ -329,5 +329,7 @@ The guidance optimization study is quite well done, and shows that improvement i
 For disturbance rejection analysis, while \(J2\) perturbations are dominant in low Earth orbit, most solar sails operate in higher orbits where these effects are not as significant. It would be more interesting to investigate gravitational perturbations from the Sun and Moon, or atmospheric drag effects. It is also difficult to justify claims about QUAIL's performance given that only a single case was run.
 
 The realistic solar sail modelling study is quite limited in its scope and usefulness. An improved study with an actual thrust model featuring off axis thrust may reveal more subtle features of working with solar sails that is not available with using an ideal sail thrust model.
+
+Additionally, attitude dynamics have not been considered. For sufficiently long period orbits, this should not have a great effect on performance, but it would be desirable to test QUAIL in a simulator with limits imposed on the angular rates of the spacecraft.
 
 Overall, the few experiments which were conducted with QUAIL cannot be used to certify performance, but suggest that even with further testing, QUAIL can prove to be a very reliable and performant guidance law for solar sailing.
