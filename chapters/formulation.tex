@@ -226,6 +226,7 @@ Note that Equation \ref{eq:equinoctial_eom_3d} in fact gives \(\dot{\moe}\) as a
     \end{bmatrix}
     \label{eq:max_accel_assumption}
 \end{equation}
+
 Keeping the relationship simple using only \(F_{\max}\) allows for a very general application of the guidance law to a broad range of spacecraft configurations.
 
 \begin{figure}
@@ -456,6 +457,9 @@ Both of the problematic cases from Section \ref{sec:insufficient} are addressed 
 
 Setting the thrust cone angle \(\kappa\) is a matter of guidance strategy; as a starting point, it could be set to be equal to the absolute maximum allowable cone angle for a solar sail (e.g. \ang{60} for a realistic solar sail), but it can also be set to an even lower angle to enforce greater production of thrust. This parameter is therefore decoupled from the solar sail thrust model used, and could readily be extended to a variety of spacecraft configurations.
 
+Note that real solar sails which rely on solar radiation pressure for attitude control cannot feather
+themselves, but this formulation provides the basis for an approach wherein \(\varphi^* > \ang{90}\) could be taken to mean ``reconfigure the spacecraft to produce zero (or almost zero) thrust''.
+
 \section{Combined Guidance Law}
 The Q-Law and the cone angle adaptation heuristic form a combined guidance law. This guidance law is called \boxed{\text{QUAIL: Q-Law Using Angle of Incidence Limits}}.
 
@@ -466,6 +470,25 @@ The Q-Law and the cone angle adaptation heuristic form a combined guidance law. 
     \label{fig:quail_logo}
 \end{figure}
 
+\subsection{Properties of the Combined Guidance Law}
+One important formulation-level consequence of the approach taken by QUAIL is that the Lyapunov stability of the baseline Q-Law is \textbf{not} preserved.
+\begin{enumerate}
+    \item The initial simplification made in the first stage of ignoring the direction-dependence of thrust production means that \(\dot{\moe}_{\text{max}}\) is itself not calculated for a proper solar sail spacecraft, and so the formulation of \(\dot{Q}\) does not correspond to the actual dynamics.
+    \item A stabilizing input may not always be provided, since the thrust direction requested by the first stage can be altered by the second stage.
+\end{enumerate}
+These two additions destroy the theoretical convergence guarantee of a control-Lyapunov function, meaning that \(Q\) may sometimes increase before it can decrease.
+
+By relaxing the requirement that the spacecraft must always ``improve'' its trajectory, it can reposition itself into a state where more thrust is available in a certain direction, affording it greater ``leverage''. Consider Figure \ref{fig:angle_availability_earth}, where it could be advantageous to wait until Earth has travelled to the opposite of the Sun from its current position in order to produce thrust in a direction which is currently inaccessible. By combining the Q-Law with the second stage cone angle adaptation heuristic, two very desirable properties are achieved:
+\begin{enumerate}
+    \item The baseline Q-Law prioritizes correcting orbital elements with the largest error and/or smallest accessible rate of change.
+    \item The cone angle adaptation heuristic prioritizes directions in which the solar sail can produce thrust.
+\end{enumerate}
+In combination, QUAIL attempts to first correct orbital elements which 1) require large corrections and 2) are accessible by the solar sail. This is a natural extension of the behaviour of the baseline Q-Law. Just like the Q-Law, any errors which are not immediately corrected are taken care of later, due to the feedback nature of the guidance law.
+
+By removing the need for \(Q\) to be a true control-Lyapunov function, an extremely convenient method for producing an ideal thrust direction is obtained, and a very simple computational procedure is available for adapting this thrust direction into one usable by a solar sail. At the same time, a conceptually well-behaved guidance law is obtained.
+
+
+\subsection{Computational Procedure}
 Following the computation of \((\alpha^*, \beta^*)\) by the first stage, \(\varphi^*\) is computed using Equation \ref{eq:cone_star}. \(\hat{n}^*\) is computed in referential form (i.e. its components are calculated relative to some reference frame), and the vector \(\hat{b}\) is formed. Then, Equation \ref{eq:ndf_law} is used to calculate \(\hat{n}\), using conditional expressions.
 
 Expressing \(\hat{n}\) in \(\vec{\mathcal{F}}_{\text{LVLH}}\), the steering angles \(\alpha\) and \(\beta\) can be found by working backwards from Equation \ref{eq:alpha_beta_n}. A reference formulation is given below:
@@ -475,3 +498,4 @@ Expressing \(\hat{n}\) in \(\vec{\mathcal{F}}_{\text{LVLH}}\), the steering angl
 \end{align*}
 
 The problem statement at the beginning of this chapter is therefore solved by QUAIL.
+
