@@ -15,10 +15,19 @@ Cone angle adaptation
 
 \section{Future Work}
 
+\subsection{Considerations for Higher Fidelity Dynamics}
+
+
+The current dynamics model is very simple. Demonstration of robustness to plant model variation would be a very attractive attribute for the guidance law.
+
+\textbf{Sail Thrust Models}
+
+So far, only a flat idealized sail has been considered. Ref. \cite{oguri2023solar} uses a more sophisticated thrust model incorporated into the Q-Law. It would be interesting to see how the guidance law produced in this project compares against Oguri's.
+
 
 \textbf{Incorporation of Attitude Dynamics}
 
-On the simulator side,
+Attitude dynamics has been ignored for this project.
 
 \textbf{Cone Angle Adaptation Heuristic Rework}
 
@@ -28,8 +37,8 @@ Coverstone \cite{coverstone2003technique} presents a feedback guidance law which
 
 
 
-\subsection{Applications to New Dynamics}
-The current dynamics model is very simple. Demonstration of robustness to plant model variation would be a very attractive attribute for the guidance law.
+\subsection{Applications to New Problems}
+
 
 \textbf{Other Bodies}
 
@@ -37,14 +46,36 @@ Only Earth-centric orbits have been considered so far. With increasing interest 
 
 There are also mission using solar sails to the inner solar system, such as a Mercury sample return mission proposed by Hughes \cite{hughes2006sample}. Although the guidance law developed in this project is targeted at planetocentric orbits, it may also work for heliocentric trajectories.
 
-\textbf{Sail Thrust Models}
-
-So far, only a flat idealized sail has been considered. Ref. \cite{oguri2023solar} uses a more sophisticated thrust model incorporated into the Q-Law. It would be interesting to see how the guidance law produced in this project compares against Oguri's.
-
 \textbf{Non-Keplerian Orbits}
 
 Solar sails are a prime candidate for exploiting non-Keplerian trajectories such as halo orbits around Lagrange points; the lack of a propellant consumption leads to an uncapped mission life in a frozen orbit. Applying the guidance law to a multibody problem could give interesting results, but is made difficult by the lack of orbital elements to describe such trajectories.
 
 \textbf{As a Starting Point for Global Methods}
 
-The trajectories produced by the guidance law could be used as an initial guess for global methods to kickstart their optimization processes.
+Many Q-Law papers describe the possibility of using solutions obtained by their guidance law to initialize a global method, \textit{but no one appears to have actually done so}. The trajectories produced by QUAIL could be used as an initial guess for global methods to kickstart their optimization processes. This would address two important research gaps:
+
+\begin{enumerate}
+    \item Using Lyapunov methods (i.e. Q-Laws) to generate initial guesses for high-fidelity trajectory optimization is a frequently mentioned but unexplored direction.
+    \item Generating good initial guesses for global optimization of \textit{solar sail} trajectories is difficult.
+\end{enumerate}
+
+A Q-Law (either QUAIL, its predecessors, or a derivative) could be used in conjunction with a simulator to integrate an initial trajectory forwards in time to reach a final target orbit. The position history flown by the Q-Law can then be used as the starting point for a pseudospectral global trajectory optimization scheme. Q-Law solutions are cheap to evaluate because the cost is about as much as propagating an orbit in time. Using such a solution to initialize a global optimization run will save expensive iterations, and could result in better convergence characteristics.
+
+\section{Summary of Outstanding Questions}
+\begin{itemize}
+    \item How well will QUAIL work in simulations with a state of the art solar sail thrust model?
+    \item Can it be used around other planets/bodies? e.g. Earth-Moon transfers
+    \item Can it target things other than Keplerian orbits? e.g. Lagrange points, pole-sitting missions
+    \item Can the idea of cone angle limiting be applied to other solar sail problems, or even conventional low-thrust spacecraft?
+    \item Can QUAIL solutions be used as a first guess for global optimization methods?
+\end{itemize}
+
+\section{Life Lessons from a Guidance Law}
+To send off this thesis, the 4 major keypoints of QUAIL are presented, along with an accompanying life lesson.
+
+\begin{enumerate}
+    \item Use feedback guidance instead of solving for a global trajectory. \newline \textit{Take things one step at a time.}
+    \item Assume a solar-sail-agnostic thrust model for the Q-Law. \newline \textit{Keep it simple.}
+    \item Adapt the solution from the Q-Law to make it work for solar sails.\newline \textit{Be willing to try something unconventional.}
+    \item Relax Lyapunov stability for better overall performance. \newline \textit{Sometimes it must get worse before it gets better.}
+\end{enumerate}

@@ -6,109 +6,109 @@
 \section{Baseline Case Runs}
 The baseline trajectory cases outlined in Tables \ref{tab:trajectory_cases} and \ref{tab:trajectory_case_params} were simulated, and the main results are shown in Table \ref{tab:outputs_1_summary}.
 \begin{table}[H]
-  \centering
-  \begin{tabular}{lR{3cm}R{2.5cm}rr}
-    \toprule
-    \textbf{Case ID} & Convergence Tolerance & Time of Flight (d) & \# Revolutions & CPU Time (s) \\
-    \midrule
-    A                & 0.001                 & 621                & 862            & 17.6         \\
-    B                & 0.03                  & 498                & 501            & 16.9         \\
-    C                & 0.005                 & 802                & 1560           & 38.3         \\
-    D                & 0.005                 & 63                 & 62             & 10.1         \\
-    \bottomrule
-  \end{tabular}
-  \caption{Summary of outcomes for each case.}
-  \label{tab:outputs_1_summary}
+    \centering
+    \begin{tabular}{lR{3cm}R{2.5cm}rr}
+        \toprule
+        \textbf{Case ID} & Convergence Tolerance & Time of Flight (d) & \# Revolutions & CPU Time (s) \\
+        \midrule
+        A                & 0.001                 & 621                & 862            & 17.6         \\
+        B                & 0.03                  & 498                & 501            & 16.9         \\
+        C                & 0.005                 & 802                & 1560           & 38.3         \\
+        D                & 0.005                 & 63                 & 62             & 10.1         \\
+        \bottomrule
+    \end{tabular}
+    \caption{Summary of outcomes for each case.}
+    \label{tab:outputs_1_summary}
 \end{table}
 
 Case-by-case plots of the time history of the orbital elements and the spatial trajectory are shown below.
 \subsection{Plots: Case A}
 \begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_transfer/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:results_a_a}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.59\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_transfer/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:results_a_b}
-  \end{subfigure}
-  \caption{Orbital elements and trajectory for case A.}
-  \label{fig:results_a}
+    \centering
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/benchmark_transfer/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:results_a_a}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.59\textwidth}
+        \includegraphics[width=\textwidth]{figures/benchmark_transfer/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:results_a_b}
+    \end{subfigure}
+    \caption{Orbital elements and trajectory for case A.}
+    \label{fig:results_a}
 \end{figure}
 
 \subsection{Plots: Case B}
 \begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_G/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:results_results_b_a}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.59\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_G/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:results_results_b_b}
-  \end{subfigure}
-  \caption{Orbital elements and trajectory for case B.}
-  \label{fig:results_results_b}
+    \centering
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/oguri_G/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:results_results_b_a}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.59\textwidth}
+        \includegraphics[width=\textwidth]{figures/oguri_G/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:results_results_b_b}
+    \end{subfigure}
+    \caption{Orbital elements and trajectory for case B.}
+    \label{fig:results_results_b}
 \end{figure}
 
 \subsection{Plots: Case C}
 \begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{figures/plane_change/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:results_c_a}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.59\textwidth}
-    \includegraphics[width=\textwidth]{figures/plane_change/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:results_c_b}
-  \end{subfigure}
-  \caption{Orbital elements and trajectory for case C.}
-  \label{fig:results_c}
+    \centering
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/plane_change/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:results_c_a}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.59\textwidth}
+        \includegraphics[width=\textwidth]{figures/plane_change/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:results_c_b}
+    \end{subfigure}
+    \caption{Orbital elements and trajectory for case C.}
+    \label{fig:results_c}
 \end{figure}
 
 \subsection{Plots: Case D}
 \begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{figures/geo_disposal/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:results_results_c_a}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.59\textwidth}
-    \includegraphics[width=\textwidth]{figures/geo_disposal/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:results_results_c_b}
-  \end{subfigure}
-  \caption{Orbital elements and trajectory for case D.}
-  \label{fig:results_results_c}
+    \centering
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/geo_disposal/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:results_results_c_a}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.59\textwidth}
+        \includegraphics[width=\textwidth]{figures/geo_disposal/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:results_results_c_b}
+    \end{subfigure}
+    \caption{Orbital elements and trajectory for case D.}
+    \label{fig:results_results_c}
 \end{figure}
 
 \subsection{Animations: Cases A-C}
 Note: a javascript-enabled PDF reader (e.g. Adobe Reader, Foxit Reader) is required for view the animations. Seeing the trajectories animated in 3D space may help provide a more comprehensible view of what is going on.
 
 \begin{figure}[H]
-  \animategraphics[width=\textwidth, controls, loop]{10}{animations/benchmark_transfer/anim-}{1}{50}
-  \caption{Trajectory animation for case A.}
-  \label{fig:anim_a}
+    \animategraphics[width=\textwidth, controls, loop]{10}{animations/benchmark_transfer/anim-}{1}{50}
+    \caption{Trajectory animation for case A.}
+    \label{fig:anim_a}
 \end{figure}
 
 \begin{figure}[H]
-  \animategraphics[width=\textwidth, controls, loop]{10}{animations/oguri_case_G/anim-}{1}{47}
-  \caption{Trajectory animation for case B.}
-  \label{fig:anim_b}
+    \animategraphics[width=\textwidth, controls, loop]{10}{animations/oguri_case_G/anim-}{1}{47}
+    \caption{Trajectory animation for case B.}
+    \label{fig:anim_b}
 \end{figure}
 
 \begin{figure}[H]
-  \animategraphics[width=\textwidth, controls, loop]{10}{animations/plane_change/anim-}{1}{50}
-  \caption{Trajectory animation for case C.}
-  \label{fig:anim_c}
+    \animategraphics[width=\textwidth, controls, loop]{10}{animations/plane_change/anim-}{1}{50}
+    \caption{Trajectory animation for case C.}
+    \label{fig:anim_c}
 \end{figure}
 
 
@@ -127,26 +127,26 @@ More insights are evident through inspection of the plots of the trajectory and 
 Global weight optimization was performed for the latter two baseline cases. The optimized guidance law tunings are compared against their unoptimized counterparts in Table \ref{tab:outputs_2_summary}.
 
 \begin{table}[H]
-  \centering
-  \begin{tabular}{L{5cm}L{2.5cm}L{2.5cm}L{3cm}}
-    \toprule
-    \textbf{Case}                                     & Time of Flight (d) & Number of Revolutions & \(\Delta v\) Expenditure (m/s) \\
-    \midrule
-    ``Benchmark'', baseline                           & 610                & 858                   & 6673.2                         \\
-    \rowcolor{green!20!white}``Benchmark'', optimized & 388                & 622                   & 6193.0                         \\
-    Polar GSO, baseline                               & 490                & 494                   & 9686.7                         \\
-    \rowcolor{green!20!white} Polar GSO, optimized    & 375                & 323                   & 8352.0                         \\
-    \bottomrule
-  \end{tabular}
-  \caption{Comparison of optimized cases against their baselines.}
-  \label{tab:outputs_2_summary}
+    \centering
+    \begin{tabular}{L{5cm}L{2.5cm}L{2.5cm}L{3cm}}
+        \toprule
+        \textbf{Case}                          & Time of Flight (d) & Number of Revolutions & \(\Delta v\) Expenditure (m/s) \\
+        \midrule
+        A, baseline                            & 621                & 862                   & 6459.6                         \\
+        \rowcolor{green!20!white}A, optimized  & 385                & 680                   & 6216.1                         \\
+        B, baseline                            & 498                & 501                   & 9640.5                         \\
+        \rowcolor{green!20!white} B, optimized & 377                & 326                   & 8315.4                         \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparison of optimized cases against their baselines.}
+    \label{tab:outputs_2_summary}
 \end{table}
 
 The two cases still use their original convergence tolerances in the optimized tunings.
 
 Plots of the trajectories and orbital elements are shown in Sections \ref{sec:bench_case_plot} and \ref{sec:gso_case_plot}.
 
-\subsection{Benchmark Case}
+\subsection{Case A}
 \label{sec:bench_case_plot}
 Baseline \(W_{\moe}\): \(\{1, 1, 1, 1, 1\}\)
 
@@ -154,85 +154,116 @@ Baseline \(W_{\moe}\): \(\{1, 1, 1, 1, 1\}\)
 Optimal \(W_{\moe}\): \(\{1.774, 0.5149, 0.3327, 9.925, 0.5317\}\)
 
 \begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_optim/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:results_benchmark_optim_a}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_optim/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:results_benchmark_optim_b}
-  \end{subfigure}
-  \caption{Benchmark transfer case, optimal tuning.}
-  \label{fig:results_benchmark_optim}
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/benchmark_optim/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:results_benchmark_optim_a}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/benchmark_optim/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:results_benchmark_optim_b}
+    \end{subfigure}
+    \caption{Case A, optimal tuning.}
+    \label{fig:results_benchmark_optim}
 \end{figure}
 
 
 \begin{figure}[H]
-  \begin{animateinline}[controls,width=\linewidth, loop]{10}
-    \multiframe{50}{i=1+1}{
-      \includegraphics[height=0.5\textwidth]{animations/benchmark_transfer/anim-\i}%
-      \includegraphics[height=0.5\textwidth]{animations/benchmark_transfer_optim/anim-\i}}
-  \end{animateinline}
-  \caption{Benchmark transfer before/after optimization (use Adobe Reader to view the animations.)}
-  \label{fig:benchmark_optim_anim}
+    \begin{animateinline}[controls,width=\linewidth, loop]{10}
+        \multiframe{50}{i=1+1}{
+            \includegraphics[height=0.5\textwidth]{animations/benchmark_transfer/anim-\i}%
+            \includegraphics[height=0.5\textwidth]{animations/benchmark_transfer_optim/anim-\i}}
+    \end{animateinline}
+    \caption{Case A before/after optimization.}
+    \label{fig:benchmark_optim_anim}
 \end{figure}
 % View: -70, 20
 
 \newpage
-\subsection{Polar GSO Case}
+\subsection{Case B}
 \label{sec:gso_case_plot}
 Baseline \(W_{\moe}\): \(\{1, 1, 1, 1, 1\}\)
-\begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_G/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:oguri_base_a}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_G/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:oguri_base_b}
-  \end{subfigure}
-  \caption{GTO to polar transfer, baseline.}
-  \label{fig:oguri_base}
-\end{figure}
 
-Optimal \(W_{\moe}\): \(\{8.959, 2.132, 1.722, 3.559, 9.789\}\)
+Optimal \(W_{\moe}\): \(\{5.688, 1.178, 1.434, 3.545, 5.568\}\)
 
 \begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_optim/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:oguri_optim_a}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/oguri_optim/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:oguri_optim_b}
-  \end{subfigure}
-  \caption{GTO to polar transfer, optimal tuning.}
-  \label{fig:oguri_optim}
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/oguri_optim/orbital_elements.pdf}
+        \caption{Evolution of orbit elements in time.}
+        \label{fig:oguri_optim_a}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/oguri_optim/trajectory_plot.png}
+        \caption{Trajectory plot.}
+        \label{fig:oguri_optim_b}
+    \end{subfigure}
+    \caption{GTO to polar transfer, optimal tuning.}
+    \label{fig:oguri_optim}
 \end{figure}
 
-\section{Discussion}
+\begin{figure}[H]
+    \begin{animateinline}[controls,width=\linewidth, loop]{10}
+        \multiframe{47}{i=1+1}{
+            \includegraphics[height=0.5\textwidth]{animations/oguri_case_G/anim-\i}%
+            \includegraphics[height=0.5\textwidth]{animations/oguri_case_G_optim/anim-\i}}
+    \end{animateinline}
+    \caption{Case B before/after optimization.}
+    \label{fig:g_optim_anim}
+\end{figure}
 
 The improvement in time-of-flight (and number of revolutions) is remarkable. By inspecting the plots of the orbital elements, it is clear that adjusting the weights of the guidance changes the ``strategy'' employed by the guidance law.
 
 By emphasizing certain elements over others, the guidance law is more willing to accept an increase in error in one element for a reduction in another. This is exemplified in Figure \ref{fig:results_benchmark_optim_a}.
 
-By inspecting the trajectory plots, it is evident that the optimized transfers ``waste fewer actions'' compared to their baseline counterparts. In the Benchmark case, the total \(\Delta v\) expenditures are very similar, but the trajectory taken by the optimized tuning looks far more direct than the baseline case.
+By inspecting the trajectory plots, it is evident that the optimized transfers ``waste fewer actions'' compared to their baseline counterparts. In Case A, the total \(\Delta v\) expenditures are very similar, but the trajectory taken by the optimized tuning looks far more direct than the baseline case.
 
 
+\section{\(J2\) Perturbation Study}
 
+\begin{figure}[H]
+    \animategraphics[width=\textwidth, controls, loop]{10}{animations/leo_operations/anim-}{1}{51}
+    \caption{Trajectory animation for case J.}
+    \label{fig:anim_j}
+\end{figure}
+
+Surprisingly, it works.
+
+\section{Cone Angle Changing}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccc}
+        \toprule
+                   & \multicolumn{2}{c}{Time of Flight (d)}          \\
+        \(\kappa\) & Case A                                 & Case B \\
+        \midrule
+        \ang{90}   & 1410                                   & 555    \\
+        \ang{80}   & 1136                                   & 544    \\
+        \ang{70}   & 941                                    & 515    \\
+        \ang{60}   & 616                                    & 422    \\
+        \ang{50}   & 1126                                   & 389    \\
+        \ang{40}   & 1528                                   & 395    \\
+        \ang{30}   & 2097                                   &        \\
+        \ang{20}   &                                        &        \\
+        \ang{10}   &                                        &        \\
+        \bottomrule
+    \end{tabular}
+    \caption{Variation of time of flight against an artificially restricted value of \(\kappa\). Blank entries denote no convergence.}
+    \label{tab:cone_angle_changing}
+\end{table}
+
+It makes sense that there is a maximum, and also surprising that transfers are still working even with \(\kappa = \ang{40}\). This suggests that QUAIL may work quite well even with very restrictive cone angle limits.
+
+
+\section{Something about Relaxation of Lyapunov Stability}
+
+pushing orbit further back
 
 \section{Validity of Methodology}
 
 \begin{itemize}
-  \item NEed more baseline Cases
-  \item Restricted solar sail angle study is kinda bunk
+    \item Need more baseline Cases
+    \item Restricted solar sail angle study needs an actual thrust model; off axis thrust may further complicate things, so that should be tested.
 \end{itemize}
