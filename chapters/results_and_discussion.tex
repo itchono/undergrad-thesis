@@ -1,31 +1,119 @@
 \chapter{Results and Discussion}
 \label{chp:results_and_discussion}
 
-\lettrine{O}{utcomes} of each simulation experiment are presented, with regards to the performance of the guidance law.
-
-
+\lettrine{O}{utcomes} of each simulation experiment are presented. The performance of the guidance law is assessed based on performance in the numerical experiments. Consideration of the methodology is used to explain some of the observed behaviours, and deficiencies are noted for improvement.
 
 \section{Baseline Case Runs}
-This section covers the baseline trajectory cases outlines in Tables \ref{tab:trajectory_cases} and \ref{tab:trajectory_case_params}.
-
-Table \ref{tab:outputs_1_summary} summarizes the outcomes of each case. Discussion proceeds.
+The baseline trajectory cases outlined in Tables \ref{tab:trajectory_cases} and \ref{tab:trajectory_case_params} were simulated, and the main results are shown in Table \ref{tab:outputs_1_summary}.
 \begin{table}[H]
   \centering
-  \begin{tabular}{lL{3cm}L{2.5cm}lr}
+  \begin{tabular}{lR{3cm}R{2.5cm}rr}
     \toprule
     \textbf{Case ID} & Convergence Tolerance & Time of Flight (d) & \# Revolutions & CPU Time (s) \\
     \midrule
-    A                & 0.001                 & 610                & 858            & 17.6         \\
-    B                & 0.03                  & 490                & 494            & 16.9         \\
-    C                & 0.005                 & 1020               & 1944           & 38.3         \\
-    D                & 0.005                 & 62.44              & 62             &              \\
+    A                & 0.001                 & 621                & 862            & 17.6         \\
+    B                & 0.03                  & 498                & 501            & 16.9         \\
+    C                & 0.005                 & 802                & 1560           & 38.3         \\
+    D                & 0.005                 & 63                 & 62             & 10.1         \\
     \bottomrule
   \end{tabular}
   \caption{Summary of outcomes for each case.}
   \label{tab:outputs_1_summary}
 \end{table}
 
-Overall, it is evident that despite being convergent, the guidance law is extremely slow in bringing the spacecraft to the target orbit.
+Case-by-case plots of the time history of the orbital elements and the spatial trajectory are shown below.
+\subsection{Plots: Case A}
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/benchmark_transfer/orbital_elements.pdf}
+    \caption{Evolution of orbit elements in time.}
+    \label{fig:results_a_a}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.59\textwidth}
+    \includegraphics[width=\textwidth]{figures/benchmark_transfer/trajectory_plot.png}
+    \caption{Trajectory plot.}
+    \label{fig:results_a_b}
+  \end{subfigure}
+  \caption{Orbital elements and trajectory for case A.}
+  \label{fig:results_a}
+\end{figure}
+
+\subsection{Plots: Case B}
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/oguri_G/orbital_elements.pdf}
+    \caption{Evolution of orbit elements in time.}
+    \label{fig:results_results_b_a}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.59\textwidth}
+    \includegraphics[width=\textwidth]{figures/oguri_G/trajectory_plot.png}
+    \caption{Trajectory plot.}
+    \label{fig:results_results_b_b}
+  \end{subfigure}
+  \caption{Orbital elements and trajectory for case B.}
+  \label{fig:results_results_b}
+\end{figure}
+
+\subsection{Plots: Case C}
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/plane_change/orbital_elements.pdf}
+    \caption{Evolution of orbit elements in time.}
+    \label{fig:results_c_a}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.59\textwidth}
+    \includegraphics[width=\textwidth]{figures/plane_change/trajectory_plot.png}
+    \caption{Trajectory plot.}
+    \label{fig:results_c_b}
+  \end{subfigure}
+  \caption{Orbital elements and trajectory for case C.}
+  \label{fig:results_c}
+\end{figure}
+
+\subsection{Plots: Case D}
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/geo_disposal/orbital_elements.pdf}
+    \caption{Evolution of orbit elements in time.}
+    \label{fig:results_results_c_a}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.59\textwidth}
+    \includegraphics[width=\textwidth]{figures/geo_disposal/trajectory_plot.png}
+    \caption{Trajectory plot.}
+    \label{fig:results_results_c_b}
+  \end{subfigure}
+  \caption{Orbital elements and trajectory for case D.}
+  \label{fig:results_results_c}
+\end{figure}
+
+\subsection{Animations: Cases A-C}
+Note: a javascript-enabled PDF reader (e.g. Adobe Reader, Foxit Reader) is required for view the animations. Seeing the trajectories animated in 3D space may help provide a more comprehensible view of what is going on.
+
+\begin{figure}[H]
+  \animategraphics[width=\textwidth, controls, loop]{10}{animations/benchmark_transfer/anim-}{1}{50}
+  \caption{Trajectory animation for case A.}
+  \label{fig:anim_a}
+\end{figure}
+
+\begin{figure}[H]
+  \animategraphics[width=\textwidth, controls, loop]{10}{animations/oguri_case_G/anim-}{1}{47}
+  \caption{Trajectory animation for case B.}
+  \label{fig:anim_b}
+\end{figure}
+
+\begin{figure}[H]
+  \animategraphics[width=\textwidth, controls, loop]{10}{animations/plane_change/anim-}{1}{50}
+  \caption{Trajectory animation for case C.}
+  \label{fig:anim_c}
+\end{figure}
+
+
+
+Overall, it is evident that despite being convergent, the guidance law is extremely slow at advancing the orbit in certain segments.
 
 The low thrust produced by the sail is not the key issue; rather, it is the lack of availability of thrust in a given direction. For example, a continuous thrust plane change maneuver involves continuously changing the direction of applied thrust. The direction desired by the first stage of the guidance law is not always available, and the solar sail often ends up being feathered (this effect has not yet been quantified; pending measurement of time spent in degraded/feathered operational mode).
 
@@ -61,21 +149,7 @@ Plots of the trajectories and orbital elements are shown in Sections \ref{sec:be
 \subsection{Benchmark Case}
 \label{sec:bench_case_plot}
 Baseline \(W_{\moe}\): \(\{1, 1, 1, 1, 1\}\)
-\begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_transfer/orbital_elements.pdf}
-    \caption{Evolution of orbit elements in time.}
-    \label{fig:results_benchmark_a}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/benchmark_transfer/trajectory_plot.png}
-    \caption{Trajectory plot.}
-    \label{fig:results_benchmark_b}
-  \end{subfigure}
-  \caption{Benchmark transfer case, baseline.}
-  \label{fig:results_benchmark}
-\end{figure}
+
 
 Optimal \(W_{\moe}\): \(\{1.774, 0.5149, 0.3327, 9.925, 0.5317\}\)
 
@@ -145,8 +219,7 @@ Optimal \(W_{\moe}\): \(\{8.959, 2.132, 1.722, 3.559, 9.789\}\)
   \label{fig:oguri_optim}
 \end{figure}
 
-
-\lettrine{T}{he} performance of the guidance law is assessed based on performance in numerical experiments. Consideration of the methodology is used to explain some of the observed behaviours, and deficiencies are noted for improvement.
+\section{Discussion}
 
 The improvement in time-of-flight (and number of revolutions) is remarkable. By inspecting the plots of the orbital elements, it is clear that adjusting the weights of the guidance changes the ``strategy'' employed by the guidance law.
 
