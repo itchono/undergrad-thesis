@@ -1,45 +1,114 @@
 \chapter{Implementation and Testing}
 
-\lettrine{D}{etails} about the implementation of QUAIL
+\lettrine{D}{etails} about the implementation of QUAIL in simulation are presented in this chapter, including the test cases used to assess the performance of the guidance law.
+
+\section{Convergence Criterion}
+The previous chapter formulates the guidance law as a single-timestep operation, but in a simulator the guidance law is run many times to eventually reach some convergence threshold. The guidance law does not come ``bundled with'' an obvious convergence criterion; \(Q\) has units of time squared, but it would be more preferable to have a dimensionless value for determining convergence. The criterion chosen was the following:
+\begin{equation*}
+  \delta = \sum_\moe \left(\moe-\hat{\moe} \right)^2 \ \ \moe \in \{\tilde{p}, f, g, h, k\}
+\end{equation*}
+where \(\tilde{p} \equiv \frac{p}{R_e}\) (normalized by the radius of Earth) to render everything dimensionless. \(\delta\) is compared to a preset tolerance to determine when to stop integration.
 
 \section{Implementation in Simulation}
 With reference to the architecture in Figure \ref{fig:algorithm_diagram} and the procedures shown above, the complete guidance law and dynamics are implemented in two separate simulators.
 
-Simulation is used to obtain trajectories through the solution of the planetocentric solar sail feedback guidance problem. Several cases of the guidance problem are solved, and the resultant trajectories are then analyzed.
+Both simulators use very standard implementations of dynamics, and there is nothing particularly special about their inner workings. Brief descriptions are provided in this report, and full source code is available for viewing.
 
 \subsection{MATLAB Implementation}
 \href{https://github.com/itchono/SLyGA}{Link to GitHub Repository}
 
-The MATLAB implementation, named ``SLyGA'' (Solar Lyapunov Guidance Algorithm) is the more fully featured simulator of the pair. SLyGA includes diagnostic metrics and plotting utilties to generate visualizations of trajectories.
+The MATLAB implementation, named ``SLyGA'' (Solar Lyapunov Guidance Algorithm) is the primary simulator used for analysis. The 3 most important parts of it are listed below:
+\begin{enumerate}
+  \item \textbf{Simulator}: models the motion of a solar sail spacecraft.
+        \begin{enumerate}
+          \item \textbf{Dynamics}: Translational equations of motion in either Cartesian coordinate or modified equinoctial orbital elements. \textbf{Attitude dynamics are not considered.}
+          \item \textbf{Ephemerides}: Models the motion of the Sun around the Earth, using the simplified motion presented in (\ref{eq:sun_position_3d}). \textbf{In this study, all simulations have \(t=0\) corresponding to the vernal equinox}.
+          \item \textbf{Eclipse Model}: Detects when the Earth occludes the Sun and halts solar sail thrust production. Formulation based on \cite{curtis2014orbital}, no penumbra included.
+          \item \textbf{Perturbation Model}: Adds J2 perturbations (can be toggled on and off).
+          \item \textbf{Propulsion Model}: Models ideal solar sail thrust and thrust from a conventional spacecraft. More detailed thrust models could be added in a similar fashion to the ones already implemented.
+        \end{enumerate}
+  \item \textbf{Guidance}: Steering laws, notably QUAIL.
+        \begin{enumerate}
+          \item \textbf{Q-Law}: Implementation of the formulation given in the previous chapter.
+          \item \textbf{Cone Angle Adaptation}: Using the solar ephemeris, implements the formulation from the previous chapter.
+        \end{enumerate}
+  \item \textbf{Case Files}: Provide initial conditions and parameters for test cases. The case files generate \verb|struct| types containing the problem data, with fields presented in Table \ref{tab:slyga_config}.
+\end{enumerate}
 
-MATLAB's built-in ODE integrators are mature and well-tested, and therefore SLyGA is used for high-fidelity simulation cases.
+A post-processing suite built into SLyGA is used to generate plots and animations of the trajectories, shown in the next chapter.
 
-A key drawback of this implementation is its speed -- simulation runs take anywhere from tens of seconds to several minutes to complete. This makes it unsuitable for optimization of the guidance law.
+MATLAB's built-in ODE integrators are mature and include a streamlined system for including events (used for terminating integration when converged). SLyGA is hence used for high-fidelity simulation cases. A key drawback of this implementation is its speed -- simulation runs take around 10-60 seconds to complete. While it is fine for single runs, parametric sweeps require a faster solution.
+
+\begin{table}[H]
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabular}{lL{5.7cm}l}
+    \toprule
+    \textbf{Field Name}     & \textbf{Description}                                                                                                            & \textbf{Example Values}             \\
+    \midrule
+    \verb|y0|               & Initial Orbital Elements (modified equinoctial elements \(\{p, f, g, h, k, L\}\), $p$ given in \unit{m})                        & \verb|[20e6; 0.5; -0.2; 0.5; 0; 0]| \\
+    \verb|y_target|         & Target Orbital Elements \(\{\hat{p}, \hat{f}, \hat{g}, \hat{h}, \hat{k}\}\)                                                     & \verb|[25e6; 0.2; 0.5; 0; 0.3]|     \\
+    \verb|propulsion_model| & Propulsion model function handle; thrust as a function of commanded thrust direction                                            & \verb|@sail_thrust|                 \\
+    \verb|steering_law|     & Guidance law function handle; steering angles as a function of current and target states                                        & \verb|@quail|                       \\
+    \verb|guidance_weights| & \(W_\moe\) in the Q-Law                                                                                                         & \verb|[1; 1; 1; 1; 1]|              \\
+    \verb|penalty_param|    & \(\gamma\) in the Q-Law                                                                                                         & \verb|1|                            \\
+    \verb|min_pe|           & \(r_{p, \min}\) in the Q-Law (\unit{m})                                                                                         & \verb|10000e3|                      \\
+    \verb|penalty_weight|   & \(W_p\) in the Q-Law                                                                                                            & \verb|0|                            \\
+    \verb|kappa|            & \(\kappa\) in cone angle adaptation                                                                                             & \verb|deg2rad(60)|                  \\
+    \midrule
+    \verb|solver|           & ODE solver for integration                                                                                                      & \verb|@ode89|                       \\
+    \verb|t_span|           & Integration timespan (\unit{s}) -- end time represents the maximum time allotted before a run is considered to not be converged & \verb|[0, 1e8]|                     \\
+    \verb|tol|              & Termination tolerance, in terms of sum of squares of errors between each orbital element                                        & \verb|1e-3|                         \\
+    \midrule
+    \verb|dynamics|         & Switches between equations of motion in Cartesian coordinates and modified orbital elements                                     & \verb|"cartesian"|                  \\
+    \verb|j2|               & Switches \(J2\) perturbation on and off                                                                                         & \verb|true|                         \\
+    \bottomrule
+  \end{tabular}
+  \caption{Mission configuration structure for simulations.}
+  \label{tab:slyga_config}
+\end{table}
 
 \subsection{C/Python Implementation}
 \href{https://github.com/itchono/cshanty}{Link to GitHub Repository}
 
 The C/Python implementation, named ``cshanty'' (i.e. Sea Shanty) is built for tuning the weights of the guidance law. The C portion of the codebase contains all of the guidance law and dynamics, as well as a custom ODE integrator based on weights found by Verner \cite{verner2010numerically}. The Python portion of the code wraps the C simulator into an interface for optimization using SciPy \cite{2020SciPy-NMeth}.
 
-\section{Trajectory Cases}
-Table \ref{tab:trajectory_cases} gives four trajectory cases used to assess the performance of the guidance law.
+Dynamics are copied over from SLyGA in a 1:1 manner where possible, but certain more complex features are excluded. Notably, perturbations and eclipse modelling are absent. The implementation of guidance-related components is essentially the same as in MATLAB. Given that this implementation loses some fidelity, the primary use case for cshanty is to optimize cases developed for SLyGA. As such, cshanty is designed to accept case files in the same format as that depicted in Table \ref{tab:slyga_config}.
+
+The key benefit of a compiled implementation is speed; cshanty runs somewhere between 100 to 1000 times faster than SLyGA, meaning that parameter optimization runs can be performed in the span of a few hours.
+
+\section{Testing Methodology}
+The following list presents the testing repertoire used to assess the performance of QUAIL.
+
+\begin{itemize}
+  \item\textbf{Baseline Cases}: Used to demonstrate that the guidance law works (is convergent) under a variety of challenging orbit-to-orbit transfer cases.
+  \item\textbf{Extended Studies}: Used to probe the capabilities of QUAIL beyond the idealized baseline formulation.
+        \begin{enumerate}[(a)]
+          \item\textbf{Time of Flight Optimization}: Attempting to recover global time optimality by tuning \(W_\moe\).
+          \item\textbf{Disturbance Rejection}: Seeing if QUAIL can still converge in the presence of orbital perturbations.
+          \item\textbf{Realistic Solar Sail Modelling}: Applying QUAIL to a crude model of a cone-angle-limited solar sail to see if it can work for realistic spacecraft.
+        \end{enumerate}
+\end{itemize}
+
+\section{Baseline Trajectory Cases}
+Four trajectory cases are developed to test the ability of QUAIL to perform planetocentric orbital transfers. These are presented in terms of an initial orbit and a target set of orbital elements. The initial and target orbital elements are given in Table \ref{tab:trajectory_cases}.
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{L{2.7cm}L{1.2cm}C{3cm}C{1cm}C{1cm}C{1cm}C{1cm}C{2cm}}
+  \begin{tabular}{llcccccc}
     \toprule
-    \textbf{Case} &         & \(p\) [\qty{1e3}{m}] & \(f\)     & \(g\)      & \(h\)     & \(k\)     & \(L\) [\unit{rad}] \\
+    \textbf{Case ID} &         & \(p\) [\qty{1e3}{m}] & \(f\)     & \(g\)      & \(h\)     & \(k\)     & \(L\) [\unit{rad}] \\
     \midrule
-    GEO Disposal  & Initial & \num{42164}          & 0         & 0          & 0         & 0         & 0                  \\
-                  & Final   & \num{42464}          & 0         & 0          & Free      & Free      & N/A                \\
-    Plane Change  & Initial & \num{20000}          & 0.5       & 0          & 1         & 0         & 0                  \\                    & Final & \num{20000} & 0.5 & 0 & \num{-1} & 0 & N/A\\
-    ``Benchmark'' & Initial & \num{20000}          & \num{0.5} & \num{-0.2} & \num{0.5} & \num{0}   & \num{0}            \\
-                  & Final   & \num{25000}          & \num{0.2} & \num{0.5}  & \num{0}   & \num{0.3} & N/A                \\
-    Polar GSO     & Initial & \num{11625}          & 0.725     & 0          & 0         & 0         & 0                  \\
-                  & Final   & \num{42165}          & 0         & 0          & 0         & \num{-1}  & N/A                \\
+    A                & Initial & \num{20000}          & \num{0.5} & \num{-0.2} & \num{0.5} & \num{0}   & \num{0}            \\
+                     & Final   & \num{25000}          & \num{0.2} & \num{0.5}  & \num{0}   & \num{0.3} & N/A                \\
+    B                & Initial & \num{11625}          & 0.725     & 0          & 0         & 0         & 0                  \\
+                     & Final   & \num{42165}          & 0         & 0          & 0         & \num{-1}  & N/A                \\
+    C                & Initial & \num{20000}          & 0.5       & 0          & 1         & 0         & 0                  \\                    & Final & \num{20000} & 0.5 & 0 & \num{-1} & 0 & N/A\\
+    D                & Initial & \num{42164}          & 0         & 0          & 0         & 0         & 0                  \\
+                     & Final   & \num{42464}          & 0         & 0          & Free      & Free      & N/A                \\
+
     \bottomrule
   \end{tabular}
-  \caption{Trajectory cases.}
+  \caption{Baseline trajectory cases.}
   \label{tab:trajectory_cases}
 \end{table}
 Free orbital elements are implemented by assigning a value of zero to the corresponding weight (i.e. \(W_{\moe} = 0\)).
@@ -47,27 +116,91 @@ Free orbital elements are implemented by assigning a value of zero to the corres
 For each trajectory case, values of the guidance parameters used are presented in Table \ref{tab:trajectory_case_params}.
 \begin{table}[H]
   \centering
-  \begin{tabular}{L{1.7cm}ccccccccc}
+  \begin{tabular}{lccccccccc}
     \toprule
-    \textbf{Case} & \(W_P\) & \(\gamma\) & \(r_{p, \text{min}}\) (km) & \(W_p\) & \(W_f\) & \(W_g\) & \(W_h\) & \(W_k\) & \(\kappa\) \\
+    \textbf{Case ID} & \(W_P\) & \(\gamma\) & \(r_{p, \text{min}} [\qty{1e3}{m}]\) & \(W_p\) & \(W_f\) & \(W_g\) & \(W_h\) & \(W_k\) & \(\kappa\) \\
     \midrule
-    GEO Disposal  & 0       & N/A        & N/A                        & 5       & 0.5     & 1       & 0       & 0       & \ang{70}   \\
-    Plane Change  & 1       & 1          & 10000                      & 1       & 1       & 1       & 1       & 1       & \ang{70}   \\
-    ``Benchmark'' & 0       & N/A        & N/A                        & 1       & 1       & 1       & 1       & 1       & \ang{70}   \\
-    Polar GSO     & 1       & 5          & 6878                       & 1       & 1       & 1       & 1       & 1       & \ang{70}   \\
+    A                & 0       & N/A        & N/A                                  & 1       & 1       & 1       & 1       & 1       & \ang{64}   \\
+    B                & 1       & 5          & 6878                                 & 1       & 1       & 1       & 1       & 1       & \ang{64}   \\
+    C                & 1       & 1          & 10000                                & 1       & 1       & 1       & 1       & 1       & \ang{64}   \\
+    D                & 0       & N/A        & N/A                                  & 5       & 0.5     & 1       & 0       & 0       & \ang{64}   \\
     \bottomrule
   \end{tabular}
-  \caption{Guidance parameters for each case.}
+  \caption{Guidance parameters for each baseline trajectory case.}
   \label{tab:trajectory_case_params}
 \end{table}
 
-\section{Tuning of Guidance Algorithm}
-The parameters in Table \ref{tab:trajectory_case_params} are a baseline obtained from manual tuning. Optimization is performed to find the parameters yielding minimum time-of-flight.
+The details of each case are discussed briefly.
 
-\subsection{Thrust Angle Heuristic Tuning}
-The value of \(\kappa\) is optimized using bounded univariate optimization through measured time-of-flight in the  Benchmark case. The value of \(\kappa\) in the interval \([\ang{30}, \ang{85}]\) is determined using Brent's method \cite{brent2013algorithms}.
+\textbf{Case A: The ``Everything Changing'' Transfer}
 
-The resultant optimum of \(\kappa \approx \ang{64}\) is used for proceeding analysis of all the other cases. Note that this is not an exact optimum for all of the other cases, and further tuning is to be done on a case-by-case basis.
+This case has no practical applicability, but tests QUAIL under a combined plane change, nodal rotation, and orbit raising. Executing this maneuver requires thrust in essentially all directions, so it is a good test of the cone angle adaptation heuristic and its ability to provide thrust in all of the required directions.
 
-\subsection{Orbital Element Weight Tuning}
-All five weights \(W_{\moe}, \ \moe \in \{p, f, g, h, k\}\) are optimized using a simulated-annealing global optimization algorithm. The computationally efficient implementation of the simulation in C allows for the global optimization runs to perform thousands of iterations in under one hour.
+\textbf{Case B: Polar GSO Transfer}
+
+This case is based on ``Case G'' from \cite{oguri2023solar}, and is included as a test to see if QUAIL can perform the same types of transfers accomplished using other solar sail planetocentric guidance laws.
+
+\textbf{Case C: Plane Change}
+
+A \ang{180} plane change maneuver is included to test the periapsis radius constraint of the guidance law, i.e. to see if the spacecraft crashes into the Earth or not. Another interesting point to probe is to see how ``smoothly'' the plane change is executed; conventional spacecraft perform the plane change roughly at a constant rate, but a solar sail may do so in spurts, owing to the direction-dependent availability of thrust.
+
+\textbf{Case D: GEO Disposal}
+
+Inspired by Hao Mei's research \cite{mei2020hybrid}, a case is added to see if QUAIL can plan out trajectories for transferring from geostationary orbit to a GEO + \qty{300}{km} graveyard orbit.
+
+\section{Extended Study: Time of Flight Optimization}
+The guidance parameters in Table \ref{tab:trajectory_case_params} are a baseline. An important question that follows is whether a more time-optimal trajectory can be obtained through careful tuning of the guidance parameters.
+
+A set of global optimization runs is performed to find the parameters yielding minimum time-of-flight.
+
+\subsection{Cone Angle Adaptation Heuristic Tuning}
+The value of \(\kappa\) is optimized using bounded univariate optimization through measured time-of-flight in case A. The value of \(\kappa\) in the interval \([\ang{30}, \ang{85}]\) is determined using Brent's method \cite{brent2013algorithms}.
+
+The resultant optimum of \(\kappa \approx \ang{64}\) is used for proceeding analysis of all the other cases. Note that this is not an exact optimum for all of the other cases, but it provides a sufficiently good tradeoff between achieving high thrust and achieving thrust in the desired direction that it should be universally applicable.
+
+\subsection{Q-Law Parameter Tuning}
+All five weights \(W_{\moe}, \ \moe \in \{p, f, g, h, k\}\) are optimized using a dual-annealing global optimization algorithm provided by SciPy \cite{2020SciPy-NMeth}. Using \(W_\moe\) as the set of design variables, the time of flight resulting from simulation runs in the C simulator is used as the objective function to minimize.
+
+A \textbf{stochastic optimization} scheme is chosen over a traditional gradient-based method because of the poor conditioning of the problem; for certain combinations of \(W_\moe\), the simulations do not converge, and in other cases, small variations in \(W_\moe\) cause sharp and extreme changes in time of flight. An annealing-based stochastic approach can work around these issues and return a globally optimal solution at the cost of extra runtime. Since the optimization runs only need to be performed once per case, the computational cost is considered tractable.
+
+Only cases A and B are optimized for time of flight, as they are the more complex cases out of the four, and have the greatest potential for improvements.
+
+\section{Extended Study: Disturbance Rejection}
+The baseline dynamics model in SLyGA uses spherically symmetric gravity (i.e. \(\vec{F} = -\frac{GMm}{||\vec{r}||^3} \vec{r}\)), but oblateness effects are quite important for solar sail spacecraft, as acceleration from these perturbations represent a non-trivial fraction of the acceleration produced by thrust.
+
+Using a standard formulation for \(J2\) perturbation in modified equinoctial elements from \cite{nasa_mpg_moe}, the second zonal harmonic effect is incorporated into the dynamics. A special test case is made using a LEO spacecraft (to increase the strength of perturbing accelerations), transferring from orbital elements shown in Table \ref{tab:trajectory_case_J}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{llcccccc}
+    \toprule
+    \textbf{Case ID} &         & \(p\) [\qty{1e3}{m}] & \(f\)     & \(g\)      & \(h\)   & \(k\)     & \(L\) [\unit{rad}] \\
+    \midrule
+    J                & Initial & \num{6878}           & \num{0.1} & \num{-0.1} & \num{0} & \num{0}   & \num{0}            \\
+                     & Final   & \num{7500}           & \num{0}   & \num{0}    & \num{0} & \num{0.2} & N/A                \\
+
+    \bottomrule
+  \end{tabular}
+  \caption{Special trajectory case for \(J2\) perturbation.}
+  \label{tab:trajectory_case_J}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lccccccccc}
+    \toprule
+    \textbf{Case ID} & \(W_P\) & \(\gamma\) & \(r_{p, \text{min}} [\qty{1e3}{m}]\) & \(W_p\) & \(W_f\) & \(W_g\) & \(W_h\) & \(W_k\) & \(\kappa\) \\
+    \midrule
+    J                & 2       & 1          & 6878                                 & 1       & 1       & 1       & 1       & 1       & \ang{64}   \\
+    \bottomrule
+  \end{tabular}
+  \caption{Guidance parameters for special case.}
+  \label{tab:trajectory_case_params_J}
+\end{table}
+This special case represents a combined orbit raising and plane change maneuver, executed at an altitude of only \qty{500}{km} above the surface. The periapsis penalty is hence also active.
+
+Additionally, as with the optimization runs, cases A and B are also tested with \(J2\) perturbation active.
+
+\section{Extended Study: Realistic Solar Sail Modelling}
+As a crude approximation to incorporating a realistic solar sail thrust model, a study is conducted on restricting \(\kappa\), and seeing how restricting the maximum cone angle affects performance. Sweeping \(\kappa\) from \ang{90} down to \ang{30}, the impact on time of flight is studied.
+

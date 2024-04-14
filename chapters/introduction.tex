@@ -1,25 +1,21 @@
 \chapter{Introduction}
 \label{chp:introduction}
 
-\lettrine{I}{ntroductory} context for the project is provided, and the main problem is framed around key challenges associated with targeted maneuvering of solar sail spacecraft in planetocentric orbits.
+\lettrine{P}{reliminary} context for the project is provided, and the main problem is framed around key challenges associated with maneuvering solar sail spacecraft in planetocentric orbits.
 
 \section{Scope}
 This project aims to develop a guidance law for performing planetocentric orbital transfers with a solar sail spacecraft, using a simplified feedback approach derived from Lyapunov control theory.
-
 \begin{figure}[H]
   \centering
   \input{figures/problem_setup/intro_diagram}
   \caption{Illustratory diagram depicting the main goal of the guidance law.}
   \label{fig:intro_diagram}
 \end{figure}
+The goal of the guidance law is to achieve a trajectory solution for a transfer between two orbits around Earth while requiring a minimal set of considerations for the solar sail.
 
+Convergence characteristics and time optimality of the guidance law are considered, but are not rigorously assessed or proven. Instead, these characteristics are assessed through simulations spanning a variety of initial/target orbits and spacecraft configurations.
 
-
-The goal of the guidance law is to achieve acceptable values for time-of-flight while requiring a minimal set of considerations for spacecraft configuration.
-
-Convergence and time optimality of the guidance law are considered, but are not rigorously assessed or proven. Instead, these characteristics are assessed through simulations spanning a variety of initial/target orbits and spacecraft configurations.
-
-Three extended studies are performed:
+Three extended studies are performed to investigate the extensibility of the guidance law:
 \begin{enumerate}
   \item Tuning the parameters of the guidance law for minimum time-of-flight;
   \item Subjecting the guidance law to disturbances;
