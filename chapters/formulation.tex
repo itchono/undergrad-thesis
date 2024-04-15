@@ -19,7 +19,7 @@ The terms of this statement are elaborated in the proceeding subsections.
 
 \subsection{Orbit and Environment}
 \label{sec:orbit_environment}
-The spacecraft is assumed to be orbiting a planet, possessing an instantaneous state expressed in modified equinoctial elements \{\(p, f, g, h, k, L\)\} (i.e an osculating orbit). The spacecraft is targeting an orbit described in modified equinoctial elements, as \(\{\hat{p}, \hat{f}, \hat{g}, \hat{h}, \hat{k}\}\)
+The spacecraft is assumed to be orbiting a planet, possessing an instantaneous state expressed in modified equinoctial elements \{\(p, f, g, h, k, L\)\} (i.e. an osculating orbit). The spacecraft is targeting an orbit described in modified equinoctial elements, as \(\{\hat{p}, \hat{f}, \hat{g}, \hat{h}, \hat{k}\}\)
 
 The position of the spacecraft with respect to the planet is given by the vector \(\vec{r}\), and the absolute velocity of the spacecraft is given by \(\vec{v}\).
 
@@ -166,7 +166,7 @@ This is obviously not reflective of Earth's elliptical orbit around the Sun, but
 In this analysis, the position of the Sun is considered to be \textbf{quasi-static}, that is, \(\dot{\lambda}_{\astrosun} = 0\), since the motion of the Sun occurs on a timescale much longer than the period of an orbit.
 
 \section{Methodology}
-The guidance law is implemented in a two-stage architecture, depicted in Figure \ref{fig:algorithm_diagram} below. This choice is discussed more in proceeding sections.
+The guidance law is implemented in a two-stage architecture, depicted in Figure \ref{fig:algorithm_diagram} below. This choice is discussed more in the proceeding sections.
 
 The guidance law occupies the left half of the diagram (blocks in blue and green), while the rest of the dynamics are shown in the purple blocks on the right.
 
@@ -275,7 +275,7 @@ By simultaneously considering Equations \ref{eq:equinoctial_eom_3d} and \ref{eq:
     \alpha^* & = \mathrm{atan2}\left(-D_1, -D_2\right) \label{eq:alpha_star}                                           \\
     \beta^*  & = \mathrm{atan2}\left(-D_3, \sqrt{D_1^2 + D_2^2}\right) \label{eq:beta_star}
 \end{align}
-which maximizes \(-\dot{Q}\). This form is obtained from Ref. \cite{vargaperez2016}, where the definition of \(D_1\) and \(D_2\) are swapped compared to this project. The reasoning behind the ordering here is such that \(D_1, D_2, D_3\) line up with \(F_r, F_\theta, F_n\).
+which maximizes \(-\dot{Q}\). This form is obtained from Ref. \cite{vargaperez2016}, where the definitions of \(D_1\) and \(D_2\) are swapped compared to this project. The reasoning behind the ordering here is such that \(D_1, D_2, D_3\) line up with \(F_r, F_\theta, F_n\).
 
 \subsection{Assembling the Guidance Output}
 The remaining piece consists of deriving expressions for all of the terms in \(Q\) and \(\dot{Q}\) and assembling them to produce optimal steering angles.
@@ -344,10 +344,10 @@ Additionally, \(\diffp{P}{{\moe}}\) is calculated using symbolic algebra, with e
 
 \section{The Simplified Q-Law Alone is Insufficient}
 \label{sec:insufficient}
-A solar-sail-agnostic formulation of the Q-Law is insufficient as a solar sail guidance law on its own. There are two notable problem cases which arise from ignoring solar sail attitude constraints:
+A solar-sail-agnostic formulation of the Q-Law is insufficient as a solar sail guidance law on its own. Two notable problem cases arise from ignoring solar sail attitude constraints:
 \begin{enumerate}[(a)]
     \item The Q-Law can request a thrust direction which points \textit{towards} the Sun, resulting in reverse thrust. This causes the guidance solution to become unstable.
-    \item The Q-Law can request a thrust direction which points almost perpendicular to the direction of incident light, which, following Equation \ref{eq:solar_force} produces nearly no thrust and stalls the progress of the solar sail.
+    \item The Q-Law can request a thrust direction pointing almost perpendicular to the direction of incident light, which, following Equation \ref{eq:solar_force} produces nearly no thrust and stalls the progress of the solar sail.
 \end{enumerate}
 
 These are illustrated in Figure \ref{fig:degencases}.
@@ -415,9 +415,9 @@ If the cone angle produced by the ideal steering angles from the first stage is 
 
 Feathering the sail is useful for situations where the cone angle suggested by the first stage exceeds \ang{90} (i.e. the sail cannot produce thrust in that direction). This prevents the spacecraft from regressing \textbf{away} from its target orbit.
 
-The latter option is particularly helpful even in the case of an ideal flat solar sail, where the first stage of the guidance law could produce a set of steering angles resulting in a cone angle very close to \ang{90}. The thrust produced in such a situation would be extremely small, and result in less progress being made compared to if the guidance law accepted a thrust direction which does not point exactly towards the local optimum. By accepting a non-ideal direction, the spacecraft can still make progress towards its goal.
+The latter option is particularly helpful even in the case of an ideal flat solar sail, where the first stage of the guidance law could produce a set of steering angles resulting in a cone angle very close to \ang{90}. The thrust produced in such a situation would be extremely small and result in less progress being made compared to if the guidance law accepted a thrust direction that does not point exactly towards the local optimum. By accepting a non-ideal direction, the spacecraft can still make progress toward its goal.
 
-This highlights a counter-intuitive aspect of solar sail dynamics; it is sometimes favourable to point somewhere other than the desired direction of thrust, so that a greater amount of total thrust (not necessarily in the desired direction) is produced. \textbf{Decreasing the cone angle of the sail can dramatically increase its thrust}, and this is the core idea of the cone angle adaptation heuristic.
+This highlights a counter-intuitive aspect of solar sail dynamics; it is sometimes favourable to point somewhere other than the desired direction of thrust so that a greater amount of total thrust (not necessarily in the desired direction) is produced. \textbf{Decreasing the cone angle of the sail can dramatically increase its thrust}, and this is the core idea of the cone angle adaptation heuristic.
 
 \subsection{Formulation}
 The ideal steering angles \(\alpha^*, \beta^*\) are used to compute an idealized cone angle.
@@ -475,11 +475,11 @@ The Q-Law and the cone angle adaptation heuristic form a combined guidance law. 
 One important formulation-level consequence of the approach taken by QUAIL is that the Lyapunov stability of the baseline Q-Law is \textbf{not} preserved.
 \begin{enumerate}
     \item The initial simplification made in the first stage of ignoring the direction-dependence of thrust production means that \(\dot{\moe}_{\text{max}}\) is itself not calculated for a proper solar sail spacecraft, and so the formulation of \(\dot{Q}\) does not correspond to the actual dynamics.
-    \item A stabilizing input may not always be provided, since the thrust direction requested by the first stage can be altered by the second stage.
+    \item A stabilizing input may not always be provided since the thrust direction requested by the first stage can be altered by the second stage.
 \end{enumerate}
 These two additions destroy the theoretical convergence guarantee of a control-Lyapunov function, meaning that \(Q\) may sometimes increase before it can decrease.
 
-By relaxing the requirement that the spacecraft must always ``improve'' its trajectory, it can reposition itself into a state where more thrust is available in a certain direction, affording it greater ``leverage''. Consider Figure \ref{fig:angle_availability_earth}, where it could be advantageous to wait until Earth has travelled to the opposite of the Sun from its current position in order to produce thrust in a direction which is currently inaccessible. By combining the Q-Law with the second stage cone angle adaptation heuristic, two very desirable properties are achieved:
+By relaxing the requirement that the spacecraft must always ``improve'' its trajectory, it can reposition itself into a state where more thrust is available in a certain direction, affording it greater ``leverage''. Consider Figure \ref{fig:angle_availability_earth}, where it could be advantageous to wait until Earth has travelled to the opposite of the Sun from its current position to produce thrust in a direction that is currently inaccessible. By combining the Q-Law with the second stage cone angle adaptation heuristic, two very desirable properties are achieved:
 \begin{enumerate}
     \item The baseline Q-Law prioritizes correcting orbital elements with the largest error and/or smallest accessible rate of change.
     \item The cone angle adaptation heuristic prioritizes directions in which the solar sail can produce thrust.

@@ -3,7 +3,7 @@
 \lettrine{D}{etails} about the implementation of QUAIL in simulation are presented in this chapter, including the test cases used to assess the performance of the guidance law.
 
 \section{Convergence Criterion}
-The previous chapter formulates the guidance law as a single-timestep operation, but in a simulator the guidance law is run many times to eventually reach some convergence threshold. The guidance law does not come ``bundled with'' an obvious convergence criterion; \(Q\) has units of time squared, but it would be more preferable to have a dimensionless value for determining convergence. The criterion chosen was the following:
+The previous chapter formulates the guidance law as a single-timestep operation, but in a simulator the guidance law is run many times to eventually reach some convergence threshold. The guidance law does not come ``bundled with'' an obvious convergence criterion; \(Q\) has units of time squared, but it would be preferable to have a dimensionless value for determining convergence. The criterion chosen was the following:
 \begin{equation*}
   \delta = \sum_\moe \left(\moe-\hat{\moe} \right)^2 \ \ \moe \in \{\tilde{p}, f, g, h, k\}
 \end{equation*}
@@ -12,7 +12,7 @@ where \(\tilde{p} \equiv \frac{p}{R_e}\) (normalized by the radius of Earth) to 
 \section{Implementation in Simulation}
 With reference to the architecture in Figure \ref{fig:algorithm_diagram} and the procedures shown above, the complete guidance law and dynamics are implemented in two separate simulators.
 
-Both simulators use very standard implementations of dynamics, and there is nothing particularly special about their inner workings. Brief descriptions are provided in this report, and full source code is available for viewing.
+Both simulators use very standard implementations of dynamics, and there is nothing particularly special about their inner workings. Brief descriptions are provided in this report, and the full source code is available for viewing.
 
 \subsection{MATLAB Implementation}
 \href{https://github.com/itchono/SLyGA}{Link to GitHub Repository}
@@ -25,7 +25,7 @@ The MATLAB implementation, named ``SLyGA'' (Solar Lyapunov Guidance Algorithm) i
           \item \textbf{Ephemerides}: Models the motion of the Sun around the Earth, using the simplified motion presented in (\ref{eq:sun_position_3d}). \textbf{In this study, all simulations have \(t=0\) corresponding to the vernal equinox}.
           \item \textbf{Eclipse Model}: Detects when the Earth occludes the Sun and halts solar sail thrust production. Formulation based on \cite{curtis2014orbital}, no penumbra included.
           \item \textbf{Perturbation Model}: Adds J2 perturbations (can be toggled on and off).
-          \item \textbf{Propulsion Model}: Models ideal solar sail thrust and thrust from a conventional spacecraft. More detailed thrust models could be added in a similar fashion to the ones already implemented.
+          \item \textbf{Propulsion Model}: Models ideal solar sail thrust and thrust from a conventional spacecraft. More detailed thrust models could be added similarly to the ones already implemented.
         \end{enumerate}
   \item \textbf{Guidance}: Steering laws, notably QUAIL.
         \begin{enumerate}
@@ -57,7 +57,7 @@ MATLAB's built-in ODE integrators are mature and include a streamlined system fo
     \midrule
     \verb|solver|           & ODE solver for integration                                                                                                      & \verb|@ode89|                       \\
     \verb|t_span|           & Integration timespan (\unit{s}) -- end time represents the maximum time allotted before a run is considered to not be converged & \verb|[0, 1e8]|                     \\
-    \verb|tol|              & Termination tolerance, in terms of sum of squares of errors between each orbital element                                        & \verb|1e-3|                         \\
+    \verb|tol|              & Termination tolerance, in terms of the sum of squares of errors between each orbital element                                    & \verb|1e-3|                         \\
     \midrule
     \verb|dynamics|         & Switches between equations of motion in Cartesian coordinates and modified orbital elements                                     & \verb|"cartesian"|                  \\
     \verb|j2|               & Switches \(J2\) perturbation on and off                                                                                         & \verb|true|                         \\
@@ -74,7 +74,7 @@ The C/Python implementation, named ``cshanty'' (i.e. Sea Shanty) is built for tu
 
 Dynamics are copied over from SLyGA in a 1:1 manner where possible, but certain more complex features are excluded. Notably, perturbations and eclipse modelling are absent. The implementation of guidance-related components is essentially the same as in MATLAB. Given that this implementation loses some fidelity, the primary use case for cshanty is to optimize cases developed for SLyGA. As such, cshanty is designed to accept case files in the same format as that depicted in Table \ref{tab:slyga_config}.
 
-The key benefit of a compiled implementation is speed; cshanty runs somewhere between 100 to 1000 times faster than SLyGA, meaning that parameter optimization runs can be performed in the span of a few hours.
+The key benefit of a compiled implementation is speed; cshanty runs somewhere between 100 to 1000 times faster than SLyGA (about a few hundred milliseconds per run), meaning that parameter optimization runs can be performed in the span of a few hours.
 
 \section{Testing Methodology}
 The following list presents the testing repertoire used to assess the performance of QUAIL.
@@ -202,7 +202,7 @@ This special case represents a combined orbit raising and plane change maneuver,
 % Additionally, as with the optimization runs, cases A and B are also tested with \(J2\) perturbation active to observe the effects of oblateness for more distant orbits.
 
 \section{Extended Study: Realistic Solar Sail Modelling}
-As a crude approximation to incorporating a realistic solar sail thrust model, a study is conducted on restricting \(\kappa\), and seeing how restricting the maximum cone angle affects performance. Sweeping \(\kappa\) from \ang{90} down to \ang{10}, the impact on time of flight for cases A and B is studied.
+As a crude approximation to incorporating a realistic solar sail thrust model, a study is conducted on restricting \(\kappa\), and seeing how restricting the maximum cone angle affects performance. Sweeping \(\kappa\) from \ang{90} down to \ang{10}, the impact on the time of flight for cases A and B is studied.
 
 \section{Computer and Software Environment}
 All simulation work is run on a Intel i7-7700HQ (\qty{2.80}{GHz} quad core) CPU with \qty{16}{GB} of RAM on Windows 10, using MATLAB R2023a, Python 3.11, and GCC v8.1.0 (MinGW-W64).

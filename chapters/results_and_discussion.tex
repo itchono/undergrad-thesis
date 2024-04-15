@@ -86,9 +86,9 @@ Case-by-case plots of the time history of the orbital elements and trajectories 
 \end{figure}
 
 \newpage
-The ``banding'' of colours in the trajectory plots highlight the tendency of the guidance law to segment the trajectory into distinguishable phases rather than a smooth continuous maneuver. This can be attributed to the properties of the guidance law discussed in Section \ref{sec:quail_properties}. Additionally, the tendency of the guidance law to continue changing orbital elements even after reaching their target values shows the relaxation of Lyapunov stability.
+The ``banding'' of colours in the trajectory plots highlights the tendency of the guidance law to segment the trajectory into distinguishable phases rather than a smooth continuous maneuver. This can be attributed to the properties of the guidance law discussed in Section \ref{sec:quail_properties}. Additionally, the tendency of the guidance law to continue changing orbital elements even after reaching their target values shows the relaxation of Lyapunov stability.
 
-For case C, as speculated in the previous section, the guidance law does not smoothly vary the orbit. The direction of applied thrust varies by \ang{180} over the course of the maneuver, and the Sun is not always in a suitable position for thrust production. Hence, even though the semilatus rectum (\(p\)) is supposed to remain constant, it actually varies so that some of the other orbital elements become easier to change. In effect, the guidance law has instated its own ``intermediate orbit''.
+For case C, as speculated in the previous section, the guidance law does not smoothly vary the orbit. The direction of applied thrust varies by \ang{180} thoughout the maneuver, and the Sun is not always in a suitable position for thrust production. Hence, even though the semilatus rectum (\(p\)) is supposed to remain constant, it varies so that some of the other orbital elements become easier to change. In effect, the guidance law has instated its own ``intermediate orbit''.
 
 Case D highlights a significant issue with the guidance law: it is extremely slow to finish off ``the last mile''. Note that all of the cases were run with convergence tolerances exceeding \(0.001\) -- this was done because smaller tolerances were either not achievable or took excessive numbers of orbits to converge.
 
@@ -108,7 +108,7 @@ Each animation plays at 10 frames per second by default, with approximately 50 f
 \end{figure}
 The segmentation of the trajectory is much easier to see in animation form. There are obvious points in the trajectory where the orbit ``pauses'', waiting for the Sun to move into a better position. This includes the time spent feathering the solar sail.
 
-It is reasonable to conclude that time spent waiting for the Sun is essentially waste, and there may exist a better trajectory which spends less time paused.
+It is reasonable to conclude that time spent waiting for the Sun is essentially wasted, and there may exist a better trajectory that spends less time paused.
 \begin{figure}[H]
     \animategraphics[width=\textwidth, controls, loop]{10}{animations/oguri_case_G/anim-}{1}{47}
     \caption{Trajectory animation for case B.}
@@ -124,7 +124,7 @@ This trajectory is flown much more smoothly than in case A, but there is some st
 \end{figure}
 Trajectory segmentation is most evident in this animation.
 
-Overall, it is impressive that the guidance law is convergent in all of the test cases. However, it is far from perfect. Most notably, it is extremely slow at advancing the orbit in certain segments. Hence, the first extended study aims to search for trajectories with lower time of flight through tuning the guidance weight \(W_{\moe}\).
+Overall, it is impressive that the guidance law is convergent in all of the test cases. However, it is far from perfect. Most notably, it is extremely slow at advancing the orbit in certain segments. Hence, the first extended study aims to search for trajectories with a lower time of flight by tuning the guidance weights \(W_{\moe}\).
 
 Tuning the weights of the Q-Law is equivalent to changing the ``greediness strategy'' of the local optimization being done at each timestep; the baseline Q-Law always attempts to maximize \(-\dot{Q}\) (in a greedy fashion), and adjusting \(W_{\moe}\) helps ``steer the greediest direction'' at one timestep to help the guidance law at a later timestep. There may exist a \textbf{local strategy} which can set up a better trajectory at a \textbf{global level}.
 
@@ -153,11 +153,11 @@ The two cases still use their original convergence tolerances in the optimized t
 
 The improvement in time-of-flight (and number of revolutions) is remarkable. By inspecting the plots of the orbital elements in the proceeding section, it is clear that adjusting \(W_\moe\) changes the ``strategy'' employed by the guidance law.
 
-One important note is that the stochastic optimization runs do not guarantee the discovery of a global minimum; the weights corresponding to the absolute lowest time of flight found over all optimization runs were used for the cases shown in the proceeding sections, but there may exist a solution with a lower time of flight that was not discovered. However, this is likely not a great issue; several different combinations of \(W_\moe\) all yielding a reduction in time of flight were found, and many solutions had a time of flight value within about 1\% of the absolute minimum found in the optimization runs. It is highly unlikely then that a dramatically lower time of flight could have been found even with more compute time.
+One important note is that the stochastic optimization runs do not guarantee the discovery of a global minimum; the weights corresponding to the absolute lowest time of flight found across all optimization runs were used for the cases shown in the proceeding sections, but there may exist a solution with a lower time of flight that was not discovered. However, this is likely not a great issue; several different combinations of \(W_\moe\) all yielding a reduction in time of flight were found, and many solutions had a time of flight value within about 1\% of the absolute minimum found in the optimization runs. It is highly unlikely then that a dramatically lower time of flight could have been found even with more compute time.
 
 This highlights a great weakness of the approach taken by QUAIL -- since there is so little that can be said about the guidance law analytically, it is very difficult to make any performance assertions about the global trajectory.
 
-Another important point to make is that QUAIL requires fine tuning to achieve shorter time of flight. While it can work out of the box, it needs to be adjusted for each mission to fly trajectories more efficiently. This is much like how classical feedback control laws are tuned to match a certain control problem.
+Another important point to make is that QUAIL requires fine-tuning to achieve a shorter time of flight. While it can work out of the box, it needs to be adjusted for each mission to fly trajectories more efficiently. This is much like how classical feedback control laws are tuned to match a certain control problem.
 
 \newpage
 \subsection{Plots}
@@ -264,7 +264,7 @@ By emphasizing certain elements over others, the guidance law is more willing to
 
 The optimized transfers spend less time paused compared to their baseline counterparts. In Case A, the total \(\Delta v\) expenditures are very similar, but the trajectory taken by the optimized tuning looks far more direct than the baseline case. In Case B, \(\Delta v\) savings of 14\% are achieved by taking a ``shorter path''.
 
-The weights associated with each optimized case are not very obvious -- it is not clear why emphasizing \(W_h\) in case A and \(W_p\) in case B result in much improved performance. A possible mechanism for this happening is that \(W_\moe\) are tuned such that the local behaviour of the guidance law at each point in the trajectory ``nicely sets up'' the next part of the trajectory without any waiting needed.
+The weights associated with each optimized case are not very obvious -- it is not clear why emphasizing \(W_h\) in case A and \(W_p\) in case B result in much-improved performance. A possible mechanism for this happening is that \(W_\moe\) are tuned such that the local behaviour of the guidance law at each point in the trajectory ``nicely sets up'' the next part of the trajectory without any waiting needed.
 \section{Disturbance Rejection Study}
 The results of case J are shown below in Figure \ref{fig:results_results_j}.
 
@@ -289,7 +289,7 @@ It is interesting to note that the spacecraft performed over 5000 revolutions of
 
 \section{Realistic Solar Sail Modelling Study}
 
-Cases A and B were run with modified values of \(\kappa\), and with all other parameters kept the same as the baseline values. The impact on time of flight is shown in Table \ref{tab:cone_angle_changing}.
+Cases A and B were run with modified values of \(\kappa\), and with all other parameters kept the same as the baseline values. The impact on the time of flight is shown in Table \ref{tab:cone_angle_changing}.
 
 \begin{table}[H]
     \centering
@@ -315,21 +315,21 @@ Cases A and B were run with modified values of \(\kappa\), and with all other pa
 
 There is a clear optimum for \(\kappa\), which is reasonable; that value represents the best tradeoff between producing thrust in the desired direction, and producing a sufficiently great amount of thrust.
 
-It is surprising that transfers are still working even with \(\kappa = \ang{40}\). This is a testament to the robustness of the Q-Law against plant dynamics variation, and suggests that QUAIL may work quite well even with very restrictive cone angle limits.
+Surprisingly, transfers are still working even with \(\kappa = \ang{40}\). This is a testament to the robustness of the Q-Law against plant dynamics variation, and suggests that QUAIL may work quite well even with very restrictive cone angle limits.
 
-It is also reassuring to see that the guidance law has limits to its capabilities; it for an extremely restrictive thrust cone angle, it simply cannot produce thrust in the direction needed by the Q-Law for progress towards the target orbit.
+It is also reassuring to see that the guidance law has limits to its capabilities; for an extremely restrictive thrust cone angle, it simply cannot produce thrust in the direction needed by the Q-Law for progress toward the target orbit.
 
 \section{Discussion}
 While QUAIL demonstrates great success in all of the numerical experiments, the methodology must be scrutinized to assess the validity of the claims being made.
 
-The lack of theoretical performance guarantees means that QUAIL can only be assessed through exhaustive simulation testing. In this thesis, only a handful of cases were simulated, and although they are challenging, they do not encompass the entire range of possible orbital maneuvers which may be done with a real solar sail. The issues encountered with the GEO disposal case raise concern over the performance of the guidance law with more ``benign'' orbital transfer cases, which may not have been captured by the other 3 cases. For future work, a better set of baseline cases should be developed, including a variety of cases motivated by practical maneuvers (de-orbiting, maneuvering to scientifically valuable orbits, etc.) rather than just trying to change many orbital elements all at once. \textbf{Both the quantity and quality of the trajectory cases should be improved} for future work. Nonetheless, the observed performance seen in the preceding experiments strongly suggests that QUAIL is able to perform complex orbital transfers.
+The lack of theoretical performance guarantees means that QUAIL can only be assessed through exhaustive simulation testing. In this thesis, only a handful of cases were simulated, and although they are challenging, they do not encompass the entire range of possible orbital maneuvers that may be done with a real solar sail. The issues encountered with the GEO disposal case raise concern over the performance of the guidance law with more ``benign'' orbital transfer cases, which may not have been captured by the other 3 cases. For future work, a better set of baseline cases should be developed, including a variety of cases motivated by practical maneuvers (de-orbiting, maneuvering to scientifically valuable orbits, etc.) rather than just trying to change many orbital elements all at once. \textbf{Both the quantity and quality of the trajectory cases should be improved} for future work. Nonetheless, the observed performance seen in the preceding experiments strongly suggests that QUAIL can perform complex orbital transfers.
 
-The guidance optimization study is quite well done, and shows that improvement in performance is possible. However, no general trends or heuristics on how to tune the guidance law are developed, as there are only 2 cases which were optimized. An interesting study would be to develop a tuning heuristic for QUAIL which can be applied \textit{a priori} or with fewer simulation runs, somewhat like Ziegler-Nichols PID tuning \cite{ziegler1942optimum}.
+The guidance optimization study is quite well done and shows that performance improvement is possible. However, no general trends or heuristics on how to tune the guidance law are developed, as there are only 2 cases that were optimized. An interesting study would be to develop a tuning heuristic for QUAIL which can be applied \textit{a priori} or with fewer simulation runs, somewhat like Ziegler-Nichols PID tuning \cite{ziegler1942optimum}.
 
 For disturbance rejection analysis, while \(J2\) perturbations are dominant in low Earth orbit, most solar sails operate in higher orbits where these effects are not as significant. It would be more interesting to investigate gravitational perturbations from the Sun and Moon, or atmospheric drag effects. It is also difficult to justify claims about QUAIL's performance given that only a single case was run.
 
-The realistic solar sail modelling study is quite limited in its scope and usefulness. An improved study with an actual thrust model featuring off axis thrust may reveal more subtle features of working with solar sails that is not available with using an ideal sail thrust model.
+The realistic solar sail modelling study is quite limited in its scope and usefulness. An improved study with an actual thrust model featuring off-axis thrust may reveal more subtle features of working with solar sails that are not available with using an ideal sail thrust model.
 
 Additionally, attitude dynamics have not been considered. For sufficiently long period orbits, this should not have a great effect on performance, but it would be desirable to test QUAIL in a simulator with limits imposed on the angular rates of the spacecraft.
 
-Overall, the few experiments which were conducted with QUAIL cannot be used to certify performance, but suggest that even with further testing, QUAIL can prove to be a very reliable and performant guidance law for solar sailing.
+Overall, the few experiments that were conducted with QUAIL cannot be used to certify performance, but suggest that even with further testing, QUAIL can prove to be a very reliable and performant guidance law for solar sailing.
